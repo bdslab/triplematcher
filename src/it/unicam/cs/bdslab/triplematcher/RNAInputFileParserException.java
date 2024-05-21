@@ -1,0 +1,61 @@
+/**
+ * SERNAlign - Structural sEquence RNA secondary structure Alignment
+ * 
+ * Copyright (C) 2023 Luca Tesei, Francesca Levi, Michela Quadrini, 
+ * Emanuela Merelli - BioShape and Data Science Lab at the University of 
+ * Camerino, Italy - http://www.emanuelamerelli.eu/bigdata/
+ *  
+ * This file is part of SERNAlign.
+ * 
+ * SERNAlign is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ * 
+ * SERNAlign is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with SERNAlign. If not, see <http://www.gnu.org/licenses/>.
+ */
+package it.unicam.cs.bdslab.triplematcher;
+
+/**
+ * Exception to signal any syntax error in input files containing the
+ * description of an RNA secondary structure in any supported format.
+ * 
+ * @author Luca Tesei
+ *
+ */
+public class RNAInputFileParserException extends RuntimeException {
+
+    private static final long serialVersionUID = 4540612561494091099L;
+
+    public RNAInputFileParserException() {
+    }
+
+    /**
+     * @param message Description message
+     */
+    public RNAInputFileParserException(String message) {
+	super(message);
+    }
+
+    /**
+     * @param cause Cause of the exception
+     */
+    public RNAInputFileParserException(Throwable cause) {
+	super(cause);
+    }
+
+    /**
+     * @param message Description message
+     * @param cause   Cause of the exception
+     */
+    public RNAInputFileParserException(String message, Throwable cause) {
+	super(message, cause);
+    }
+
+}
