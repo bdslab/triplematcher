@@ -73,12 +73,22 @@ public class RNASecondaryStructure {
      * Create an empty secondary structure.
      */
     public RNASecondaryStructure() {
-	this.sequence = null;
-	this.size = -1;
-	this.bonds = new ArrayList<WeakBond>();
-	this.p = null;
-	this.description = "";
+		this.sequence = null;
+		this.size = -1;
+		this.bonds = new ArrayList<WeakBond>();
+		this.p = null;
+		this.description = "";
     }
+
+	/**
+	 * For test
+	 * @param bonds the bonds
+	 */
+	public RNASecondaryStructure(List<WeakBond> bonds){
+		this.sequence = null;
+		this.size = -1;
+		this.bonds = bonds;
+	}
 
     /**
      * @return the sequence
@@ -98,7 +108,7 @@ public class RNASecondaryStructure {
      * @return the bonds
      */
     public List<WeakBond> getBonds() {
-	return bonds;
+		return bonds;
     }
 
     /**
