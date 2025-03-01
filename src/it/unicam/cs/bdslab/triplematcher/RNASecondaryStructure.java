@@ -1,22 +1,19 @@
 /**
  * SERNAlign - Structural sEquence RNA secondary structure Alignment
- * 
  * Copyright (C) 2023 Luca Tesei, Francesca Levi, Michela Quadrini, 
  * Emanuela Merelli - BioShape and Data Science Lab at the University of 
  * Camerino, Italy - http://www.emanuelamerelli.eu/bigdata/
- *  
  * This file is part of SERNAlign.
- * 
  * SERNAlign is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * any later version.
- * 
+
  * SERNAlign is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+
  * You should have received a copy of the GNU General Public License
  * along with SERNAlign. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -75,7 +72,7 @@ public class RNASecondaryStructure {
     public RNASecondaryStructure() {
 		this.sequence = null;
 		this.size = -1;
-		this.bonds = new ArrayList<WeakBond>();
+		this.bonds = new ArrayList<>();
 		this.p = null;
 		this.description = "";
     }
@@ -111,6 +108,7 @@ public class RNASecondaryStructure {
 		return bonds;
     }
 
+	@SuppressWarnings("unused")
     /**
      * @return the description
      */
@@ -153,7 +151,7 @@ public class RNASecondaryStructure {
 	if (this.sequence != null) {
 	    // the size is fixed to the length of the sequence
 	    if (b.getRight() > this.size)
-		throw new RNAInputFileParserException("Weak Bond right index "
+			throw new RNAInputFileParserException("Weak Bond right index "
 			+ b.getRight()
 			+ " is greater than the structure size " + this.size);
 	} else
@@ -205,8 +203,8 @@ public class RNASecondaryStructure {
     public boolean isPseudoknotted() {
 	for (int i = 0; i < this.bonds.size(); i++)
 	    for (int j = i + 1; j < this.bonds.size(); j++)
-		if (this.bonds.get(i).crossesWith(this.bonds.get(j)))
-		    return true;
+			if (this.bonds.get(i).crossesWith(this.bonds.get(j)))
+		    	return true;
 	return false;
     }
 

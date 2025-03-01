@@ -8,7 +8,7 @@ import java.util.*;
 public class RNAApproximatePatternMatcher<T extends Comparable<T>> implements  RNAPatternMatcher<T> {
 
     private int[][] matrix;
-    private List<T> sequence;
+    private final List<T> sequence;
     private boolean solved;
     private List<T> pattern;
     private List<List<EditOperation<T>>> optimalEditOperations;

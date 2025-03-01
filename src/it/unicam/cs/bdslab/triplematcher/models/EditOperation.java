@@ -3,8 +3,8 @@ package it.unicam.cs.bdslab.triplematcher.models;
 import java.util.Objects;
 
 public class EditOperation<T> {
-    private T first;
-    private T second;
+    private final T first;
+    private final T second;
     public EditOperation(T first, T second) {
         if (first == null && second == null)
             throw new IllegalArgumentException("Both elements cannot be null");
@@ -18,6 +18,7 @@ public class EditOperation<T> {
         }
         return first.toString();
     }
+
     public String second() {
         if (second == null) {
             return "-";
@@ -41,18 +42,4 @@ public class EditOperation<T> {
     public int hashCode() {
         return Objects.hash(first, second);
     }
-
-    public boolean isInsertion() {
-        return first == null;
-    }
-    public boolean isDeletion() {
-        return second == null;
-    }
-    public boolean isMatchOrMismatch() {
-        return first != null && second != null;
-    }
-    public boolean isMatch() {
-        return first != null && first.equals(second);
-    }
-
 }

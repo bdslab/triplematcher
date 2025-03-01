@@ -137,7 +137,7 @@ public class RNAApproximatePatternMatcherTest {
         assertEquals(expectedSecondAlignment, secondAlignment, "Second alignment should be correct.");
     }
 
-    private List<WeakBond> getWeakBonds(List<Integer> lefts, List<Integer> rights) throws Exception {
+    private List<WeakBond> getWeakBonds(List<Integer> lefts, List<Integer> rights) {
         List<WeakBond> weakBonds = new ArrayList<>();
         for (int i = 0; i < lefts.size(); i++) {
             weakBonds.add(new WeakBond(lefts.get(i), rights.get(i)));
