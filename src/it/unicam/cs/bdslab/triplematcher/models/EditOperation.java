@@ -26,6 +26,10 @@ public class EditOperation<T> {
         return second.toString();
     }
 
+    public String getStringForExport() {
+        return Objects.equals(first, second) ? "M" : "-";
+    }
+
     @Override
     public String toString() {
         return first + "->" + second;

@@ -19,6 +19,8 @@
  */
 package it.unicam.cs.bdslab.triplematcher;
 
+import it.unicam.cs.bdslab.triplematcher.models.CompleteWeakBond;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -45,6 +47,8 @@ public class RNASecondaryStructure {
     // list of the weak bonds of this structure
     protected List<WeakBond> bonds;
 
+	private final List<WeakBond> completeWeakBonds = new ArrayList<>();
+
     /*
      * length of the sequence; if this structure has no sequence a
      * sub-approximation is computed from the bonds
@@ -64,7 +68,7 @@ public class RNASecondaryStructure {
     protected int[] p;
 
     // Description taken from the file, if any
-    protected String description;
+    public String description;
 
     /**
      * Create an empty secondary structure.
@@ -105,7 +109,13 @@ public class RNASecondaryStructure {
      * @return the bonds
      */
     public List<WeakBond> getBonds() {
-		return bonds;
+		if (completeWeakBonds.size() != bonds.size()) {
+			completeWeakBonds.clear();
+			for (WeakBond bond : bonds) {
+				completeWeakBonds.add(new CompleteWeakBond(bond.getLeft(), bond.getRight(), sequence.charAt(bond.getLeft() - 1), sequence.charAt(bond.getRight() - 1)));
+			}
+		}
+		return completeWeakBonds;
     }
 
 	@SuppressWarnings("unused")
