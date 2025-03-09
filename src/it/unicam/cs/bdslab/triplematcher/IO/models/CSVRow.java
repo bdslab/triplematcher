@@ -47,6 +47,6 @@ public class CSVRow {
     public String getRow() {
         return RNAKey + "," + sequenceLength + "," + seqWindow.getStart() + "," + seqWindow.getEnd() + "," + bondWindow.getStart() + ","
                 + bondWindow.getEnd() + "," + isApproximateSeq + "," + strMatchSeq + "," + isApproximateBond + "," + strMatchBond
-                + "," + scoreSeq + "," + scoreBond + "," + scoreSeq + "," + scoreBond + "\n";
+                + "," + scoreSeq + "," + scoreBond + "\n";
     }
 }

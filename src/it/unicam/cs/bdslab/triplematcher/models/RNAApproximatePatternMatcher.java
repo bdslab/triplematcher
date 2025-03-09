@@ -90,7 +90,7 @@ public class RNAApproximatePatternMatcher<T> implements  RNAPatternMatcher<T> {
                 editOperations.add(
                         new EditOperation<>(
                             pattern.get(i - 1),
-                            text.get(i - 1)
+                            text.get(j - 1)
                         )
                 );
                 i--;

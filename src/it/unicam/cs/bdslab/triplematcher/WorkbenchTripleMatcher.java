@@ -25,7 +25,8 @@ public class WorkbenchTripleMatcher {
         options.addOption("n", true, "nucleotide letter (A, C, G, U), default U")
             .addOption("b", true, "canonical base pair (AU, UA, GC, CG), default UA")
             .addOption("t", true, "number of allowed mismatches, default 2")
-            .addOption("ml", true, "minimum length of the pattern, default 4");
+            .addOption("ml", true, "minimum length of the pattern, default 4")
+            .addOption("h", "help", false, "print this message");
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd;
 
@@ -33,7 +34,7 @@ public class WorkbenchTripleMatcher {
             cmd = parser.parse(options, args);
 
             String nucleotide = cmd.getOptionValue("n", "U");
-            String basePair = cmd.getOptionValue("b", "UA");
+            String basePair = cmd.getOptionValue("b", "AU");
             int tolerance = Integer.parseInt(cmd.getOptionValue("t", "0"));
             int minPatternLength = Integer.parseInt(cmd.getOptionValue("ml", "4"));
 

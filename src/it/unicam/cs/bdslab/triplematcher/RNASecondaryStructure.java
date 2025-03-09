@@ -283,4 +283,8 @@ public class RNASecondaryStructure {
 	    }
 	}
     }
+
+	public boolean isNotWeakBond(int i) {
+		return this.bonds.stream().allMatch(pair -> pair.getLeft() != i && pair.getRight() != i);
+	}
 }

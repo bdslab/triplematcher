@@ -1,5 +1,6 @@
 package it.unicam.cs.bdslab.triplematcher.models;
 
+import it.unicam.cs.bdslab.triplematcher.WeakBond;
 import it.unicam.cs.bdslab.triplematcher.models.utils.Utils;
 
 import java.util.*;
@@ -32,7 +33,7 @@ public class BasicFilter<T> implements MatchFilter<T> {
         List<Match<T>> matches = new LinkedList<>();
         // If the row has 0 we don't need to consider others
         boolean rowWith0 = false;
-        for (int i = matrix.length - 1; i >= 6 && !rowWith0; i--) {
+        for (int i = matrix.length - 1; i >= minPatternLength && !rowWith0; i--) {
             int[] matrixRow = matrix[i];
             int minScoreValue = Utils.getMin(matrixRow);
             // if the min distance on the row is higher than the tolerance I consider the next row
@@ -42,6 +43,7 @@ public class BasicFilter<T> implements MatchFilter<T> {
                 rowWith0 = true;
             matches.addAll(getMatchesForARow(patternMatcher, i, minScoreValue));
         }
+
         return new ArrayList<>(matches);
     }
 

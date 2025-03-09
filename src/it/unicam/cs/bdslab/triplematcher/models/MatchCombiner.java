@@ -27,7 +27,7 @@ public class MatchCombiner<T, K> {
         List<Pair<Match<T>, Match<K>>> result = new ArrayList<>();
         for (Match<T> match1 : matches1) {
             for (Match<K> match2 : matches2) {
-                if (match1.getLength() == match2.getLength() && match1.getAlignmentLength() == match2.getAlignmentLength()) {
+                if (match1.getLength() == match2.getLength() && match1.getDistance() == match2.getDistance()) {
                     // if the two matches have the same length and alignment length then they are combined
                     result.add(new Pair<>(match1, match2));
                 }

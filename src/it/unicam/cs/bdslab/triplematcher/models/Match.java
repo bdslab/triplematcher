@@ -48,6 +48,7 @@ public class Match<T> {
         StringBuilder alignmentString = new StringBuilder();
         for (EditOperation<T> operation : editOperations) {
             alignmentString.append(operation.getStringForExport());
+            alignmentString.append(";");
         }
         return alignmentString.toString();
     }

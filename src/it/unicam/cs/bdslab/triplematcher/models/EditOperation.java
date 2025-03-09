@@ -27,7 +27,7 @@ public class EditOperation<T> {
     }
 
     public String getStringForExport() {
-        return Objects.equals(first, second) ? "M" : "-";
+        return first() +"->"+second();
     }
 
     @Override

@@ -13,10 +13,10 @@ import it.unicam.cs.bdslab.triplematcher.models.utils.Pair;
 import java.io.OutputStreamWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ApplicationCSV implements Application {
     private final ApplicationSettings settings;
@@ -34,8 +34,7 @@ public class ApplicationCSV implements Application {
         List<WeakBond> bondPattern = settings.getBondPatternList();
         List<Character> seqPattern = settings.getSeqPatternList();
         MatchCombiner<WeakBond, Character> combiner = new MatchCombiner<>();
-        try {
-            OutputStreamWriter writer = new OutputStreamWriter(Files.newOutputStream(output));
+        try (OutputStreamWriter writer = new OutputStreamWriter(Files.newOutputStream(output))){
             writer.write(CSVRow.HEADERS);
             while (folderIterator.hasNext()) {
                 RNASecondaryStructure structure = folderIterator.next();
@@ -63,16 +62,32 @@ public class ApplicationCSV implements Application {
             seqText.add(c);
         }
         bondText.sort(WeakBond::compareTo);
-        return combiner.combine(
-                getMatches(bondText, bondPattern, settings.getTolerance()),
-                getMatches(seqText, seqPattern, settings.getTolerance())
-        );
+        return filter(structure, combiner.combine(
+                getMatches(bondText, bondPattern),
+                getMatches(seqText, seqPattern)
+        ));
 
     }
 
-    private<T> List<Match<T>> getMatches(List<T> text, List<T> pattern, int tolerance) {
+    private List<Pair<Match<WeakBond>, Match<Character>>> filter(RNASecondaryStructure structure, List<Pair<Match<WeakBond>, Match<Character>>> matches) {
+        return matches.stream().filter(m -> {
+           int numberOfBonds = 0;
+           for (int i = m.getSecond().getCol() - 1; i >= m.getFirst().getCol() - m.getSecond().getLength(); i--) {
+               if (!structure.isNotWeakBond(i)) {
+                   numberOfBonds++;
+                   if (numberOfBonds >= settings.getTolerance()) {
+                          return false;
+                   }
+               }
+           }
+           return true;
+        }).collect(Collectors.toList());
+
+    }
+
+    private<T> List<Match<T>> getMatches(List<T> text, List<T> pattern) {
         BasicFilter<T> filter = new BasicFilter<>(text, pattern);
         RNAApproximatePatternMatcher<T> matcher = new RNAApproximatePatternMatcher<>(text);
-        return filter.filter(matcher, tolerance, settings.getMinPatternLength());
+        return filter.filter(matcher, settings.getTolerance(), settings.getMinPatternLength());
     }
 }

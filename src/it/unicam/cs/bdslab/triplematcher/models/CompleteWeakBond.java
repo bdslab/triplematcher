@@ -37,4 +37,9 @@ public class CompleteWeakBond extends WeakBond {
     public int hashCode() {
         return Objects.hash(leftC, rightC);
     }
+
+    @Override
+    public String toString() {
+        return "(" + leftC + "; " + rightC + ")";
+    }
 }
