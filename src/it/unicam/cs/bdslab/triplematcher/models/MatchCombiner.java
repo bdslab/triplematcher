@@ -8,17 +8,7 @@ import java.util.List;
 
 public class MatchCombiner<T, K> {
 
-    Comparator<Match<?>> order = new Comparator<Match<?>>() {
-        @Override
-        public int compare(Match<?> o1, Match<?> o2) {
-            // order by length, then by distance so the longest matches are first with the smallest distance
-            if (o1.getLength() == o2.getLength()) {
-                return o1.getDistance() - o2.getDistance();
-            } else {
-                return o1.getLength() - o2.getLength();
-            }
-        }
-    };
+
     public MatchCombiner() {
 
     }

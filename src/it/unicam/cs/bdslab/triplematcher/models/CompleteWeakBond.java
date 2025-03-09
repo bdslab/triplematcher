@@ -27,7 +27,6 @@ public class CompleteWeakBond extends WeakBond {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        //TODO: I know this is wrong but no time to fix it
         //if (!super.equals(o)) return false;
         CompleteWeakBond that = (CompleteWeakBond) o;
         return leftC == that.leftC && rightC == that.rightC;

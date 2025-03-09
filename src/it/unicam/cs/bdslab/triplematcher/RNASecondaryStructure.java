@@ -105,12 +105,17 @@ public class RNASecondaryStructure {
 	return size;
     }
 
+	private boolean ordered = false;
     /**
      * @return the bonds
      */
     public List<WeakBond> getBonds() {
 		if (completeWeakBonds.size() != bonds.size()) {
 			completeWeakBonds.clear();
+			if (!ordered) {
+				Collections.sort(bonds);
+				ordered = true;
+			}
 			for (WeakBond bond : bonds) {
 				completeWeakBonds.add(new CompleteWeakBond(bond.getLeft(), bond.getRight(), sequence.charAt(bond.getLeft() - 1), sequence.charAt(bond.getRight() - 1)));
 			}

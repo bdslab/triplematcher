@@ -26,6 +26,14 @@ public class EditOperation<T> {
         return second.toString();
     }
 
+    public T getFirst() {
+        return first;
+    }
+
+    public T getSecond() {
+        return second;
+    }
+
     public String getStringForExport() {
         return first() +"->"+second();
     }

@@ -4,10 +4,7 @@ import it.unicam.cs.bdslab.triplematcher.IO.models.CSVRow;
 import it.unicam.cs.bdslab.triplematcher.IO.utils.FolderIterator;
 import it.unicam.cs.bdslab.triplematcher.RNASecondaryStructure;
 import it.unicam.cs.bdslab.triplematcher.WeakBond;
-import it.unicam.cs.bdslab.triplematcher.models.BasicFilter;
-import it.unicam.cs.bdslab.triplematcher.models.Match;
-import it.unicam.cs.bdslab.triplematcher.models.MatchCombiner;
-import it.unicam.cs.bdslab.triplematcher.models.RNAApproximatePatternMatcher;
+import it.unicam.cs.bdslab.triplematcher.models.*;
 import it.unicam.cs.bdslab.triplematcher.models.utils.Pair;
 
 import java.io.OutputStreamWriter;
@@ -39,6 +36,7 @@ public class ApplicationCSV implements Application {
             while (folderIterator.hasNext()) {
                 RNASecondaryStructure structure = folderIterator.next();
                 List<Pair<Match<WeakBond>, Match<Character>>> matches = getMatches(structure, combiner, bondPattern, seqPattern);
+                System.out.println("[INFO] start processing " + structure.getDescription());
                 matches.stream()
                         .map(pair -> new CSVRow(structure, pair.getFirst(), pair.getSecond()))
                         .forEach(row -> {
@@ -70,19 +68,46 @@ public class ApplicationCSV implements Application {
     }
 
     private List<Pair<Match<WeakBond>, Match<Character>>> filter(RNASecondaryStructure structure, List<Pair<Match<WeakBond>, Match<Character>>> matches) {
-        return matches.stream().filter(m -> {
+        return filterConsecutiveBondMatches(filterSequence(structure, matches));
+    }
+
+    private List<Pair<Match<WeakBond>, Match<Character>>> filterSequence(RNASecondaryStructure structure, List<Pair<Match<WeakBond>, Match<Character>>> matches) {
+        return  matches.stream().filter(m -> {
            int numberOfBonds = 0;
            for (int i = m.getSecond().getCol() - 1; i >= m.getFirst().getCol() - m.getSecond().getLength(); i--) {
                if (!structure.isNotWeakBond(i)) {
                    numberOfBonds++;
-                   if (numberOfBonds >= settings.getTolerance()) {
+                   if (numberOfBonds > settings.getTolerance()) {
                           return false;
                    }
                }
            }
            return true;
         }).collect(Collectors.toList());
+    }
 
+    private List<Pair<Match<WeakBond>, Match<Character>>> filterConsecutiveBondMatches(List<Pair<Match<WeakBond>, Match<Character>>> matches) {
+        List<Pair<Match<WeakBond>, Match<Character>>> filteredMatches = new ArrayList<>();
+        for (Pair<Match<WeakBond>, Match<Character>> match : matches) {
+            Match<WeakBond> bond = match.getFirst();
+            int notConsecutive = 0;
+            boolean consecutive = true;
+            for (int i = 1; i < bond.getEditOperations().size(); i++) {
+                WeakBond previous = bond.getEditOperations().get(i - 1).getSecond();
+                WeakBond current = bond.getEditOperations().get(i).getSecond();
+                if (previous.getLeft() != current.getLeft() - 1) {
+                    notConsecutive++;
+                    if (notConsecutive > settings.getTolerance()) {
+                        consecutive = false;
+                        break;
+                    }
+                }
+            }
+            if (consecutive) {
+                filteredMatches.add(match);
+            }
+        }
+        return filteredMatches;
     }
 
     private<T> List<Match<T>> getMatches(List<T> text, List<T> pattern) {

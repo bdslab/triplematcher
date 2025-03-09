@@ -22,8 +22,10 @@ public class CSVRow {
     public static final String HEADERS = String.join(",", HEADERSARRAY) + "\n";
     private final String RNAKey;
     private final int sequenceLength;
-    private final Window seqWindow;
-    private final Window bondWindow;
+    private final int seqWindowStart;
+    private final int seqWindowEnd;
+    private final WeakBond bondWindowStart;
+    private final WeakBond bondWindowEnd;
     private final boolean isApproximateSeq;
     private final String strMatchSeq;
     private final boolean isApproximateBond;
@@ -34,8 +36,10 @@ public class CSVRow {
     public CSVRow(RNASecondaryStructure rnaSecondaryStructure, Match<WeakBond> bondMatch, Match<Character> seqMatch) {
         this.RNAKey = rnaSecondaryStructure.getDescription();
         this.sequenceLength = rnaSecondaryStructure.getSequence().length();
-        this.seqWindow = new Window(seqMatch.getCol() - seqMatch.getLength(), seqMatch.getCol());
-        this.bondWindow = new Window(bondMatch.getCol() - seqMatch.getLength(), bondMatch.getCol());
+        this.seqWindowStart = seqMatch.getCol() - seqMatch.getLength();
+        this.seqWindowEnd = seqMatch.getCol();
+        this.bondWindowStart = rnaSecondaryStructure.getBonds().get(bondMatch.getCol() - bondMatch.getLength());
+        this.bondWindowEnd = rnaSecondaryStructure.getBonds().get(bondMatch.getCol());
         this.isApproximateSeq = seqMatch.getDistance() > 0;
         this.strMatchSeq = seqMatch.getAlignmentString();
         this.isApproximateBond = bondMatch.getDistance() > 0;
@@ -45,8 +49,12 @@ public class CSVRow {
     }
 
     public String getRow() {
-        return RNAKey + "," + sequenceLength + "," + seqWindow.getStart() + "," + seqWindow.getEnd() + "," + bondWindow.getStart() + ","
-                + bondWindow.getEnd() + "," + isApproximateSeq + "," + strMatchSeq + "," + isApproximateBond + "," + strMatchBond
+        return RNAKey + "," + sequenceLength + "," + seqWindowStart + "," + seqWindowEnd + "," + getBondString(bondWindowStart) + ","
+                + getBondString(bondWindowEnd) + "," + isApproximateSeq + "," + strMatchSeq + "," + isApproximateBond + "," + strMatchBond
                 + "," + scoreSeq + "," + scoreBond + "\n";
+    }
+
+    private String getBondString(WeakBond bond) {
+        return "(" + bond.getLeft() + ";" + bond.getRight() + ")";
     }
 }
