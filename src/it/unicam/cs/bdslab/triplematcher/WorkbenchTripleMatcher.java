@@ -34,7 +34,7 @@ public class WorkbenchTripleMatcher {
             cmd = parser.parse(options, args);
 
             String nucleotide = cmd.getOptionValue("n", "U");
-            String basePair = cmd.getOptionValue("b", "AU");
+            String basePair = cmd.getOptionValue("b", "UA");
             int tolerance = Integer.parseInt(cmd.getOptionValue("t", "0"));
             int minPatternLength = Integer.parseInt(cmd.getOptionValue("ml", "4"));
 

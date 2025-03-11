@@ -1,6 +1,8 @@
 package it.unicam.cs.bdslab.triplematcher.models.utils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Utils {
     public static int[] getMins(int[] array) {
@@ -39,5 +41,12 @@ public class Utils {
         return min;
     }
 
+    public static<T> List<T> replicate(T element, int times) {
+        List<T> list = new ArrayList<>();
+        for (int i = 0; i < times; i++) {
+            list.add(element);
+        }
+        return list;
+    }
 
 }

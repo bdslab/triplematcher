@@ -290,6 +290,7 @@ public class RNASecondaryStructure {
     }
 
 	public boolean isNotWeakBond(int i) {
-		return this.bonds.stream().allMatch(pair -> pair.getLeft() != i && pair.getRight() != i);
+		int finalI = i + 1;
+		return this.bonds.stream().allMatch(pair -> pair.getLeft() != finalI && pair.getRight() != finalI);
 	}
 }

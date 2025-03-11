@@ -144,10 +144,10 @@ public class WeakBond implements Comparable<WeakBond> {
      */
     @Override
     public int compareTo(WeakBond o) {
-	Integer right, oright;
-	right = new Integer(this.right);
-	oright = new Integer(o.right);
-	return right.compareTo(oright);
+		Integer right, oright;
+		right = new Integer(this.left);
+		oright = new Integer(o.left);
+		return right.compareTo(oright);
     }
 
 }

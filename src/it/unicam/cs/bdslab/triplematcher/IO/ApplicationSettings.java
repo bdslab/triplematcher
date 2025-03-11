@@ -1,6 +1,7 @@
 package it.unicam.cs.bdslab.triplematcher.IO;
 
 import it.unicam.cs.bdslab.triplematcher.WeakBond;
+import it.unicam.cs.bdslab.triplematcher.models.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,19 +40,11 @@ public class ApplicationSettings {
     }
 
     public List<WeakBond> getBondPatternList() {
-        return replicate(bondPattern, maxPatternLength);
+        return Utils.replicate(bondPattern, maxPatternLength);
     }
 
     public List<Character> getSeqPatternList() {
-        return replicate(seqPattern, maxPatternLength);
+        return Utils.replicate(seqPattern, maxPatternLength);
     }
 
-
-    private<T> List<T> replicate(T element, int times) {
-        List<T> list = new ArrayList<>();
-        for (int i = 0; i < times; i++) {
-            list.add(element);
-        }
-        return list;
-    }
 }

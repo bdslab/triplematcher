@@ -7,6 +7,7 @@ import it.unicam.cs.bdslab.triplematcher.models.Match;
 public class CSVRow {
     public static final String[] HEADERSARRAY = {
             "FileName",
+            "length",
             "solution_length",
             "start_window_seq",
             "stop_window_seq",
@@ -22,6 +23,7 @@ public class CSVRow {
     public static final String HEADERS = String.join(",", HEADERSARRAY) + "\n";
     private final String RNAKey;
     private final int sequenceLength;
+    private final int solutionLength;
     private final int seqWindowStart;
     private final int seqWindowEnd;
     private final WeakBond bondWindowStart;
@@ -36,10 +38,11 @@ public class CSVRow {
     public CSVRow(RNASecondaryStructure rnaSecondaryStructure, Match<WeakBond> bondMatch, Match<Character> seqMatch) {
         this.RNAKey = rnaSecondaryStructure.getDescription();
         this.sequenceLength = rnaSecondaryStructure.getSequence().length();
+        this.solutionLength = seqMatch.getLength();
         this.seqWindowStart = seqMatch.getCol() - seqMatch.getLength();
         this.seqWindowEnd = seqMatch.getCol();
         this.bondWindowStart = rnaSecondaryStructure.getBonds().get(bondMatch.getCol() - bondMatch.getLength());
-        this.bondWindowEnd = rnaSecondaryStructure.getBonds().get(bondMatch.getCol());
+        this.bondWindowEnd = rnaSecondaryStructure.getBonds().get(bondMatch.getCol() - 1);
         this.isApproximateSeq = seqMatch.getDistance() > 0;
         this.strMatchSeq = seqMatch.getAlignmentString();
         this.isApproximateBond = bondMatch.getDistance() > 0;
@@ -49,7 +52,7 @@ public class CSVRow {
     }
 
     public String getRow() {
-        return RNAKey + "," + sequenceLength + "," + seqWindowStart + "," + seqWindowEnd + "," + getBondString(bondWindowStart) + ","
+        return RNAKey + "," + sequenceLength + "," + solutionLength + "," + seqWindowStart + "," + seqWindowEnd + "," + getBondString(bondWindowStart) + ","
                 + getBondString(bondWindowEnd) + "," + isApproximateSeq + "," + strMatchSeq + "," + isApproximateBond + "," + strMatchBond
                 + "," + scoreSeq + "," + scoreBond + "\n";
     }

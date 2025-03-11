@@ -41,7 +41,7 @@ public class Match<T> {
         return editOperations;
     }
     public int getLength() {
-        return pattern.size();
+        return editOperations.size();
     }
 
     public String getAlignmentString() {
