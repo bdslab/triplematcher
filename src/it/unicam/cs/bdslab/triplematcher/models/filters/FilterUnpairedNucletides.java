@@ -23,6 +23,7 @@ public class FilterUnpairedNucletides implements MatchFilter {
                 }
             }
         }
+        matchMatchPair.getSecond().setFilterTollerance(numberOfBonds);
         return true;
     }
 }

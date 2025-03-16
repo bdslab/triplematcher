@@ -28,6 +28,7 @@ public class FilterNotConsecutiveBond implements MatchFilter {
                 }
             }
         }
+        bond.setFilterTollerance(notConsecutive);
         return consecutive;
     }
 }

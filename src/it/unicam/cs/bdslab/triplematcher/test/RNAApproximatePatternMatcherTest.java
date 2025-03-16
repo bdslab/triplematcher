@@ -23,10 +23,9 @@ public class RNAApproximatePatternMatcherTest {
 
     @Test
     public void testSolveWithExactMatch() throws Exception {
-        RNASecondaryStructure sequence = new RNASecondaryStructure(getWeakBonds(
+        RNAApproximatePatternMatcher<WeakBond> matcher = new RNAApproximatePatternMatcher<>(getWeakBonds(
                 Arrays.asList(1, 2, 3), Arrays.asList(2, 3, 4)
         ));
-        RNAApproximatePatternMatcher<WeakBond> matcher = new RNAApproximatePatternMatcher<>(sequence.getBonds());
 
         List<WeakBond> pattern = getWeakBonds(
                 Arrays.asList(1, 2, 3), Arrays.asList(2, 3, 4)
@@ -40,10 +39,9 @@ public class RNAApproximatePatternMatcherTest {
 
     @Test
     public void testSolveWithPartialMismatch() throws Exception {
-        RNASecondaryStructure sequence = new RNASecondaryStructure(getWeakBonds(
+        RNAApproximatePatternMatcher<WeakBond> matcher = new RNAApproximatePatternMatcher<>(getWeakBonds(
                 Arrays.asList(1, 3, 5), Arrays.asList(2, 4, 6)
         ));
-        RNAApproximatePatternMatcher<WeakBond> matcher = new RNAApproximatePatternMatcher<>(sequence.getBonds());
 
         List<WeakBond> pattern = getWeakBonds(
                 Arrays.asList(1, 3), Arrays.asList(2, 5)
@@ -57,10 +55,9 @@ public class RNAApproximatePatternMatcherTest {
 
     @Test
     public void testSolveWithEmptyPattern() throws Exception {
-        RNASecondaryStructure sequence = new RNASecondaryStructure(getWeakBonds(
+        RNAApproximatePatternMatcher<WeakBond> matcher = new RNAApproximatePatternMatcher<>(getWeakBonds(
                 Arrays.asList(1, 2, 3), Arrays.asList(4, 5, 6)
         ));
-        RNAApproximatePatternMatcher<WeakBond> matcher = new RNAApproximatePatternMatcher<>(sequence.getBonds());
 
         List<WeakBond> pattern = new ArrayList<>();
         boolean result = matcher.solve(pattern);
@@ -72,10 +69,9 @@ public class RNAApproximatePatternMatcherTest {
 
     @Test
     public void testSolveAlreadySolved() throws Exception {
-        RNASecondaryStructure sequence = new RNASecondaryStructure(getWeakBonds(
+        RNAApproximatePatternMatcher<WeakBond> matcher = new RNAApproximatePatternMatcher<>(getWeakBonds(
                 Arrays.asList(10, 15, 20), Arrays.asList(11, 16, 21)
         ));
-        RNAApproximatePatternMatcher<WeakBond> matcher = new RNAApproximatePatternMatcher<>(sequence.getBonds());
 
         List<WeakBond> pattern = getWeakBonds(
                 Arrays.asList(10, 15), Arrays.asList(11, 16)
@@ -88,10 +84,9 @@ public class RNAApproximatePatternMatcherTest {
 
     @Test
     public void testAlignmentMatrixAfterSolve() throws Exception {
-        RNASecondaryStructure sequence = new RNASecondaryStructure(getWeakBonds(
+        RNAApproximatePatternMatcher<WeakBond> matcher = new RNAApproximatePatternMatcher<>(getWeakBonds(
                 Arrays.asList(1, 2, 3), Arrays.asList(4, 5, 6)
         ));
-        RNAApproximatePatternMatcher<WeakBond> matcher = new RNAApproximatePatternMatcher<>(sequence.getBonds());
 
         List<WeakBond> pattern = getWeakBonds(
                 Arrays.asList(1, 2), Arrays.asList(4, 6)
@@ -106,10 +101,9 @@ public class RNAApproximatePatternMatcherTest {
 
     @Test
     public void testCorrectAlignmentMatrix() throws Exception {
-        RNASecondaryStructure sequence = new RNASecondaryStructure(getWeakBonds(
+        RNAApproximatePatternMatcher<WeakBond> matcher = new RNAApproximatePatternMatcher<>(getWeakBonds(
                 Arrays.asList(1, 2, 3), Arrays.asList(4, 5, 6)
         ));
-        RNAApproximatePatternMatcher<WeakBond> matcher = new RNAApproximatePatternMatcher<>(sequence.getBonds());
         List<WeakBond> pattern = getWeakBonds(
                 Arrays.asList(1, 2), Arrays.asList(4, 6)
         );

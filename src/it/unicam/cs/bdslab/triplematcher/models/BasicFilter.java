@@ -41,17 +41,17 @@ public class BasicFilter<T> implements MatchFilter<T> {
                 continue;
             if (minScoreValue == 0)
                 rowWith0 = true;
-            matches.addAll(getMatchesForARow(patternMatcher, i, minScoreValue));
+            matches.addAll(getMatchesForARow(patternMatcher, i, tolerance));
         }
 
         return new ArrayList<>(matches);
     }
 
-    private List<Match<T>> getMatchesForARow(RNAPatternMatcher<T> patternMatcher, int i, int minValue) {
+    private List<Match<T>> getMatchesForARow(RNAPatternMatcher<T> patternMatcher, int i, int tolerance) {
         int[] row = patternMatcher.getAlignmentMatrix()[i];
         List<Match<T>> matches = new LinkedList<>();
         for (int j = 0; j < row.length ; j++ ) {
-            if (row[j] <= minValue) {
+            if (row[j] <= tolerance) {
                 List<EditOperation<T>> traceback = patternMatcher.traceback(i, j);
                 matches.add(new Match<>(i, j, row[j], text, pattern.subList(0, i), traceback));
             }

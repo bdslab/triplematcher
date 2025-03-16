@@ -1,5 +1,6 @@
 package it.unicam.cs.bdslab.triplematcher.models.algorithms;
 
+import it.unicam.cs.bdslab.triplematcher.IO.ApplicationSettings;
 import it.unicam.cs.bdslab.triplematcher.RNASecondaryStructure;
 import it.unicam.cs.bdslab.triplematcher.WeakBond;
 import it.unicam.cs.bdslab.triplematcher.models.Match;
@@ -17,16 +18,28 @@ public abstract class RNABaseTripleMatcher implements RNATripleMatcher {
     protected final int tolerance;
     protected final int minPatternLength;
     protected final MatchCombiner<WeakBond, Character> combiner = new MatchCombiner<>();
-    protected RNABaseTripleMatcher(int tolerance, int minPatternLength) {
+    protected final int bondTolerance;
+    protected final int notPairedTolerance;
+    protected final int notConsecutiveTolerance;
+
+
+    protected RNABaseTripleMatcher(int tolerance, int minPatternLength, int bondTolerance, int notPairedTolerance, int notConsecutiveTolerance) {
         this.tolerance = tolerance;
         this.minPatternLength = minPatternLength;
+        this.bondTolerance = bondTolerance;
+        this.notPairedTolerance = notPairedTolerance;
+        this.notConsecutiveTolerance = notConsecutiveTolerance;
+    }
+
+    protected RNABaseTripleMatcher(ApplicationSettings settings) {
+        this(settings.getTolerance(), settings.getMinPatternLength(), settings.getBondTollerance(), settings.getNotPairedTollerance(), settings.getNotConsecutiveTollerance());
     }
 
 
     protected MatchFilter getBaseFilter() {
         return new FilterBuilder()
-                .addFilter(new FilterNotConsecutiveBond(this.tolerance))
-                .addFilter(new FilterUnpairedNucletides(this.tolerance))
+                .addFilter(new FilterNotConsecutiveBond(this.notConsecutiveTolerance))
+                .addFilter(new FilterUnpairedNucletides(this.notPairedTolerance))
                 .build();
     }
 

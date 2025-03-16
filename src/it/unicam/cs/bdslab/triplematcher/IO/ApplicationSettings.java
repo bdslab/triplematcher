@@ -12,11 +12,17 @@ public class ApplicationSettings {
     private final int tolerance;
     private final int minPatternLength;
     private final int maxPatternLength = 11;
-    public ApplicationSettings(WeakBond bondPattern, Character seqPattern, int tolerance, int minPatternLength) {
+    private final int bondTollerance;
+    private final int notPairedTollerance;
+    private final int notConsecutiveTollerance;
+    public ApplicationSettings(WeakBond bondPattern, Character seqPattern, int tolerance, int minPatternLength, int bondTollerance, int notPairedTollerance, int notConsecutiveTollerance) {
         this.bondPattern = bondPattern;
         this.seqPattern = seqPattern;
         this.tolerance = tolerance;
         this.minPatternLength = minPatternLength;
+        this.bondTollerance = bondTollerance;
+        this.notPairedTollerance = notPairedTollerance;
+        this.notConsecutiveTollerance = notConsecutiveTollerance;
     }
 
     public WeakBond getBondPattern() {
@@ -37,6 +43,18 @@ public class ApplicationSettings {
 
     public int getMinPatternLength() {
         return minPatternLength;
+    }
+
+    public int getBondTollerance() {
+        return bondTollerance;
+    }
+
+    public int getNotPairedTollerance() {
+        return notPairedTollerance;
+    }
+
+    public int getNotConsecutiveTollerance() {
+        return notConsecutiveTollerance;
     }
 
     public List<WeakBond> getBondPatternList() {

@@ -22,10 +22,14 @@ public class WorkbenchTripleMatcher {
     public static void main(String[] args) {
         Options options = new Options();
 
-        options.addOption("n", true, "nucleotide letter (A, C, G, U), default U")
+        options
+            .addOption("n", true, "nucleotide letter (A, C, G, U), default U")
             .addOption("b", true, "canonical base pair (AU, UA, GC, CG), default UA")
             .addOption("t", true, "number of allowed mismatches, default 2")
             .addOption("ml", true, "minimum length of the pattern, default 4")
+            .addOption("bt", true, "base pair tolerance, default 0")
+            .addOption("pt", true, "paired tolerance, default 0")
+            .addOption("ct", true, "consecutive tolerance, default 0")
             .addOption("h", "help", false, "print this message");
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd;
@@ -37,6 +41,9 @@ public class WorkbenchTripleMatcher {
             String basePair = cmd.getOptionValue("b", "UA");
             int tolerance = Integer.parseInt(cmd.getOptionValue("t", "0"));
             int minPatternLength = Integer.parseInt(cmd.getOptionValue("ml", "4"));
+            int basePairTolerance = Integer.parseInt(cmd.getOptionValue("bt", "0"));
+            int pairedTolerance = Integer.parseInt(cmd.getOptionValue("pt", "0"));
+            int consecutiveTolerance = Integer.parseInt(cmd.getOptionValue("ct", "0"));
 
             if (cmd.getArgs().length < 2) {
                 throw new IllegalArgumentException("Input folder and output file must be specified.");
@@ -49,6 +56,9 @@ public class WorkbenchTripleMatcher {
                     , nucleotide.charAt(0)
                     , tolerance
                     , minPatternLength
+                    , basePairTolerance
+                    , pairedTolerance
+                    , consecutiveTolerance
             );
             Application app = new ApplicationCSV(settings);
             app.exportFolder(inputFolder, outputFile);

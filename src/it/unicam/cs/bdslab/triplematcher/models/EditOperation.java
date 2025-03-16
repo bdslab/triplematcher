@@ -38,6 +38,10 @@ public class EditOperation<T> {
         return first() +"->"+second();
     }
 
+    public boolean isMatch(){
+        return Objects.equals(first, second);
+    }
+
     @Override
     public String toString() {
         return first + "->" + second;

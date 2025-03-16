@@ -33,7 +33,7 @@ public class ApplicationCSV implements Application {
         FolderIterator folderIterator = new FolderIterator(inputFolder, false);
         MatchCombiner<WeakBond, Character> combiner = new MatchCombiner<>();
         //RNATripleMatcher matcher = new RNAApproximateMatcher(this.settings.getTolerance(), this.settings.getMinPatternLength(), this.settings.getMaxPatternLength());
-        RNATripleMatcher matcher = new RNALinearTripleMatcher(this.settings.getTolerance(), this.settings.getMinPatternLength());
+        RNATripleMatcher matcher = new RNAApproximateMatcher(this.settings);
         try (OutputStreamWriter writer = new OutputStreamWriter(Files.newOutputStream(output))){
             writer.write(CSVRow.HEADERS);
             while (folderIterator.hasNext()) {

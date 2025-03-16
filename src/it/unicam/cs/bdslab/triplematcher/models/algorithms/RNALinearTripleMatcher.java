@@ -1,5 +1,6 @@
 package it.unicam.cs.bdslab.triplematcher.models.algorithms;
 
+import it.unicam.cs.bdslab.triplematcher.IO.ApplicationSettings;
 import it.unicam.cs.bdslab.triplematcher.RNASecondaryStructure;
 import it.unicam.cs.bdslab.triplematcher.WeakBond;
 import it.unicam.cs.bdslab.triplematcher.models.BasicFilter;
@@ -15,8 +16,9 @@ import java.util.stream.Collectors;
 public class RNALinearTripleMatcher extends RNABaseTripleMatcher {
     private final LinearMatcher<WeakBond> bondMatcher;
     private final LinearMatcher<Character> seqMatcher;
-    public RNALinearTripleMatcher(int tolerance, int minPatternLength) {
-        super(tolerance, minPatternLength);
+
+    public RNALinearTripleMatcher(ApplicationSettings settings) {
+        super(settings);
         seqMatcher = new LinearMatcher<>(tolerance, minPatternLength);
         bondMatcher = new LinearMatcher<>(tolerance, minPatternLength);
     }

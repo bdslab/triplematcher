@@ -13,6 +13,7 @@ public class Match<T> {
     private final List<T> sequence;
     private final List<T> pattern;
     private final List<EditOperation<T>> editOperations;
+    private int filterTollerance = 0;
 
     public Match(int row, int col, int distance, List<T> sequence, List<T> pattern, List<EditOperation<T>> editOperations) {
         this.row = row;
@@ -54,5 +55,13 @@ public class Match<T> {
     }
     public int getAlignmentLength() {
         return editOperations.size();
+    }
+
+    public void setFilterTollerance(int filterTollerance) {
+        this.filterTollerance = filterTollerance;
+    }
+
+    public int getFilterTollerance() {
+        return filterTollerance;
     }
 }
