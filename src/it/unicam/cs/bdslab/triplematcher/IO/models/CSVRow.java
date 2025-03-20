@@ -16,7 +16,7 @@ public class CSVRow {
             "solution_length_bond",
             "start_window_seq",
             "stop_window_seq",
-            "start_window_seq",
+            "start_window_bond",
             "stop_window_bond",
             "isApprox_seq",
             "str_match_seq",
