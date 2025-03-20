@@ -20,7 +20,7 @@ public class FilterNotConsecutiveBond implements MatchFilter {
         for (int i = 1; i < bond.getEditOperations().size(); i++) {
             WeakBond previous = bond.getEditOperations().get(i - 1).getSecond();
             WeakBond current = bond.getEditOperations().get(i).getSecond();
-            if (previous.getLeft() != current.getLeft() - 1) {
+            if (previous == null || current == null || previous.getLeft() != current.getLeft() - 1) {
                 notConsecutive++;
                 if (notConsecutive > this.tolerance) {
                     consecutive = false;

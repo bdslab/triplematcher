@@ -103,10 +103,11 @@ public class RNAApproximatePatternMatcher<T> implements  RNAPatternMatcher<T> {
                 j--;
             }
         }
-        return editOperations;
+        return Utils.reverse(editOperations);
     }
 
     private List<EditOperation<T>> singleTraceback(int column) {
         return singleTraceback(matrix.length - 1, column);
     }
+
 }

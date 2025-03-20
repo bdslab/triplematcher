@@ -18,7 +18,7 @@ public class FolderIterator implements Iterator<RNASecondaryStructure> {
             try {
                 Files.walk(folder).filter(Files::isRegularFile).forEach(pathsQueue::add);
             } catch (IOException e) {
-                throw new RuntimeException("Error walking through the folder", e);
+                throw new RuntimeException("[ERROR] walking through the folder", e);
             }
         } else {
             try (DirectoryStream<Path> stream = Files.newDirectoryStream(folder)) {
@@ -28,7 +28,7 @@ public class FolderIterator implements Iterator<RNASecondaryStructure> {
                     }
                 }
             } catch (IOException e) {
-                throw new RuntimeException("Error reading the folder", e);
+                throw new RuntimeException("[ERROR] reading the folder", e);
             }
         }
         advance();
@@ -49,6 +49,14 @@ public class FolderIterator implements Iterator<RNASecondaryStructure> {
         return currentStructure;
     }
 
+    public List<RNASecondaryStructure> getAllStructures() {
+        List<RNASecondaryStructure> structures = new ArrayList<>();
+        while (hasNext()) {
+            structures.add(next());
+        }
+        return structures;
+    }
+
     private void advance() {
         nextStructure = null;
         while (!pathsQueue.isEmpty()) {
@@ -67,7 +75,7 @@ public class FolderIterator implements Iterator<RNASecondaryStructure> {
             secondaryStructure = RNASecondaryStructureFileReader.readStructure(path.toString(), false);
             secondaryStructure.description = path.getFileName().toString().replace(".db", "");
         } catch (IOException | RNAInputFileParserException e) {
-            System.err.println("WARNING: Skipping file " + path + " ... " + e.getMessage());
+            System.err.println("[WARNING] Skipping file " + path + " ... " + e.getMessage());
         }
         return secondaryStructure;
     }

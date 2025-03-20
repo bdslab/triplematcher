@@ -38,6 +38,7 @@ public class ApplicationCSV implements Application {
             writer.write(CSVRow.HEADERS);
             while (folderIterator.hasNext()) {
                 RNASecondaryStructure structure = folderIterator.next();
+                structure.isNotWeakBond(0);
                 List<Pair<Match<WeakBond>, Match<Character>>> matches = matcher.match(structure, this.settings.getBondPattern(), this.settings.getSeqPattern());
                 System.out.println("[INFO] start processing " + structure.getDescription());
                 matches.stream()

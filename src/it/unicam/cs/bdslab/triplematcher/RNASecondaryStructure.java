@@ -289,8 +289,16 @@ public class RNASecondaryStructure {
 	}
     }
 
+	private Boolean[] weakBondCache;
+
 	public boolean isNotWeakBond(int i) {
-		int finalI = i + 1;
-		return this.bonds.stream().allMatch(pair -> pair.getLeft() != finalI && pair.getRight() != finalI);
+		if (weakBondCache == null) {
+			weakBondCache = new Boolean[size];
+			for (int j = 0; j < size; j++) {
+				int finalJ = j + 1;
+				weakBondCache[j] = this.bonds.stream().allMatch(pair -> pair.getLeft() != finalJ && pair.getRight() != finalJ);
+			}
+		}
+		return weakBondCache[i];
 	}
 }

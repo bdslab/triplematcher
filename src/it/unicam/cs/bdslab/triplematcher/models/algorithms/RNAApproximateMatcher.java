@@ -32,7 +32,7 @@ public class RNAApproximateMatcher extends RNABaseTripleMatcher {
         return super.combiner.combine(
                 getMatches(super.getBondText(structure), Utils.replicate(bondPattern, this.maxPatternLength), this.bondTolerance),
                 getMatches(super.getSeqText(structure), Utils.replicate(seqPattern, this.maxPatternLength), this.tolerance)
-        ).stream()
+        ).stream().parallel()
                 .filter(pair -> super.getBaseFilter().test(structure, pair))
                 .collect(Collectors.toList());
     }

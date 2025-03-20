@@ -49,4 +49,14 @@ public class Utils {
         return list;
     }
 
+    public static<T> List<T> reverse(List<T> list) {
+        List<T> reversed = new ArrayList<>(list);
+        for (int i = 0; i < reversed.size() / 2; i++) {
+            T temp = reversed.get(i);
+            reversed.set(i, reversed.get(reversed.size() - i - 1));
+            reversed.set(reversed.size() - i - 1, temp);
+        }
+        return reversed;
+    }
+
 }
