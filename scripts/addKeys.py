@@ -1,11 +1,13 @@
 import pandas as pd
 import argparse
-
+"Rna Type"
 def main(path_matches, path_ids_xlsx, out): 
     df_matches = pd.read_csv(path_matches)
     df_ids = pd.read_excel(path_ids_xlsx)
     df_out = df_matches.merge(df_ids, left_on="FileName", right_on="Benchmark ID", how="inner")
-    df_out = df_out.drop(columns=df_ids.columns.delete(df_ids.columns.get_loc("Accession number")))
+    colums_to_drop = df_ids.columns.delete(df_ids.columns.get_loc("Accession number"))
+    colums_to_drop = colums_to_drop.delete(colums_to_drop.get_loc("Rna Type"))
+    df_out = df_out.drop(columns=colums_to_drop)
     df_out.to_csv(out, index=False, sep=",")
     print("Merged file saved in: ", out)
     print("Total merged molecolous: ", len(df_out))

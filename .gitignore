@@ -16,7 +16,7 @@
 *.ear
 *.tar.gz
 *.rar
-
+*.csv
 bin/
 executable-jars/
 tmp/
@@ -39,5 +39,7 @@ hs_err_pid*
 replay_pid*
 .idea
 Intellij.iml
-
+# Maven
+**/Target/
+# Dataset
 /Examples/
