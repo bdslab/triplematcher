@@ -17,6 +17,7 @@
 *.tar.gz
 *.rar
 *.csv
+!**/resources/**/*.csv
 bin/
 executable-jars/
 tmp/
@@ -43,3 +44,4 @@ Intellij.iml
 **/Target/
 # Dataset
 /Examples/
+
