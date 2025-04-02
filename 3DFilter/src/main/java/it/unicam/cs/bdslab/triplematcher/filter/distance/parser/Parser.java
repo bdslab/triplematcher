@@ -34,6 +34,7 @@ public class Parser {
                         .setNotPairedTolerance(Integer.parseInt(record.get("tolerance_not_paired")))
                         .setNotConsecutiveTolerance(Integer.parseInt(record.get("tolerance_not_consecutive")))
                         .setFullSeq(record.get("full_seq"))
+                        .setRNAType(record.get("Rna Type"))
                         .setAccessionNumber(record.get("Accession number"))
                         .build();
                 rows.add(row);

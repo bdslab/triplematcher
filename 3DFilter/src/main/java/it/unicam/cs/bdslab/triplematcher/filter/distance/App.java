@@ -32,9 +32,9 @@ public class App
                 formatter.printHelp("3DFilter", options);
                 System.exit(1);
             }
-            double threshold = Double.parseDouble(cli.getOptionValue("t", "12"));
+            double threshold = Double.parseDouble(cli.getOptionValue("t", "-3"));
             Path inputFolder = Paths.get(cli.getArgs()[0]);
-            Path outputFile = Paths.get(cli.getArgs()[1]);
+            Path outputFile = Paths.get(cli.getArgs()[1] + ".csv");
             System.out.println("[INFO] Tolerance set to " + threshold);
             System.out.println("[INFO] Input folder: " + inputFolder);
             System.out.println("[INFO] Output file: " + outputFile);
