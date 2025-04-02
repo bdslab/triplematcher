@@ -34,7 +34,7 @@ public class Parser {
                         .setNotPairedTolerance(Integer.parseInt(record.get("tolerance_not_paired")))
                         .setNotConsecutiveTolerance(Integer.parseInt(record.get("tolerance_not_consecutive")))
                         .setFullSeq(record.get("full_seq"))
-                        .setAccessionNumber(record.get("Accession Number"))
+                        .setAccessionNumber(record.get("Accession number"))
                         .build();
                 rows.add(row);
             });
