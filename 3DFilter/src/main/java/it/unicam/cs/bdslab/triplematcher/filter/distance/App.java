@@ -1,9 +1,13 @@
 package it.unicam.cs.bdslab.triplematcher.filter.distance;
 
+import it.unicam.cs.bdslab.triplematcher.filter.distance.filter.RNA3DFilter;
 import it.unicam.cs.bdslab.triplematcher.filter.distance.parser.CSVRow;
 import it.unicam.cs.bdslab.triplematcher.filter.distance.parser.Parser;
 import org.apache.commons.cli.*;
 
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -36,10 +40,24 @@ public class App
             System.out.println("[INFO] Output file: " + outputFile);
             Parser csvParser = new Parser();
             List<CSVRow> rows = csvParser.parse(inputFolder);
-            rows.forEach(r -> {
-                System.out.println("[INFO] start processing: " + r.getAccessionNumber());
+            RNA3DFilter filter = new RNA3DFilter(threshold);
+            try (OutputStreamWriter writer = new OutputStreamWriter(Files.newOutputStream(outputFile))) {
+                writer.write(CSVRow.HEADERS);
+                rows.forEach(row -> {
+                    try {
+                        if (filter.filter(row)) {
+                            writer.write(row.getCsv());
+                            System.out.println("[INFO] Filtered row: " + row.getCsv());
+                        } else
+                            System.out.println("[INFO] Row not filtered: " + row.getCsv());
+                    } catch (Exception e) {
+                        System.err.println("[ERROR] An error occurred while writing the output file");
+                    }
+                });
+            } catch (Exception e) {
+                System.err.println("[ERROR] An error occurred while writing the output file");
+            }
 
-            });
         } catch (Exception e) {
             formatter.printHelp("3DFilter", options);
         }

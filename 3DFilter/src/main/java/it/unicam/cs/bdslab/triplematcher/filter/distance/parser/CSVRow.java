@@ -103,6 +103,30 @@ public class CSVRow {
         return parseBondWindow(bondWindowEnd);
     }
 
+    public String getCsv() {
+        return RNAKey + "," +
+                sequenceLength + "," +
+                seqSolutionLength + "," +
+                bondSolutionLength + "," +
+                seqWindowStart + "," +
+                seqWindowEnd + "," +
+                bondWindowStart + "," +
+                bondWindowEnd + "," +
+                strMatchSeq + "," +
+                strMatchBond + "," +
+                scoreSeq + "," +
+                scoreBond + "," +
+                seqCustomMatchString + "," +
+                bondCustomMatchString + "," +
+                seqTolerance + "," +
+                bondTolerance + "," +
+                notPairedTolerance + "," +
+                notConsecutiveTolerance + "," +
+                fullSeq + "," +
+                RNAType + "," +
+                accessionNumber + "\n";
+    }
+
     private Pair<Integer> parseBondWindow(String bondWindow) {
         String[] split = bondWindow
                 .replace("(", "")
@@ -110,6 +134,7 @@ public class CSVRow {
                 .split(";");
         return new Pair<>(Integer.parseInt(split[0]), Integer.parseInt(split[1]));
     }
+
 
 
 
