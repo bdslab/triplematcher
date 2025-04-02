@@ -24,17 +24,26 @@ public class RNA3DFilter {
             int seqStart = row.getSeqWindowStart();
             int seqEnd = row.getSeqWindowEnd();
             Pair<Integer> bondStart = row.getBondWindowStart();
+            Pair<Integer> bondEnd = row.getBondWindowEnd();
             double meanDistanceLeft = 0;
             double meanDistanceRight = 0;
-            int n = 0;
+            double meanDistanceLeftInverse = 0;
+            double meanDistanceRightInverse = 0;
             for (int i = 0; i < seqEnd - seqStart && i + seqStart < distanceMatrix.length && i < distanceMatrix.length + bondStart.getFirst() && i + bondStart.getSecond() < distanceMatrix.length; i++) {
                 meanDistanceLeft += accessMatrix(distanceMatrix, seqStart + i, bondStart.getFirst() + i);
                 meanDistanceRight += accessMatrix(distanceMatrix, seqStart + i, bondStart.getSecond() + i);
-                n++;
             }
-            meanDistanceLeft /= seqEnd - seqStart;
-            meanDistanceRight /= seqEnd - seqStart;
-            return isDistanceInThreshold(meanDistanceLeft) || isDistanceInThreshold(meanDistanceRight);
+            for (int i = 0; i < seqEnd - seqStart && i + seqStart < distanceMatrix.length && i < distanceMatrix.length + bondStart.getFirst() && i + bondStart.getSecond() < distanceMatrix.length; i++) {
+                meanDistanceLeftInverse += accessMatrix(distanceMatrix, bondEnd.getFirst() - i, seqEnd - i);
+                meanDistanceRightInverse += accessMatrix(distanceMatrix, bondStart.getSecond() - i, seqEnd - i);
+            }
+
+            meanDistanceLeft = meanDistanceLeft / (seqEnd - seqStart);
+            meanDistanceRight = meanDistanceRight / (seqEnd - seqStart);
+            meanDistanceLeftInverse = meanDistanceLeftInverse / (seqEnd - seqStart);
+            meanDistanceRightInverse = meanDistanceRightInverse / (seqEnd - seqStart);
+            return isDistanceInThreshold(meanDistanceLeft) || isDistanceInThreshold(meanDistanceRight)
+                    || isDistanceInThreshold(meanDistanceLeftInverse) || isDistanceInThreshold(meanDistanceRightInverse);
         } catch (IOException | StructureException e) {
             System.err.println("[ERROR] An error occurred while filtering the file" + row.getAccessionNumber());
             return false;

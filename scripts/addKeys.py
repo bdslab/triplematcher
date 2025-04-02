@@ -1,6 +1,5 @@
 import pandas as pd
 import argparse
-"Rna Type"
 def main(path_matches, path_ids_xlsx, out): 
     df_matches = pd.read_csv(path_matches)
     df_ids = pd.read_excel(path_ids_xlsx)

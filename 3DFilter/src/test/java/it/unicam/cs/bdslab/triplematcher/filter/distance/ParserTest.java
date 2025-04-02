@@ -18,7 +18,5 @@ public class ParserTest {
         Path path = Paths.get(this.getClass().getResource("/complete.csv").toURI());
         List<CSVRow> rows = parser.parse(path);
         Assertions.assertEquals(161, rows.size());
-        
-
     }
 }

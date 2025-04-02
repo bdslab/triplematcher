@@ -20,7 +20,8 @@ public class RNA3DFilterTest {
                 .setAccessionNumber("4plx")
                 .setRNAType("RNA")
                 .setFullSeq("GAAGGUUUUUCUUUUCCUGAGAAAACAACACGUAUUGUUUUCUCAGGUUUUGCUUUUUGGCCUUUUUCUAGCUUAAAAAAAAAAAAAGCAAAA")
-                .setBondWindowStart("(00;66)")
+                .setBondWindowStart("(10;66)")
+                .setBondWindowEnd("(10;76)")
                 .setSeqWindowStart(7)
                 .setSeqWindowEnd(17)
                 .build();
