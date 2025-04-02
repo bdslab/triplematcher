@@ -18,6 +18,6 @@ if __name__ == "__main__":
     parse.add_argument("path_ids_xlsx", help="Path to the xlsx file with the ids")
     parse.add_argument("out", help="Path to save the merged molecolous")
     args = parse.parse_args()
-    if args.out is not None and args.out[:3] != "csv":
+    if args.out is not None and not args.out.endswith(".csv"):
         args.out = args.out + ".csv"
     main(args.path_matches, args.path_ids_xlsx, out=args.out)

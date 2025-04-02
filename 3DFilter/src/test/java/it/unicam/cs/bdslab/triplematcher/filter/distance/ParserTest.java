@@ -15,7 +15,7 @@ public class ParserTest {
     public void testParser() throws URISyntaxException {
         Parser parser = new Parser();
 
-        Path path = Paths.get(this.getClass().getResource("/result_ml4_G_CG_0 - result_ml4_G_CG_0.csv").toURI());
+        Path path = Paths.get(this.getClass().getResource("/complete.csv").toURI());
         List<CSVRow> rows = parser.parse(path);
         Assertions.assertEquals(161, rows.size());
         

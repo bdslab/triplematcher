@@ -4,17 +4,15 @@ import org.biojava.nbio.structure.*;
 import org.biojava.nbio.structure.Chain;
 import org.biojava.nbio.structure.GroupType;
 import org.biojava.nbio.structure.Structure;
-import org.biojava.nbio.structure.contact.Pair;
 import org.biojava.nbio.structure.secstruc.SecStrucCalc;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-public class TertiaryStructure {
+public class DistanceMatrixCalculator {
 
     private final Structure structure;
     private double threshold; //Value between 4.5 and 12 ångström
@@ -24,18 +22,24 @@ public class TertiaryStructure {
     private String sequence;
 
     private Chain specifiedChain;
+    private String rnaType;
+    private String sequenceToFind;
     /**
      * Creates a new TertiaryStructure from a PDB file's structure
      * @param structure the structure extracted from the PDB file
+     * @param RNAType a string like 16S, 23S, 5S, tRNA...
+     * @param sequence the sequence of the RNA to check the distance
      */
-    public TertiaryStructure(Structure structure) {
+    public DistanceMatrixCalculator(Structure structure, String RNAType, String sequence) {
         this.structure = structure;
         this.sequence = null;
-        this.threshold = 4;
+        this.threshold = 12;
         this.secondaryStructure = null;
         this.distanceMatrix = null;
-        this.distanceMatrixCalculationMethod = "default";
+        this.distanceMatrixCalculationMethod = "centerofmass";
         this.specifiedChain = null;
+        this.rnaType = RNAType;
+        this.sequenceToFind = sequence;
     }
 
     /**
@@ -54,38 +58,42 @@ public class TertiaryStructure {
     }
 
     private void calculateDistanceMatrixCenterOfMass(){
-        int groupsNumber = getNonHetatmGroupsCounter(this.getChain("16S"));
-        // TODO: Make the distance matrix a triangular matrix
-        double[][] distanceMatrix = new double[groupsNumber][groupsNumber];
-        int moleculeCount = 0;
-        Chain chain  = this.getChain("16S");
-        for (Group currentMolecule : chain.getAtomGroups()) {
-            if (currentMolecule.getType() != GroupType.HETATM) {
-                int comparedMoleculeCount = 0;
-                for (Group comparisonMolecule : chain.getAtomGroups()) {
-                    if (comparisonMolecule.getType() != GroupType.HETATM) {
-                        distanceMatrix[moleculeCount][comparedMoleculeCount] = Calc.getDistance(Calc.centerOfMass(currentMolecule.getAtoms().toArray(new Atom[0])), Calc.centerOfMass(comparisonMolecule.getAtoms().toArray(new Atom[0])));
-                        comparedMoleculeCount++;
-                    }
-                }
-                moleculeCount++;
+        List<Group> nonHetatmGroups = this.getChain().getAtomGroups().stream()
+                .filter(f -> f.getType() != GroupType.HETATM)
+                .collect(Collectors.toList());
+        int groupsNumber = nonHetatmGroups.size();
+        double[][] distanceMatrix = new double[groupsNumber][];
+        for (int i = 0; i < nonHetatmGroups.size(); i++) {
+            distanceMatrix[i] = new double[i + 1];
+            distanceMatrix[i][i] = 0;
+            for (int j = 0; j < i; j++) {
+                distanceMatrix[i][j] = Calc.getDistance(Calc.centerOfMass(nonHetatmGroups.get(i).getAtoms().toArray(new Atom[0])), Calc.centerOfMass(nonHetatmGroups.get(j).getAtoms().toArray(new Atom[0])));
             }
         }
         this.distanceMatrix = distanceMatrix;
     }
     /**
      * Calculates the secondary structure of the structure
-     * @param type a string like 16S, 23S, 5S, tRNA...
      * @return the specified chain or the first chain if no chain is found
      */
-    private Chain getChain(String type) {
+    protected Chain getChain() {
         for (Chain chain : this.structure.getChains()) {
-            // TODO: se ce ne sono  più di una guarda la sequenza e prendi quella che fa match
-            if (chain.getName().contains(type)) {
-                return chain;
+            if (chain.isNucleicAcid() && (chain.toString().contains(rnaType) || isRnaToCheck(chain))) {
+                this.specifiedChain = chain;
+                break;
             }
         }
         return this.specifiedChain == null ? this.structure.getChains().get(0) : this.specifiedChain;
+    }
+
+    private boolean isRnaToCheck(Chain chain) {
+
+        return String.valueOf(chain.getSeqResSequence()
+                .chars()
+                .filter(n -> n != 'A' && n != 'C' && n != 'G' && n != 'U')
+                .mapToObj(n -> (char) n))
+                .startsWith(sequenceToFind);
+
     }
 
     private void calculateDistanceMatrixDefault(){
@@ -186,6 +194,14 @@ public class TertiaryStructure {
      */
     public void setSequence(String sequence) {
         this.sequence = sequence;
+    }
+
+    /**
+     * Replace the current rnaType
+     * @param rnaType the new rnaType
+     */
+    public void setRnaType(String rnaType) {
+        this.rnaType = rnaType;
     }
 
 }

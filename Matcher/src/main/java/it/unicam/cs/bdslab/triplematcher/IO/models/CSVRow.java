@@ -17,9 +17,7 @@ public class CSVRow {
             "stop_window_seq",
             "start_window_bond",
             "stop_window_bond",
-            "isApprox_seq",
             "str_match_seq",
-            "isApprox_bond",
             "str_match_bond",
             "real_num_seq",
             "real_num_bond",
@@ -28,7 +26,8 @@ public class CSVRow {
             "tolerance_seq",
             "tolerance_bond",
             "tolerance_not_paired",
-            "tolerance_not_consecutive"
+            "tolerance_not_consecutive",
+            "full_seq",
     };
     public static final String HEADERS = String.join(",", HEADERSARRAY) + "\n";
     private final String RNAKey;
@@ -39,9 +38,7 @@ public class CSVRow {
     private final int seqWindowEnd;
     private final WeakBond bondWindowStart;
     private final WeakBond bondWindowEnd;
-    private final boolean isApproximateSeq;
     private final String strMatchSeq;
-    private final boolean isApproximateBond;
     private final String strMatchBond;
     private final int scoreSeq;
     private final int scoreBond;
@@ -51,6 +48,7 @@ public class CSVRow {
     private final int bondTolerance;
     private final int notPairedTolerance;
     private final int notConsecutiveTolerance;
+    private final String fullSeq;
 
     public CSVRow(RNASecondaryStructure rnaSecondaryStructure, Match<WeakBond> bondMatch, Match<Character> seqMatch) {
         this.RNAKey = rnaSecondaryStructure.getDescription();
@@ -61,9 +59,7 @@ public class CSVRow {
         this.seqWindowEnd = seqMatch.getCol();
         this.bondWindowStart = rnaSecondaryStructure.getBonds().get(bondMatch.getCol() - bondMatch.getLength());
         this.bondWindowEnd = rnaSecondaryStructure.getBonds().get(bondMatch.getCol() - 1);
-        this.isApproximateSeq = seqMatch.getDistance() > 0;
         this.strMatchSeq = seqMatch.getAlignmentString();
-        this.isApproximateBond = bondMatch.getDistance() > 0;
         this.strMatchBond = bondMatch.getAlignmentString();
         this.scoreSeq = seqMatch.getDistance();
         this.scoreBond = bondMatch.getDistance();
@@ -73,14 +69,16 @@ public class CSVRow {
         this.bondTolerance = bondMatch.getDistance();
         this.notPairedTolerance = seqMatch.getFilterTollerance();
         this.notConsecutiveTolerance = bondMatch.getFilterTollerance();
+        this.fullSeq = rnaSecondaryStructure.getSequence();
     }
 
     public String getRow() {
         return RNAKey + "," + sequenceLength + "," + seqSolutionLength + "," + bondSolutionLength + "," + seqWindowStart + "," + seqWindowEnd + "," + getBondString(bondWindowStart) + ","
-                + getBondString(bondWindowEnd) + "," + isApproximateSeq + "," + strMatchSeq + "," + isApproximateBond + "," + strMatchBond
+                + getBondString(bondWindowEnd) + "," + strMatchSeq + "," + strMatchBond
                 + "," + scoreSeq + "," + scoreBond
                 + "," + seqCustomMatchString + "," + bondCustomMatchString
                 + "," + seqTolerance + "," + bondTolerance + "," + notPairedTolerance + "," + notConsecutiveTolerance
+                + "," + fullSeq
                 + "\n";
     }
 
