@@ -1,5 +1,7 @@
 package it.unicam.cs.bdslab.triplematcher.filter.distance.parser;
 
+import java.util.Locale;
+
 public class CSVRow {
     public static final String[] HEADERSARRAY = {
             "FileName",
@@ -23,6 +25,10 @@ public class CSVRow {
             "full_seq",
             "Rna Type",
             "Accession Number",
+            "mean_angstroms",
+            "mean_direction",
+            "chain_id",
+            "chain_description"
     };
     public static final String HEADERS = String.join(",", HEADERSARRAY) + "\n";
     private final String RNAKey;
@@ -47,6 +53,11 @@ public class CSVRow {
     private final String accessionNumber;
     private final String RNAType;
 
+    private double meanAngstroms;
+    private Direction meanDirection;
+    private String SelectedChainId;
+    private String SelectedChainDescription;
+
     private CSVRow(Builder builder) {
         this.RNAKey = builder.RNAKey;
         this.sequenceLength = builder.sequenceLength;
@@ -69,6 +80,8 @@ public class CSVRow {
         this.fullSeq = builder.fullSeq;
         this.accessionNumber = builder.accessionNumber;
         this.RNAType = builder.RNAType;
+        this.meanAngstroms = Double.NaN;
+        this.meanDirection = Direction.LEFT_TO_RIGHT_FIRST_BOND;
     }
 
     public String getRNAKey() {
@@ -103,6 +116,24 @@ public class CSVRow {
         return parseBondWindow(bondWindowEnd);
     }
 
+    public void setMeanAngstroms(double meanAngstroms) {
+        this.meanAngstroms = meanAngstroms;
+    }
+
+    public void setMeanDirection(Direction meanDirection) {
+        this.meanDirection = meanDirection;
+    }
+
+    public void setSelectedChainId(String selectedChainId) {
+        SelectedChainId = selectedChainId;
+    }
+
+    public void setSelectedChainDescription(String selectedChainDescription) {
+        SelectedChainDescription = selectedChainDescription.replace(",", ";")
+                .replace("\n", " ")
+                .replace("\r", " ");
+    }
+
     public String getCsv() {
         return RNAKey + "," +
                 sequenceLength + "," +
@@ -124,7 +155,12 @@ public class CSVRow {
                 notConsecutiveTolerance + "," +
                 fullSeq + "," +
                 RNAType + "," +
-                accessionNumber + "\n";
+                accessionNumber + "," +
+                String.format(Locale.US, "%.2f", meanAngstroms) + "," +
+                meanDirection.write() + "," +
+                SelectedChainId + "," +
+                SelectedChainDescription +
+                "\n";
     }
 
     private Pair<Integer> parseBondWindow(String bondWindow) {
@@ -134,11 +170,6 @@ public class CSVRow {
                 .split(";");
         return new Pair<>(Integer.parseInt(split[0]), Integer.parseInt(split[1]));
     }
-
-
-
-
-
 
     public static class Builder {
         private String RNAKey;

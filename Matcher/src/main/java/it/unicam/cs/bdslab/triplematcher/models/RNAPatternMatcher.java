@@ -1,5 +1,4 @@
 package it.unicam.cs.bdslab.triplematcher.models;
-import javafx.beans.value.ObservableBooleanValue;
 
 import java.util.List;
 

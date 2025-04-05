@@ -14,6 +14,7 @@ import java.util.stream.IntStream;
 
 public class DistanceMatrixCalculator {
 
+    private static final int MAX_EDIT_DISTANCE_LENGTH = 100;
     private final Structure structure;
     private double threshold; //Value between 4.5 and 12 ångström
     private SecStrucCalc secondaryStructure;
@@ -73,41 +74,62 @@ public class DistanceMatrixCalculator {
         this.distanceMatrix = distanceMatrix;
     }
     /**
-     * Calculates the secondary structure of the structure
+     * Find the best chain in the structure
      * @return the specified chain or the first chain if no chain is found
      */
     protected Chain getChain() {
+        if (this.specifiedChain != null) {
+            return this.specifiedChain;
+        }
+        List<ResultFilter> resultFilters = new ArrayList<>();
         for (Chain chain : this.structure.getChains()) {
-            if (chain.isNucleicAcid() && (chain.toString().contains(rnaType) || isRnaToCheck(chain))) {
-                this.specifiedChain = chain;
-                break;
+            if (chain.isNucleicAcid()) {
+                resultFilters.add(getResultFilter(chain));
             }
         }
-        return this.specifiedChain == null ? this.structure.getChains().get(0) : this.specifiedChain;
+        // If no chain is found, return the first chain
+        this.specifiedChain = resultFilters.stream()
+                .min(ResultFilter::compareTo)
+                .orElseThrow(() -> new IllegalStateException("No chain in the structure"))
+                .chain;
+        return this.specifiedChain;
     }
 
-    private boolean isRnaToCheck(Chain chain) {
-
-        return String.valueOf(chain.getSeqResSequence()
-                .chars()
-                .filter(n -> n != 'A' && n != 'C' && n != 'G' && n != 'U')
-                .mapToObj(n -> (char) n))
-                .startsWith(sequenceToFind);
-
+    private ResultFilter getResultFilter(Chain chain) {
+        boolean containType = chain.toString().contains(rnaType);
+        String sequence = chain.getAtomSequence().substring(0, Math.min(MAX_EDIT_DISTANCE_LENGTH, chain.getAtomSequence().length()));
+        String target = sequenceToFind.substring(0, Math.min(sequence.length(), sequenceToFind.length() - 1));
+        // for efficency, we use only first 100 characters
+        int[][] alignmentMatrix = new int[target.length() + 1][sequence.length() + 1];
+        for (int i = 0; i <= target.length(); i++) {
+            alignmentMatrix[i][0] = i;
+        }
+        for (int j = 0; j <= sequence.length(); j++) {
+            alignmentMatrix[0][j] = j;
+        }
+        for (int i = 1; i <= target.length(); i++) {
+            for (int j = 1; j <= sequence.length(); j++) {
+                int cost = (target.charAt(i - 1) == sequence.charAt(j - 1)) ? 0 : 1;
+                alignmentMatrix[i][j] = Math.min(Math.min(alignmentMatrix[i - 1][j] + 1, alignmentMatrix[i][j - 1] + 1), alignmentMatrix[i - 1][j - 1] + cost);
+            }
+        }
+        int editDistance = alignmentMatrix[target.length()][sequence.length()];
+        return new ResultFilter(chain, containType, editDistance);
     }
 
     private void calculateDistanceMatrixDefault(){
         Atom[] representativeAtomsArray = this.specifiedChain == null ? StructureTools.getRepresentativeAtomArray(this.structure) : this.getRepresentativeAtomArrayFromSpecifiedChains(this.specifiedChain);
         double[][] distanceMatrix = new double[representativeAtomsArray.length][representativeAtomsArray.length];
-        for(int i=0; i<representativeAtomsArray.length; i++)
-            for(int j=0; j<representativeAtomsArray.length; j++)
+        for(int i=0; i < representativeAtomsArray.length; i++)
+            for(int j=0; j < representativeAtomsArray.length; j++)
                 distanceMatrix[i][j] = Calc.getDistance(representativeAtomsArray[i], representativeAtomsArray[j]);
         this.distanceMatrix = distanceMatrix;
     }
 
     private Atom[] getRepresentativeAtomArrayFromSpecifiedChains(Chain chain) {
-        ArrayList<Atom> tempRepresentativeAtomsArray = new ArrayList<>();
-        tempRepresentativeAtomsArray.addAll(new ArrayList<>(Arrays.asList(StructureTools.getRepresentativeAtomArray(chain))));
+        ArrayList<Atom> tempRepresentativeAtomsArray = new ArrayList<>(
+                new ArrayList<>(Arrays.asList(StructureTools.getRepresentativeAtomArray(chain)))
+        );
         Atom[] representativeAtomsArray = new Atom[tempRepresentativeAtomsArray.size()];
         tempRepresentativeAtomsArray.toArray(representativeAtomsArray);
         return  representativeAtomsArray;
@@ -202,6 +224,27 @@ public class DistanceMatrixCalculator {
      */
     public void setRnaType(String rnaType) {
         this.rnaType = rnaType;
+    }
+    private static class ResultFilter implements Comparable<ResultFilter> {
+        private final Chain chain;
+        private final boolean containType;
+        private final int editDistance;
+
+        private ResultFilter(Chain chain, boolean containType, int editDistance) {
+            this.chain = chain;
+            this.containType = containType;
+            this.editDistance = editDistance;
+        }
+
+        @Override
+        public int compareTo(ResultFilter o) {
+            if (this.containType == o.containType) {
+                return Integer.compare(this.editDistance, o.editDistance);
+            } else {
+                return Boolean.compare(!this.containType, !o.containType);
+            }
+        }
+
     }
 
 }

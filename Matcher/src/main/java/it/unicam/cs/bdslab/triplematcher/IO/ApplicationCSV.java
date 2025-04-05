@@ -30,6 +30,7 @@ public class ApplicationCSV implements Application {
         FolderIterator folderIterator = new FolderIterator(inputFolder, false);
         MatchCombiner<WeakBond, Character> combiner = new MatchCombiner<>();
         RNATripleMatcher matcher = new RNAApproximateMatcher(this.settings);
+        int allResults = 0;
         try (OutputStreamWriter writer = new OutputStreamWriter(Files.newOutputStream(output))) {
             writer.write(CSVRow.HEADERS);
             while (folderIterator.hasNext()) {
@@ -37,6 +38,7 @@ public class ApplicationCSV implements Application {
                 structure.isNotWeakBond(0);
                 List<Pair<Match<WeakBond>, Match<Character>>> matches = matcher.match(structure, this.settings.getBondPattern(), this.settings.getSeqPattern());
                 System.out.println("[INFO] start processing " + structure.getDescription());
+                allResults += matches.size();
                 matches.stream()
                         .map(pair -> new CSVRow(structure, pair.getFirst(), pair.getSecond()))
                         .forEach(row -> {
@@ -50,6 +52,7 @@ public class ApplicationCSV implements Application {
             }
             System.out.println("[INFO] end processing all structures");
             System.out.println("[INFO] output file written to " + output);
+            System.out.println("[INFO] total results: " + allResults);
         } catch (IOException exception) {
             System.err.println("[ERROR] An error occurred while writing the output file");
         }

@@ -1,14 +1,19 @@
 package it.unicam.cs.bdslab.triplematcher.filter.distance.parser;
 
+import java.io.FileNotFoundException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Parser {
+    private static final Logger logger = LoggerFactory.getLogger("filtered");
 
     public List<CSVRow> parse(Path path){
         List<CSVRow> rows = new ArrayList<>();
@@ -40,8 +45,11 @@ public class Parser {
                 rows.add(row);
             });
         }
+        catch (NoSuchFileException e){
+            logger.error("An error occurred while parsing the input file; the field is not present");
+        }
         catch (Exception e) {
-            System.err.println("[ERROR] An error occurred while parsing the input file");
+            logger.error("An error occurred while parsing the input file");
         }
 
         return rows;

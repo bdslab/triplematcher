@@ -2,7 +2,7 @@ import pandas as pd
 import argparse 
 def main(path, out):
     df = pd.read_csv(path)
-    df = df.drop_duplicates("FileName")
+    df = df.drop_duplicates("length")
     df.to_csv(out, index=False, sep=",")
     print("Distincts molecolous saved in: ", out)
     print("Total distincts molecolous: ", len(df))

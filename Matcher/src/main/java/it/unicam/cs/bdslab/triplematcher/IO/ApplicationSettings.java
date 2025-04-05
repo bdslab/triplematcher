@@ -64,4 +64,17 @@ public class ApplicationSettings {
         return Utils.replicate(seqPattern, maxPatternLength);
     }
 
+    public String toString() {
+        return "ApplicationSettings{" + "\n" +
+                "bondPattern=" + bondPattern + "\n" +
+                ", seqPattern=" + seqPattern + "\n" +
+                ", tolerance=" + tolerance + "\n" +
+                ", minPatternLength=" + minPatternLength + "\n" +
+                ", maxPatternLength=" + maxPatternLength + "\n" +
+                ", bondTollerance=" + bondTollerance + "\n" +
+                ", notPairedTollerance=" + notPairedTollerance + "\n" +
+                ", notConsecutiveTollerance=" + notConsecutiveTollerance + "\n" +
+                '}' + "\n";
+    }
+
 }

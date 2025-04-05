@@ -9,7 +9,7 @@ def main(path_matches, path_ids_xlsx, out):
     df_out = df_out.drop(columns=colums_to_drop)
     df_out.to_csv(out, index=False, sep=",")
     print("Merged file saved in: ", out)
-    print("Total merged molecolous: ", len(df_out))
+    print("Total merged molecules: ", len(df_out))
 
 if __name__ == "__main__":
     parse = argparse.ArgumentParser(description="Merge a match csv file with a xlsx file")

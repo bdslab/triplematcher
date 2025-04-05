@@ -39,11 +39,11 @@ public class WorkbenchTripleMatcher {
 
             String nucleotide = cmd.getOptionValue("n", "U");
             String basePair = cmd.getOptionValue("b", "UA");
-            int tolerance = Integer.parseInt(cmd.getOptionValue("t", "0"));
+            int tolerance = Integer.parseInt(cmd.getOptionValue("t", "1"));
             int minPatternLength = Integer.parseInt(cmd.getOptionValue("ml", "4"));
-            int basePairTolerance = Integer.parseInt(cmd.getOptionValue("bt", "0"));
-            int pairedTolerance = Integer.parseInt(cmd.getOptionValue("pt", "0"));
-            int consecutiveTolerance = Integer.parseInt(cmd.getOptionValue("ct", "0"));
+            int basePairTolerance = Integer.parseInt(cmd.getOptionValue("bt", "1"));
+            int pairedTolerance = Integer.parseInt(cmd.getOptionValue("pt", "1"));
+            int consecutiveTolerance = Integer.parseInt(cmd.getOptionValue("ct", "1"));
 
             if (cmd.getArgs().length < 2) {
                 throw new IllegalArgumentException("Input folder and output file must be specified.");
@@ -61,6 +61,9 @@ public class WorkbenchTripleMatcher {
                     , consecutiveTolerance
             );
             Application app = new ApplicationCSV(settings);
+            System.out.println("[INFO] start with settings: " + settings);
+            System.out.println("[INFO] reading from folder: " + inputFolder);
+            System.out.println("[INFO] writing to file: " + outputFile);
             app.exportFolder(inputFolder, outputFile);
 
         } catch (ParseException | IllegalArgumentException e) {
