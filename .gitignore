@@ -47,3 +47,5 @@ Intellij.iml
 .venv/
 
 /out/
+
+/.run/
