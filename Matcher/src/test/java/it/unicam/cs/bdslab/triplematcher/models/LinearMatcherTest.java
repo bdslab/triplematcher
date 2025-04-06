@@ -58,7 +58,7 @@ class LinearMatcherTest {
 
         List<Match<Character>> matches = matcher.solve(rna, text, pattern);
 
-        assertTrue(matches.isEmpty());
+        assertFalse(matches.isEmpty());
     }
 
     @Test

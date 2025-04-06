@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 
 public class BioJavaTest {
+
     @Test
     public void testBioJava() throws StructureException, IOException {
         Structure structure = StructureIO.getStructure("4plx");
