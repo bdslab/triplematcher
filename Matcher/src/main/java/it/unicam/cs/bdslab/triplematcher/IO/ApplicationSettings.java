@@ -8,20 +8,20 @@ import java.util.List;
 public class ApplicationSettings {
     private final WeakBond bondPattern;
     private final Character seqPattern;
-    private final int tolerance;
+    private final int sequenceTolerance;
     private final int minPatternLength;
     private final int maxPatternLength = 11;
-    private final int bondTollerance;
-    private final int notPairedTollerance;
-    private final int notConsecutiveTollerance;
-    public ApplicationSettings(WeakBond bondPattern, Character seqPattern, int tolerance, int minPatternLength, int bondTollerance, int notPairedTollerance, int notConsecutiveTollerance) {
+    private final int bondTolerance;
+    private final int notPairedTolerance;
+    private final int notConsecutiveTolerance;
+    public ApplicationSettings(WeakBond bondPattern, Character seqPattern, int sequenceTolerance, int minPatternLength, int bondTolerance, int notPairedTolerance, int notConsecutiveTolerance) {
         this.bondPattern = bondPattern;
         this.seqPattern = seqPattern;
-        this.tolerance = tolerance;
+        this.sequenceTolerance = sequenceTolerance;
         this.minPatternLength = minPatternLength;
-        this.bondTollerance = bondTollerance;
-        this.notPairedTollerance = notPairedTollerance;
-        this.notConsecutiveTollerance = notConsecutiveTollerance;
+        this.bondTolerance = bondTolerance;
+        this.notPairedTolerance = notPairedTolerance;
+        this.notConsecutiveTolerance = notConsecutiveTolerance;
     }
 
     public WeakBond getBondPattern() {
@@ -32,8 +32,8 @@ public class ApplicationSettings {
         return seqPattern;
     }
 
-    public int getTolerance() {
-        return tolerance;
+    public int getSequenceTolerance() {
+        return sequenceTolerance;
     }
 
     public int getMaxPatternLength() {
@@ -44,16 +44,16 @@ public class ApplicationSettings {
         return minPatternLength;
     }
 
-    public int getBondTollerance() {
-        return bondTollerance;
+    public int getBondTolerance() {
+        return bondTolerance;
     }
 
-    public int getNotPairedTollerance() {
-        return notPairedTollerance;
+    public int getNotPairedTolerance() {
+        return notPairedTolerance;
     }
 
-    public int getNotConsecutiveTollerance() {
-        return notConsecutiveTollerance;
+    public int getNotConsecutiveTolerance() {
+        return notConsecutiveTolerance;
     }
 
     public List<WeakBond> getBondPatternList() {
@@ -68,12 +68,12 @@ public class ApplicationSettings {
         return "ApplicationSettings{" + "\n" +
                 "bondPattern=" + bondPattern + "\n" +
                 ", seqPattern=" + seqPattern + "\n" +
-                ", tolerance=" + tolerance + "\n" +
+                ", seqTolerance=" + sequenceTolerance + "\n" +
                 ", minPatternLength=" + minPatternLength + "\n" +
                 ", maxPatternLength=" + maxPatternLength + "\n" +
-                ", bondTollerance=" + bondTollerance + "\n" +
-                ", notPairedTollerance=" + notPairedTollerance + "\n" +
-                ", notConsecutiveTollerance=" + notConsecutiveTollerance + "\n" +
+                ", bondTolerance=" + bondTolerance + "\n" +
+                ", notPairedTolerance=" + notPairedTolerance + "\n" +
+                ", notConsecutiveTolerance=" + notConsecutiveTolerance + "\n" +
                 '}' + "\n";
     }
 

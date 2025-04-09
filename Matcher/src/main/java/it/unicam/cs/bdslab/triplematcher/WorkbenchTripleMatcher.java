@@ -25,11 +25,11 @@ public class WorkbenchTripleMatcher {
         options
             .addOption("n", true, "nucleotide letter (A, C, G, U), default U")
             .addOption("b", true, "canonical base pair (AU, UA, GC, CG), default UA")
-            .addOption("t", true, "number of allowed mismatches, default 2")
             .addOption("ml", true, "minimum length of the pattern, default 4")
-            .addOption("bt", true, "base pair tolerance, default 0")
-            .addOption("pt", true, "paired tolerance, default 0")
-            .addOption("ct", true, "consecutive tolerance, default 0")
+            .addOption("st", true, "number of allowed mismatch/insertion/deletion on the sequence, default 1")
+            .addOption("bt", true, "base pair tolerance for mismatch/insertion/deletion, default 1")
+            .addOption("pt", true, "paired tolerance, default 1")
+            .addOption("ct", true, "consecutive tolerance, default 1")
             .addOption("h", "help", false, "print this message");
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd;
@@ -39,8 +39,8 @@ public class WorkbenchTripleMatcher {
 
             String nucleotide = cmd.getOptionValue("n", "U");
             String basePair = cmd.getOptionValue("b", "UA");
-            int tolerance = Integer.parseInt(cmd.getOptionValue("t", "1"));
             int minPatternLength = Integer.parseInt(cmd.getOptionValue("ml", "4"));
+            int SequenceTolerance = Integer.parseInt(cmd.getOptionValue("st", "1"));
             int basePairTolerance = Integer.parseInt(cmd.getOptionValue("bt", "1"));
             int pairedTolerance = Integer.parseInt(cmd.getOptionValue("pt", "1"));
             int consecutiveTolerance = Integer.parseInt(cmd.getOptionValue("ct", "1"));
@@ -50,11 +50,11 @@ public class WorkbenchTripleMatcher {
             }
 
             Path inputFolder = Paths.get(cmd.getArgs()[0]);
-            Path outputFile = Paths.get(cmd.getArgs()[1] + "_" + nucleotide + "_" + basePair + "_" + tolerance + ".csv");
+            Path outputFile = Paths.get(cmd.getArgs()[1] + "_" + nucleotide + "_" + basePair + "_" + SequenceTolerance + ".csv");
             ApplicationSettings settings = new ApplicationSettings(
                     new CompleteWeakBond(1, 2, basePair.charAt(0), basePair.charAt(1))
                     , nucleotide.charAt(0)
-                    , tolerance
+                    , SequenceTolerance
                     , minPatternLength
                     , basePairTolerance
                     , pairedTolerance
