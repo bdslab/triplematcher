@@ -39,6 +39,11 @@ public class ApplicationCSV implements Application {
                 List<Pair<Match<WeakBond>, Match<Character>>> matches = matcher.match(structure, this.settings.getBondPattern(), this.settings.getSeqPattern());
                 System.out.println("[INFO] start processing " + structure.getDescription());
                 allResults += matches.size();
+                if (matches.isEmpty()) {
+                    System.err.println("[INFO] no matches found for " + structure.getDescription());
+                } else {
+                    System.out.println("[INFO] found " + matches.size() + " matches for " + structure.getDescription());
+                }
                 matches.stream()
                         .map(pair -> new CSVRow(structure, pair.getFirst(), pair.getSecond()))
                         .forEach(row -> {

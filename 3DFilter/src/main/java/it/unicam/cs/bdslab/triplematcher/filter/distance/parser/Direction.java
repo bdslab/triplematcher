@@ -4,7 +4,11 @@ public enum Direction {
     LEFT_TO_RIGHT_FIRST_BOND,
     LEFT_TO_RIGHT_SECOND_BOND,
     RIGHT_TO_LEFT_FIRST_BOND,
-    RIGHT_TO_LEFT_SECOND_BOND;
+    RIGHT_TO_LEFT_SECOND_BOND,
+    CROSS_LEFT_TO_RIGHT_FIRST_BOND,
+    CROSS_LEFT_TO_RIGHT_SECOND_BOND,
+    CROSS_RIGHT_TO_LEFT_FIRST_BOND,
+    CROSS_RIGHT_TO_LEFT_SECOND_BOND;
 
     String write() {
         switch (this) {
@@ -16,6 +20,14 @@ public enum Direction {
                 return "C";
             case RIGHT_TO_LEFT_SECOND_BOND:
                 return "D";
+            case CROSS_LEFT_TO_RIGHT_FIRST_BOND:
+                return "CA";
+            case CROSS_LEFT_TO_RIGHT_SECOND_BOND:
+                return "CB";
+            case CROSS_RIGHT_TO_LEFT_FIRST_BOND:
+                return "CC";
+            case CROSS_RIGHT_TO_LEFT_SECOND_BOND:
+                return "CD";
             default:
                 throw new IllegalStateException("Unexpected value: " + this);
         }

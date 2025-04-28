@@ -1,5 +1,10 @@
 package it.unicam.cs.bdslab.triplematcher.filter.distance.parser;
 
+import it.unicam.cs.bdslab.triplematcher.filter.distance.utils.DistanceInfo;
+import it.unicam.cs.bdslab.triplematcher.filter.distance.utils.Triple;
+import it.unicam.cs.bdslab.triplematcher.filter.distance.utils.Utils;
+
+import java.util.List;
 import java.util.Locale;
 
 public class CSVRow {
@@ -28,7 +33,8 @@ public class CSVRow {
             "mean_angstroms",
             "mean_direction",
             "chain_id",
-            "chain_description"
+            "chain_description",
+            "distance_info"
     };
     public static final String HEADERS = String.join(",", HEADERSARRAY) + "\n";
     private final String RNAKey;
@@ -57,6 +63,7 @@ public class CSVRow {
     private Direction meanDirection;
     private String SelectedChainId;
     private String SelectedChainDescription;
+    private String distanceInfo;
 
     private CSVRow(Builder builder) {
         this.RNAKey = builder.RNAKey;
@@ -128,6 +135,24 @@ public class CSVRow {
         SelectedChainId = selectedChainId;
     }
 
+    public void setDistanceInfo(List<Triple<DistanceInfo>> info) {
+        // the capacity is calculated as 13 = 2 (the semicolon) + 3 (the number of digits)  * 3 (the numbers for triple) + 2 (the brackets)
+        StringBuilder distanceInfoBuilder = new StringBuilder(info.size() * 11 + 2);
+        distanceInfoBuilder.append("[");
+        for (Triple<DistanceInfo> triple : info) {
+            distanceInfoBuilder.append("(")
+                    .append(triple.getFirst().formatForCSV())
+                    .append("; ")
+                    .append(triple.getSecond().formatForCSV()   )
+                    .append("; ")
+                    .append(triple.getThird().formatForCSV())
+                    .append("); ");
+        }
+        distanceInfoBuilder.delete(distanceInfoBuilder.length() - 2, distanceInfoBuilder.length());
+        distanceInfoBuilder.append("]");
+        this.distanceInfo = distanceInfoBuilder.toString();
+    }
+
     public void setSelectedChainDescription(String selectedChainDescription) {
         SelectedChainDescription = selectedChainDescription.replace(",", ";")
                 .replace("\n", " ")
@@ -156,10 +181,11 @@ public class CSVRow {
                 fullSeq + "," +
                 RNAType + "," +
                 accessionNumber + "," +
-                String.format(Locale.US, "%.2f", meanAngstroms) + "," +
+                Utils.formatDoubleCsv(meanAngstroms) + "," +
                 meanDirection.write() + "," +
                 SelectedChainId + "," +
-                SelectedChainDescription +
+                SelectedChainDescription + "," +
+                distanceInfo +
                 "\n";
     }
 

@@ -59,6 +59,7 @@ public class App {
                     .collect(Collectors.groupingBy(CSVRow::getAccessionNumber));
             GenericFileLoader loader = new GenericFileLoader(pdbFolder);
             try (OutputStreamWriter writer = new OutputStreamWriter(Files.newOutputStream(outputFile))) {
+                writer.write(CSVRow.HEADERS);
                 groupedRows.forEach((key, value) -> {
                     try {
                         RNA3DFilter filter = new RNA3DFilter(threshold, loader.getStructure(key));

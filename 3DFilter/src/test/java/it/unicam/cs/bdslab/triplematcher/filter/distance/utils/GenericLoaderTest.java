@@ -36,5 +36,15 @@ public class GenericLoaderTest {
         assertThrows(StructureException.class, () -> fileLoader.getStructure("MALAT1"));
     }
 
+    @Test
+    public void testLoadChainMalat1() throws StructureException, IOException, URISyntaxException {
+        GenericFileLoader fileLoader = new GenericFileLoader(
+                Paths.get(getClass().getResource("/PDB_Examples").toURI())
+        );
+        Structure structure = fileLoader.getStructure("MALAT1");
+        assertNotNull(structure, "Structure should not be null");
+        assertEquals(1, structure.getChains().size(), "Structure chain should contain 1 chain");
+    }
+
 
 }

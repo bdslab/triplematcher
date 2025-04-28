@@ -37,7 +37,7 @@ public class DistanceMatrixCalculator {
         this.threshold = 12;
         this.secondaryStructure = null;
         this.distanceMatrix = null;
-        this.distanceMatrixCalculationMethod = "centerofmass";
+        this.distanceMatrixCalculationMethod = "c1";
         this.specifiedChain = null;
         this.rnaType = RNAType;
         this.sequenceToFind = sequence;
@@ -49,11 +49,18 @@ public class DistanceMatrixCalculator {
      * @return distance matrix
      */
     public double[][] getDistanceMatrix(){
-        if(this.distanceMatrixCalculationMethod.equals("default")){
-            this.calculateDistanceMatrixDefault();
-        }
-        else if (this.distanceMatrixCalculationMethod.equals("centerofmass")){
-            this.calculateDistanceMatrixCenterOfMass();
+        switch (this.distanceMatrixCalculationMethod) {
+            case "default":
+                this.calculateDistanceMatrixDefault();
+                break;
+            case "centerofmass":
+                this.calculateDistanceMatrixCenterOfMass();
+                break;
+            case "c1":
+                this.calculateDistanceMatrixC1();
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid distance matrix calculation method: " + this.distanceMatrixCalculationMethod);
         }
         return this.distanceMatrix;
     }
@@ -73,12 +80,34 @@ public class DistanceMatrixCalculator {
         }
         this.distanceMatrix = distanceMatrix;
     }
+
+    private void calculateDistanceMatrixC1(){
+        List<Group> nonHetatmGroups = this.getChain().getAtomGroups().stream()
+                .filter(f -> f.getType() != GroupType.HETATM)
+                .collect(Collectors.toList());
+        int groupsNumber = nonHetatmGroups.size();
+        double[][] distanceMatrix = new double[groupsNumber][];
+        for (int i = 0; i < nonHetatmGroups.size(); i++) {
+            distanceMatrix[i] = new double[i + 1];
+            distanceMatrix[i][i] = 0;
+            for (int j = 0; j < i; j++) {
+                Atom c1i = nonHetatmGroups.get(i).getAtom("C1'");
+                Atom c1j = nonHetatmGroups.get(j).getAtom("C1'");
+                distanceMatrix[i][j] = Calc.getDistance(c1i, c1j);
+            }
+        }
+        this.distanceMatrix = distanceMatrix;
+    }
     /**
      * Find the best chain in the structure
      * @return the specified chain or the first chain if no chain is found
      */
     protected Chain getChain() {
         if (this.specifiedChain != null) {
+            return this.specifiedChain;
+        }
+        if (structure.getChains().size() == 1){
+            this.specifiedChain = structure.getChains().get(0);
             return this.specifiedChain;
         }
         List<ResultFilter> resultFilters = new ArrayList<>();

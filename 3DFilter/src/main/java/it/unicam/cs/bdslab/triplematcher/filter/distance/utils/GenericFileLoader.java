@@ -37,7 +37,7 @@ public class GenericFileLoader {
                 StructureFiletype filetype = getFileType(extension);
                 if (file.isFile() && filetype != StructureFiletype.UNKNOWN) {
                     String nameNoExtension = file.getName().substring(0, file.getName().length() - 4);
-                    files.put(nameNoExtension, new FileContainer(filetype, file));
+                    files.put(nameNoExtension.toLowerCase(), new FileContainer(filetype, file));
                 }
             }
         }
@@ -45,9 +45,9 @@ public class GenericFileLoader {
 
 
     public Structure getStructure(String accessionNumber) throws StructureException, IOException {
-        return !files.containsKey(accessionNumber)
+        return !files.containsKey(accessionNumber.toLowerCase())
                 ? StructureIO.getStructure(accessionNumber)
-                : loadGenericType(files.get(accessionNumber));
+                : loadGenericType(files.get(accessionNumber.toLowerCase()));
     }
 
     private Structure loadGenericType(FileContainer file) throws StructureException, IOException {

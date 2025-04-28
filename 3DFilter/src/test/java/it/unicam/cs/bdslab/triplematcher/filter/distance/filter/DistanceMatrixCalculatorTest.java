@@ -39,4 +39,17 @@ public class DistanceMatrixCalculatorTest {
         assertEquals("F", calculator.getChain().getId());
     }
 
+    @Test
+    public void testDistanceMatrixOn2m8k() throws StructureException, IOException {
+        String sequence = "GGUUUCUUUUUAGUGAUUUUUCCAAACCCCUUUGUGCAAAAAUCAUUA";
+        DistanceMatrixCalculator calculator = new DistanceMatrixCalculator(
+                StructureIO.getStructure("2m8k"),
+                "23S",
+                sequence
+        );
+        double[][] matrix = calculator.getDistanceMatrix();
+        assertEquals(1, matrix[0].length);
+        assertTrue(calculator.getChain().isNucleicAcid());
+    }
+
 }
