@@ -148,9 +148,9 @@ public class RNA3DFilter {
 
     private Triple<DistanceInfo> createTriplet(double[][] distanceMatrix, int sequence, int pairFirst, int pairSecond) {
         return new Triple<>(
-                new DistanceInfo(sequence, pairFirst - 1, accessMatrix(distanceMatrix, sequence, pairFirst - 1)),
-                new DistanceInfo(sequence, pairSecond - 1, accessMatrix(distanceMatrix, sequence, pairSecond - 1)),
-                new DistanceInfo(pairFirst - 1, pairSecond - 1, accessMatrix(distanceMatrix, pairFirst - 1, pairSecond - 1))
+                new DistanceInfo(sequence + 1, pairFirst + 1, accessMatrix(distanceMatrix, sequence, pairFirst - 1)),
+                new DistanceInfo(sequence + 1, pairSecond + 1, accessMatrix(distanceMatrix, sequence, pairSecond - 1)),
+                new DistanceInfo(pairFirst + 1, pairSecond + 1, accessMatrix(distanceMatrix, pairFirst - 1, pairSecond - 1))
         );
     }
 
