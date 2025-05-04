@@ -4,6 +4,7 @@ import it.unicam.cs.bdslab.triplematcher.filter.distance.parser.CSVRow;
 import it.unicam.cs.bdslab.triplematcher.filter.distance.utils.DistanceInfo;
 import it.unicam.cs.bdslab.triplematcher.filter.distance.utils.Triple;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,9 +25,10 @@ public class TripleHelixNotationGenerator {
             result.append("-");
         }
         char character = 'z';
+        distances.sort(Comparator.comparingInt(DistanceInfo::getIndexFirst));
         for (DistanceInfo distance : distances) {
-            result.setCharAt(distance.getIndexFirst(), character);
-            result.setCharAt(distance.getIndexSecond(), toUpperCase(character));
+            result.setCharAt(distance.getIndexFirst() - 1, character);
+            result.setCharAt(distance.getIndexSecond() - 1, toUpperCase(character));
             character--;
         }
 
