@@ -10,7 +10,7 @@ public enum Direction {
     CROSS_RIGHT_TO_LEFT_FIRST_BOND,
     CROSS_RIGHT_TO_LEFT_SECOND_BOND;
 
-    String write() {
+    public String write() {
         switch (this) {
             case LEFT_TO_RIGHT_FIRST_BOND:
                 return "A";
@@ -31,5 +31,10 @@ public enum Direction {
             default:
                 throw new IllegalStateException("Unexpected value: " + this);
         }
+    }
+
+    public boolean isFirstBond() {
+        return this == LEFT_TO_RIGHT_FIRST_BOND || this == RIGHT_TO_LEFT_FIRST_BOND ||
+                this == CROSS_LEFT_TO_RIGHT_FIRST_BOND || this == CROSS_RIGHT_TO_LEFT_FIRST_BOND;
     }
 }

@@ -1,5 +1,6 @@
 package it.unicam.cs.bdslab.triplematcher.filter.distance.parser;
 
+import it.unicam.cs.bdslab.triplematcher.filter.distance.filter.TripleHelixNotationGenerator;
 import it.unicam.cs.bdslab.triplematcher.filter.distance.utils.DistanceInfo;
 import it.unicam.cs.bdslab.triplematcher.filter.distance.utils.Triple;
 import it.unicam.cs.bdslab.triplematcher.filter.distance.utils.Utils;
@@ -34,7 +35,8 @@ public class CSVRow {
             "mean_direction",
             "chain_id",
             "chain_description",
-            "distance_info"
+            "triple_notation",
+            "distance_info",
     };
     public static final String HEADERS = String.join(",", HEADERSARRAY) + "\n";
     private final String RNAKey;
@@ -64,6 +66,7 @@ public class CSVRow {
     private String SelectedChainId;
     private String SelectedChainDescription;
     private String distanceInfo;
+    private List<Triple<DistanceInfo>> distanceInfoList;
 
     private CSVRow(Builder builder) {
         this.RNAKey = builder.RNAKey;
@@ -123,6 +126,14 @@ public class CSVRow {
         return parseBondWindow(bondWindowEnd);
     }
 
+    public Direction getMeanDirection() {
+        return meanDirection;
+    }
+
+    public List<Triple<DistanceInfo>> getDistanceInfoList() {
+        return distanceInfoList;
+    }
+
     public void setMeanAngstroms(double meanAngstroms) {
         this.meanAngstroms = meanAngstroms;
     }
@@ -136,6 +147,11 @@ public class CSVRow {
     }
 
     public void setDistanceInfo(List<Triple<DistanceInfo>> info) {
+        this.distanceInfoList = info;
+        if (info == null || info.isEmpty()) {
+            this.distanceInfo = "[]";
+            return;
+        }
         // the capacity is calculated as 13 = 2 (the semicolon) + 3 (the number of digits)  * 3 (the numbers for triple) + 2 (the brackets)
         StringBuilder distanceInfoBuilder = new StringBuilder(info.size() * 11 + 2);
         distanceInfoBuilder.append("[");
@@ -185,6 +201,7 @@ public class CSVRow {
                 meanDirection.write() + "," +
                 SelectedChainId + "," +
                 SelectedChainDescription + "," +
+                TripleHelixNotationGenerator.generateTripleHelixNotation(this) + "," +
                 distanceInfo +
                 "\n";
     }

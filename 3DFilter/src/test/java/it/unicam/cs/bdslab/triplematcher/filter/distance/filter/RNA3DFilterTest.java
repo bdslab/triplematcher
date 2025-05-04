@@ -1,6 +1,7 @@
 package it.unicam.cs.bdslab.triplematcher.filter.distance.filter;
 
 import it.unicam.cs.bdslab.triplematcher.filter.distance.parser.CSVRow;
+import it.unicam.cs.bdslab.triplematcher.filter.distance.parser.Direction;
 import it.unicam.cs.bdslab.triplematcher.filter.distance.utils.GenericFileLoader;
 import org.biojava.nbio.structure.Structure;
 import org.biojava.nbio.structure.StructureException;
@@ -59,6 +60,9 @@ public class RNA3DFilterTest {
                 .setBondTolerance(1)
                 .setNotPairedTolerance(1)
                 .build();
+        row.setMeanDirection(Direction.LEFT_TO_RIGHT_FIRST_BOND);
+        row.setDistanceInfo(new java.util.ArrayList<>());
+        row.setMeanAngstroms(1.0);
         RNA3DFilter filter = new RNA3DFilter(1.0);
         filter.filter(row);
         assertEquals(CSVRow.HEADERSARRAY.length, row.getCsv().split(",").length, "CSVRow is not well formatted, it should have " + CSVRow.HEADERS + " columns" + " but it has " + Arrays.toString(row.getCsv().split(",")));
