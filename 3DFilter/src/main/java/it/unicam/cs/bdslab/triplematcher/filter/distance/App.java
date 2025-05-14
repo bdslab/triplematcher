@@ -55,8 +55,10 @@ public class App {
             }
             Parser csvParser = new Parser();
             List<CSVRow> rows = csvParser.parse(inputFolder);
+            logger.info("Read {} rows", rows.size());
             Map<String, List<CSVRow>> groupedRows = rows.stream()
                     .collect(Collectors.groupingBy(CSVRow::getAccessionNumber));
+            logger.info("Read {} groups", groupedRows.size());
             GenericFileLoader loader = new GenericFileLoader(pdbFolder);
             try (OutputStreamWriter writer = new OutputStreamWriter(Files.newOutputStream(outputFile))) {
                 writer.write(CSVRow.HEADERS);

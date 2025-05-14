@@ -134,6 +134,10 @@ public class CSVRow {
         return distanceInfoList;
     }
 
+    public double getMeanAngstroms() {
+        return meanAngstroms;
+    }
+
     public void setMeanAngstroms(double meanAngstroms) {
         this.meanAngstroms = meanAngstroms;
     }

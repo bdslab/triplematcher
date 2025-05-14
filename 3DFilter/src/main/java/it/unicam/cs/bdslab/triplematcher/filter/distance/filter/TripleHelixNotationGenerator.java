@@ -27,8 +27,8 @@ public class TripleHelixNotationGenerator {
         char character = 'z';
         distances.sort(Comparator.comparingInt(DistanceInfo::getIndexFirst));
         for (DistanceInfo distance : distances) {
-            result.setCharAt(distance.getIndexFirst() - 1, character);
-            result.setCharAt(distance.getIndexSecond() - 1, toUpperCase(character));
+            result.setCharAt(distance.getIndexFirst(), character);
+            result.setCharAt(distance.getIndexSecond(), toUpperCase(character));
             character--;
         }
 

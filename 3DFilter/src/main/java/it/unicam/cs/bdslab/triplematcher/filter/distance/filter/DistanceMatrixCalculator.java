@@ -82,17 +82,27 @@ public class DistanceMatrixCalculator {
     }
 
     private void calculateDistanceMatrixC1(){
-        List<Group> nonHetatmGroups = this.getChain().getAtomGroups().stream()
-                .filter(f -> f.getType() != GroupType.HETATM)
-                .collect(Collectors.toList());
+        List<Group> nonHetatmGroups = new LinkedList<>();
+        for (Group group : this.getChain().getAtomGroups()) {
+            if (group.getType() != GroupType.HETATM) {
+                nonHetatmGroups.add(group);
+            }
+        }
         int groupsNumber = nonHetatmGroups.size();
         double[][] distanceMatrix = new double[groupsNumber][];
+        // Create a map to store the C1' atoms to avoid multiple calls to getAtom which is expensive
+        Map<Integer, Atom> c1Atoms = new HashMap<>();
+        for (int i = 0; i < nonHetatmGroups.size(); i++) {
+            Group group = nonHetatmGroups.get(i);
+            Atom c1Atom = group.getAtom("C1'");
+            c1Atoms.put(i, c1Atom);
+        }
         for (int i = 0; i < nonHetatmGroups.size(); i++) {
             distanceMatrix[i] = new double[i + 1];
             distanceMatrix[i][i] = 0;
+            Atom c1i = c1Atoms.get(i);
             for (int j = 0; j < i; j++) {
-                Atom c1i = nonHetatmGroups.get(i).getAtom("C1'");
-                Atom c1j = nonHetatmGroups.get(j).getAtom("C1'");
+                Atom c1j = c1Atoms.get(j);
                 distanceMatrix[i][j] = Calc.getDistance(c1i, c1j);
             }
         }
