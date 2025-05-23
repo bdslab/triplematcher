@@ -1,9 +1,14 @@
 package it.unicam.cs.bdslab.triplematcher.models;
 import org.junit.jupiter.api.Test;
+import it.unicam.cs.bdslab.triplematcher.WeakBond;
+import it.unicam.cs.bdslab.triplematcher.RNASecondaryStructure;
+import it.unicam.cs.bdslab.triplematcher.models.filters.FilterNotConsecutiveBond;
+import it.unicam.cs.bdslab.triplematcher.models.utils.Pair;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -113,4 +118,44 @@ class BasicFilterTest {
         // ASSERT
         assertEquals(2, matches.size());
     }
+
+    @Test
+    void consecutiveFilterTestOnNonConsecutiveBonds() {
+        // ARRANGE
+        List<EditOperation<WeakBond>> editOperations = Arrays.asList(
+                new EditOperation<>(new WeakBond(1, 10), new WeakBond(1, 10)),
+                new EditOperation<>(new WeakBond(2, 20), new WeakBond(2, 20)),
+                new EditOperation<>(new WeakBond(3, 30), new WeakBond(3, 30)),
+                new EditOperation<>(new WeakBond(6, 40), new WeakBond(6, 40))
+        );
+        Match<WeakBond> bond1 = new Match<>(1, 2, 0, new ArrayList<>(), new ArrayList<>(), editOperations);
+        Match<Character> match = new Match<>(1, 2, 0, new ArrayList<>(), new ArrayList<>(), Collections.emptyList());
+        Pair<Match<WeakBond>, Match<Character>> pair = new Pair<>(bond1, match);
+        FilterNotConsecutiveBond filter = new FilterNotConsecutiveBond(1);
+        // ACT
+        boolean result = filter.test(new RNASecondaryStructure(), pair);
+        // ASSERT
+        assertFalse(result);
+        assertEquals(2, bond1.getFilterTollerance());
+    }
+
+    @Test 
+    void consecutiveFilterTestOnConsecutiveBonds() {
+        // ARRANGE
+        List<EditOperation<WeakBond>> editOperations = Arrays.asList(
+                new EditOperation<>(new WeakBond(1, 10), new WeakBond(1, 10)),
+                new EditOperation<>(new WeakBond(2, 20), new WeakBond(2, 20)),
+                new EditOperation<>(new WeakBond(3, 30), new WeakBond(3, 30)),
+                new EditOperation<>(new WeakBond(4, 40), new WeakBond(4, 40))
+        );
+        Match<WeakBond> bond1 = new Match<>(1, 2, 0, new ArrayList<>(), new ArrayList<>(), editOperations);
+        Match<Character> match = new Match<>(1, 2, 0, new ArrayList<>(), new ArrayList<>(), Collections.emptyList());
+        Pair<Match<WeakBond>, Match<Character>> pair = new Pair<>(bond1, match);
+        FilterNotConsecutiveBond filter = new FilterNotConsecutiveBond(2);
+        // ACT
+        boolean result = filter.test(new RNASecondaryStructure(), pair);
+        // ASSERT
+        assertTrue(result);
+        assertEquals(0, bond1.getFilterTollerance());
+    } 
 }
