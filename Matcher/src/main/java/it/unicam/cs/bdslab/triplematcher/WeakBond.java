@@ -33,7 +33,6 @@ public class WeakBond implements Comparable<WeakBond> {
 
     private final int left; // first member of the bond
     private final int right; // second member of the bond
-
     /**
      * Construct a pair of indexes representing the weak bond.
      * 

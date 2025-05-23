@@ -1,12 +1,13 @@
 package it.unicam.cs.bdslab.triplematcher.IO;
 
 import it.unicam.cs.bdslab.triplematcher.WeakBond;
+import it.unicam.cs.bdslab.triplematcher.models.CompleteWeakBond;
 import it.unicam.cs.bdslab.triplematcher.models.utils.Utils;
 
 import java.util.List;
 
 public class ApplicationSettings {
-    private final WeakBond bondPattern;
+    private final CompleteWeakBond bondPattern;
     private final Character seqPattern;
     private final int sequenceTolerance;
     private final int minPatternLength;
@@ -14,7 +15,7 @@ public class ApplicationSettings {
     private final int bondTolerance;
     private final int notPairedTolerance;
     private final int notConsecutiveTolerance;
-    public ApplicationSettings(WeakBond bondPattern, Character seqPattern, int sequenceTolerance, int minPatternLength, int bondTolerance, int notPairedTolerance, int notConsecutiveTolerance) {
+    public ApplicationSettings(CompleteWeakBond bondPattern, Character seqPattern, int sequenceTolerance, int minPatternLength, int bondTolerance, int notPairedTolerance, int notConsecutiveTolerance) {
         this.bondPattern = bondPattern;
         this.seqPattern = seqPattern;
         this.sequenceTolerance = sequenceTolerance;
@@ -24,7 +25,7 @@ public class ApplicationSettings {
         this.notConsecutiveTolerance = notConsecutiveTolerance;
     }
 
-    public WeakBond getBondPattern() {
+    public CompleteWeakBond getBondPattern() {
         return bondPattern;
     }
 

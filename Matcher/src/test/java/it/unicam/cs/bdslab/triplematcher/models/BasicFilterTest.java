@@ -122,15 +122,15 @@ class BasicFilterTest {
     @Test
     void consecutiveFilterTestOnNonConsecutiveBonds() {
         // ARRANGE
-        List<EditOperation<WeakBond>> editOperations = Arrays.asList(
-                new EditOperation<>(new WeakBond(1, 10), new WeakBond(1, 10)),
-                new EditOperation<>(new WeakBond(2, 20), new WeakBond(2, 20)),
-                new EditOperation<>(new WeakBond(3, 30), new WeakBond(3, 30)),
-                new EditOperation<>(new WeakBond(6, 40), new WeakBond(6, 40))
+        List<EditOperation<CompleteWeakBond>> editOperations = Arrays.asList(
+                new EditOperation<>(new CompleteWeakBond(1, 10, 'A', 'A', false), new CompleteWeakBond(1, 10, 'A', 'A', false)),
+                new EditOperation<>(new CompleteWeakBond(2, 11, 'B', 'B', false), new CompleteWeakBond(2, 11, 'B', 'B', false)),
+                new EditOperation<>(new CompleteWeakBond(3, 12, 'C', 'C', false), new CompleteWeakBond(3, 12, 'C', 'C', false)),
+                new EditOperation<>(new CompleteWeakBond(6, 13, 'D', 'D', false), new CompleteWeakBond(6, 13, 'D', 'D', false))
         );
-        Match<WeakBond> bond1 = new Match<>(1, 2, 0, new ArrayList<>(), new ArrayList<>(), editOperations);
+        Match<CompleteWeakBond> bond1 = new Match<>(1, 2, 0, new ArrayList<>(), new ArrayList<>(), editOperations);
         Match<Character> match = new Match<>(1, 2, 0, new ArrayList<>(), new ArrayList<>(), Collections.emptyList());
-        Pair<Match<WeakBond>, Match<Character>> pair = new Pair<>(bond1, match);
+        Pair<Match<CompleteWeakBond>, Match<Character>> pair = new Pair<>(bond1, match);
         FilterNotConsecutiveBond filter = new FilterNotConsecutiveBond(1);
         // ACT
         boolean result = filter.test(new RNASecondaryStructure(), pair);
@@ -142,15 +142,15 @@ class BasicFilterTest {
     @Test 
     void consecutiveFilterTestOnConsecutiveBonds() {
         // ARRANGE
-        List<EditOperation<WeakBond>> editOperations = Arrays.asList(
-                new EditOperation<>(new WeakBond(1, 10), new WeakBond(1, 10)),
-                new EditOperation<>(new WeakBond(2, 20), new WeakBond(2, 20)),
-                new EditOperation<>(new WeakBond(3, 30), new WeakBond(3, 30)),
-                new EditOperation<>(new WeakBond(4, 40), new WeakBond(4, 40))
+        List<EditOperation<CompleteWeakBond>> editOperations = Arrays.asList(
+                new EditOperation<>(new CompleteWeakBond(1, 10, 'A', 'A', false), new CompleteWeakBond(1, 10, 'A', 'A', false)),
+                new EditOperation<>(new CompleteWeakBond(2, 11, 'B', 'B', false), new CompleteWeakBond(2, 11, 'B', 'B', false)),
+                new EditOperation<>(new CompleteWeakBond(3, 12, 'C', 'C', false), new CompleteWeakBond(3, 12, 'C', 'C', false)),
+                new EditOperation<>(new CompleteWeakBond(4, 13, 'D', 'D', false), new CompleteWeakBond(4, 13, 'D', 'D', false))
         );
-        Match<WeakBond> bond1 = new Match<>(1, 2, 0, new ArrayList<>(), new ArrayList<>(), editOperations);
+        Match<CompleteWeakBond> bond1 = new Match<>(1, 2, 0, new ArrayList<>(), new ArrayList<>(), editOperations);
         Match<Character> match = new Match<>(1, 2, 0, new ArrayList<>(), new ArrayList<>(), Collections.emptyList());
-        Pair<Match<WeakBond>, Match<Character>> pair = new Pair<>(bond1, match);
+        Pair<Match<CompleteWeakBond>, Match<Character>> pair = new Pair<>(bond1, match);
         FilterNotConsecutiveBond filter = new FilterNotConsecutiveBond(2);
         // ACT
         boolean result = filter.test(new RNASecondaryStructure(), pair);

@@ -2,6 +2,7 @@ package it.unicam.cs.bdslab.triplematcher.IO.models;
 
 import it.unicam.cs.bdslab.triplematcher.RNASecondaryStructure;
 import it.unicam.cs.bdslab.triplematcher.WeakBond;
+import it.unicam.cs.bdslab.triplematcher.models.CompleteWeakBond;
 import it.unicam.cs.bdslab.triplematcher.models.EditOperation;
 import it.unicam.cs.bdslab.triplematcher.models.Match;
 
@@ -50,7 +51,7 @@ public class CSVRow {
     private final int notConsecutiveTolerance;
     private final String fullSeq;
 
-    public CSVRow(RNASecondaryStructure rnaSecondaryStructure, Match<WeakBond> bondMatch, Match<Character> seqMatch) {
+    public CSVRow(RNASecondaryStructure rnaSecondaryStructure, Match<CompleteWeakBond> bondMatch, Match<Character> seqMatch) {
         this.RNAKey = rnaSecondaryStructure.getDescription();
         this.sequenceLength = rnaSecondaryStructure.getSequence().length();
         this.seqSolutionLength = seqMatch.getLength();

@@ -15,6 +15,12 @@ import java.util.*;
 public class BasicFilter<T> implements MatchFilter<T> {
     private final List<T> text;
     private final List<T> pattern;
+
+    /**
+     * Constructor for the BasicFilter class.
+     * @param text the sequence to be matched
+     * @param pattern the pattern to be matched
+     */
     public BasicFilter(List<T> text, List<T> pattern) {
         this.text = Collections.unmodifiableList(text);
         this.pattern = Collections.unmodifiableList(pattern);
@@ -26,6 +32,13 @@ public class BasicFilter<T> implements MatchFilter<T> {
         return getMatches(patternMatcher, tolerance, minPatternLength);
     }
 
+    /**
+     * This method retrieves matches from the alignment matrix of the given RNAPatternMatcher.
+     * @param patternMatcher the RNAPatternMatcher to use for matching
+     * @param tolerance the tolerance to use for the filter
+     * @param minPatternLength the minimum length of the pattern to use for the filter
+     * @return a list of matches
+     */
     private List<Match<T>> getMatches(RNAPatternMatcher<T> patternMatcher, int tolerance, int minPatternLength) {
         int[][] matrix = patternMatcher.getAlignmentMatrix();
         // linked list is better for concatenation and append
@@ -46,6 +59,13 @@ public class BasicFilter<T> implements MatchFilter<T> {
         return new ArrayList<>(matches);
     }
 
+    /**
+     * This method retrieves matches for a specific row in the alignment matrix of the given RNAPatternMatcher.
+     * @param patternMatcher the RNAPatternMatcher to use for matching
+     * @param i the row index in the alignment matrix
+     * @param tolerance the tolerance to use for the filter
+     * @return a list of matches for the specified row
+     */
     private List<Match<T>> getMatchesForARow(RNAPatternMatcher<T> patternMatcher, int i, int tolerance) {
         int[] row = patternMatcher.getAlignmentMatrix()[i];
         List<Match<T>> matches = new LinkedList<>();

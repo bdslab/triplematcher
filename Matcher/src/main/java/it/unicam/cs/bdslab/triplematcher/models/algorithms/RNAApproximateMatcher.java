@@ -4,6 +4,7 @@ import it.unicam.cs.bdslab.triplematcher.IO.ApplicationSettings;
 import it.unicam.cs.bdslab.triplematcher.RNASecondaryStructure;
 import it.unicam.cs.bdslab.triplematcher.WeakBond;
 import it.unicam.cs.bdslab.triplematcher.models.BasicFilter;
+import it.unicam.cs.bdslab.triplematcher.models.CompleteWeakBond;
 import it.unicam.cs.bdslab.triplematcher.models.Match;
 import it.unicam.cs.bdslab.triplematcher.models.RNAApproximatePatternMatcher;
 import it.unicam.cs.bdslab.triplematcher.models.utils.Pair;
@@ -27,7 +28,7 @@ public class RNAApproximateMatcher extends RNABaseTripleMatcher {
 
 
     @Override
-    public List<Pair<Match<WeakBond>, Match<Character>>> match(RNASecondaryStructure structure, WeakBond bondPattern, Character seqPattern) {
+    public List<Pair<Match<CompleteWeakBond>, Match<Character>>> match(RNASecondaryStructure structure, CompleteWeakBond bondPattern, Character seqPattern) {
         return super.combiner.combine(
                 getMatches(super.getBondText(structure), Utils.replicate(bondPattern, this.maxPatternLength), this.bondTolerance),
                 getMatches(super.getSeqText(structure), Utils.replicate(seqPattern, this.maxPatternLength), this.tolerance)

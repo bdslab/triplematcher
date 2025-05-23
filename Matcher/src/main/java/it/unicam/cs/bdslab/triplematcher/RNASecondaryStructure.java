@@ -21,9 +21,7 @@ package it.unicam.cs.bdslab.triplematcher;
 
 import it.unicam.cs.bdslab.triplematcher.models.CompleteWeakBond;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Representation of an RNA secondary structure with any kind of pseudoknot.
@@ -47,7 +45,7 @@ public class RNASecondaryStructure {
     // list of the weak bonds of this structure
     protected List<WeakBond> bonds;
 
-	private final List<WeakBond> completeWeakBonds = new ArrayList<>();
+	private final List<CompleteWeakBond> completeWeakBonds = new ArrayList<>();
 
     /*
      * length of the sequence; if this structure has no sequence a
@@ -109,15 +107,29 @@ public class RNASecondaryStructure {
     /**
      * @return the bonds
      */
-    public List<WeakBond> getBonds() {
+    public List<CompleteWeakBond> getBonds() {
 		if (completeWeakBonds.size() != bonds.size()) {
 			completeWeakBonds.clear();
 			if (!ordered) {
 				Collections.sort(bonds);
 				ordered = true;
 			}
+			Set<WeakBond> crossingBonds = new HashSet<>();
 			for (WeakBond bond : bonds) {
-				completeWeakBonds.add(new CompleteWeakBond(bond.getLeft(), bond.getRight(), sequence.charAt(bond.getLeft() - 1), sequence.charAt(bond.getRight() - 1)));
+				for (WeakBond bond2 : bonds) {
+					if (bond != bond2 && bond.crossesWith(bond2)) {
+						crossingBonds.add(bond);
+						crossingBonds.add(bond2);
+					}
+				}
+			}
+
+			for (WeakBond bond : bonds) {
+				completeWeakBonds.add(new CompleteWeakBond(bond.getLeft(),
+						bond.getRight(),
+						sequence.charAt(bond.getLeft() - 1),
+						sequence.charAt(bond.getRight() - 1),
+						crossingBonds.contains(bond)));
 			}
 		}
 		return completeWeakBonds;

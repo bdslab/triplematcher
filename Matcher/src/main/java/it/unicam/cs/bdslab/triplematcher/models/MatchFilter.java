@@ -7,6 +7,12 @@ import java.util.List;
  * @param <T>
  */
 public interface MatchFilter<T> {
-
+    /**
+     * Filter the matches of a RNAPatternMatcher, giving a list of matches
+     * @param patternMatcher the RNAPatternMatcher to filter
+     * @param tolerance the tolerance to use for the filter
+     * @param minPatternLength the minimum length of the pattern to use for the filter
+     * @return a list of matches
+     */
     List<Match<T>> filter(RNAPatternMatcher<T> patternMatcher, int tolerance, int minPatternLength);
 }

@@ -2,6 +2,7 @@ package it.unicam.cs.bdslab.triplematcher.models.filters;
 
 import it.unicam.cs.bdslab.triplematcher.RNASecondaryStructure;
 import it.unicam.cs.bdslab.triplematcher.WeakBond;
+import it.unicam.cs.bdslab.triplematcher.models.CompleteWeakBond;
 import it.unicam.cs.bdslab.triplematcher.models.Match;
 import it.unicam.cs.bdslab.triplematcher.models.utils.Pair;
 
@@ -13,7 +14,7 @@ public class FilterUnpairedNucletides implements MatchFilter {
 
 
     @Override
-    public boolean test(RNASecondaryStructure structure, Pair<Match<WeakBond>, Match<Character>> matchMatchPair) {
+    public boolean test(RNASecondaryStructure structure, Pair<Match<CompleteWeakBond>, Match<Character>> matchMatchPair) {
         int numberOfBonds = 0;
         for (int i = matchMatchPair.getSecond().getCol() - 1; i >= matchMatchPair.getSecond().getCol() - matchMatchPair.getSecond().getLength(); i--) {
             if (!structure.isNotWeakBond(i)) {

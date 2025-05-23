@@ -2,6 +2,7 @@ package it.unicam.cs.bdslab.triplematcher.models.algorithms;
 
 import it.unicam.cs.bdslab.triplematcher.RNASecondaryStructure;
 import it.unicam.cs.bdslab.triplematcher.WeakBond;
+import it.unicam.cs.bdslab.triplematcher.models.CompleteWeakBond;
 import it.unicam.cs.bdslab.triplematcher.models.Match;
 import it.unicam.cs.bdslab.triplematcher.models.utils.Pair;
 
@@ -18,6 +19,6 @@ public interface RNATripleMatcher {
      * @param seqPattern the sequence pattern
      * @return a list of pairs of matches, where the first element of the pair is a match of the bond pattern and the second element is a match of the sequence pattern
      */
-    List<Pair<Match<WeakBond>, Match<Character>>> match(RNASecondaryStructure structure, WeakBond bondPattern, Character seqPattern);
+    List<Pair<Match<CompleteWeakBond>, Match<Character>>> match(RNASecondaryStructure structure, CompleteWeakBond bondPattern, Character seqPattern);
 
 }

@@ -8,6 +8,7 @@ import java.util.Objects;
 public class CompleteWeakBond extends WeakBond {
     private final char leftC;
     private final char rightC;
+    private final boolean cross;
     /**
      * Construct a pair of indexes representing the weak bond.
      *
@@ -18,10 +19,11 @@ public class CompleteWeakBond extends WeakBond {
      *                                     than or equal to the right
      *                                     position.
      */
-    public CompleteWeakBond(int left, int right, char leftC, char rightC) throws RNAInputFileParserException {
+    public CompleteWeakBond(int left, int right, char leftC, char rightC, boolean cross) throws RNAInputFileParserException {
         super(left, right);
         this.leftC = leftC;
         this.rightC = rightC;
+        this.cross = cross;
     }
 
     @Override

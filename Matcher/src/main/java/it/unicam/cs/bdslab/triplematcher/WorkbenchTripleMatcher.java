@@ -52,7 +52,7 @@ public class WorkbenchTripleMatcher {
             Path inputFolder = Paths.get(cmd.getArgs()[0]);
             Path outputFile = Paths.get(cmd.getArgs()[1] + "_" + nucleotide + "_" + basePair + "_" + SequenceTolerance + ".csv");
             ApplicationSettings settings = new ApplicationSettings(
-                    new CompleteWeakBond(1, 2, basePair.charAt(0), basePair.charAt(1))
+                    new CompleteWeakBond(1, 2, basePair.charAt(0), basePair.charAt(1), false)
                     , nucleotide.charAt(0)
                     , SequenceTolerance
                     , minPatternLength
