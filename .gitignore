@@ -49,3 +49,5 @@ Intellij.iml
 /out/
 
 /.run/
+
+**/target/
