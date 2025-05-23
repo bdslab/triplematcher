@@ -26,6 +26,13 @@ public class CompleteWeakBond extends WeakBond {
         this.cross = cross;
     }
 
+    /**
+     * @return if the bond crosses with another bond in the structure
+     */
+    public boolean isCross() {
+        return cross;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

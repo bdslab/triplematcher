@@ -5,10 +5,7 @@ import it.unicam.cs.bdslab.triplematcher.RNASecondaryStructure;
 import it.unicam.cs.bdslab.triplematcher.WeakBond;
 import it.unicam.cs.bdslab.triplematcher.models.CompleteWeakBond;
 import it.unicam.cs.bdslab.triplematcher.models.MatchCombiner;
-import it.unicam.cs.bdslab.triplematcher.models.filters.FilterBuilder;
-import it.unicam.cs.bdslab.triplematcher.models.filters.FilterNotConsecutiveBond;
-import it.unicam.cs.bdslab.triplematcher.models.filters.FilterUnpairedNucletides;
-import it.unicam.cs.bdslab.triplematcher.models.filters.MatchFilter;
+import it.unicam.cs.bdslab.triplematcher.models.filters.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,18 +17,20 @@ public abstract class RNABaseTripleMatcher implements RNATripleMatcher {
     protected final int bondTolerance;
     protected final int notPairedTolerance;
     protected final int notConsecutiveTolerance;
+    protected final int pseudoKnotsTolerance;
 
 
-    protected RNABaseTripleMatcher(int tolerance, int minPatternLength, int bondTolerance, int notPairedTolerance, int notConsecutiveTolerance) {
+    protected RNABaseTripleMatcher(int tolerance, int minPatternLength, int bondTolerance, int notPairedTolerance, int notConsecutiveTolerance, int pseudoKnotsTolerance) {
         this.tolerance = tolerance;
         this.minPatternLength = minPatternLength;
         this.bondTolerance = bondTolerance;
         this.notPairedTolerance = notPairedTolerance;
         this.notConsecutiveTolerance = notConsecutiveTolerance;
+        this.pseudoKnotsTolerance = pseudoKnotsTolerance;
     }
 
     protected RNABaseTripleMatcher(ApplicationSettings settings) {
-        this(settings.getSequenceTolerance(), settings.getMinPatternLength(), settings.getBondTolerance(), settings.getNotPairedTolerance(), settings.getNotConsecutiveTolerance());
+        this(settings.getSequenceTolerance(), settings.getMinPatternLength(), settings.getBondTolerance(), settings.getNotPairedTolerance(), settings.getNotConsecutiveTolerance(), settings.getPseudoKnotsTolerance());
     }
 
     /**
@@ -42,7 +41,10 @@ public abstract class RNABaseTripleMatcher implements RNATripleMatcher {
         return new FilterBuilder()
                 .addFilter(new FilterNotConsecutiveBond(this.notConsecutiveTolerance))
                 .addFilter(new FilterUnpairedNucletides(this.notPairedTolerance))
-                .build();
+                .addFilter(this.pseudoKnotsTolerance == -1
+                    ? null
+                    : new FilterOnlyPseudoknot(this.pseudoKnotsTolerance)
+                ).build();
     }
 
     /**

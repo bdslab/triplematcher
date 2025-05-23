@@ -5,6 +5,9 @@ import it.unicam.cs.bdslab.triplematcher.WeakBond;
 import it.unicam.cs.bdslab.triplematcher.models.CompleteWeakBond;
 import it.unicam.cs.bdslab.triplematcher.models.EditOperation;
 import it.unicam.cs.bdslab.triplematcher.models.Match;
+import it.unicam.cs.bdslab.triplematcher.models.filters.FilterNotConsecutiveBond;
+import it.unicam.cs.bdslab.triplematcher.models.filters.FilterOnlyPseudoknot;
+import it.unicam.cs.bdslab.triplematcher.models.filters.FilterUnpairedNucletides;
 
 import java.util.List;
 
@@ -28,6 +31,7 @@ public class CSVRow {
             "tolerance_bond",
             "tolerance_not_paired",
             "tolerance_not_consecutive",
+            "tolerance_pseudoknot",
             "full_seq",
     };
     public static final String HEADERS = String.join(",", HEADERSARRAY) + "\n";
@@ -49,6 +53,7 @@ public class CSVRow {
     private final int bondTolerance;
     private final int notPairedTolerance;
     private final int notConsecutiveTolerance;
+    private final int pseudoknotTolerance;
     private final String fullSeq;
 
     public CSVRow(RNASecondaryStructure rnaSecondaryStructure, Match<CompleteWeakBond> bondMatch, Match<Character> seqMatch) {
@@ -68,8 +73,9 @@ public class CSVRow {
         this.bondCustomMatchString = getCustomMatchString(bondMatch.getEditOperations());
         this.seqTolerance = seqMatch.getDistance();
         this.bondTolerance = bondMatch.getDistance();
-        this.notPairedTolerance = seqMatch.getFilterTollerance();
-        this.notConsecutiveTolerance = bondMatch.getFilterTollerance();
+        this.notPairedTolerance = seqMatch.getFilterTolerance(FilterUnpairedNucletides.class.getName());
+        this.notConsecutiveTolerance = bondMatch.getFilterTolerance(FilterNotConsecutiveBond.class.getName());
+        this.pseudoknotTolerance = bondMatch.getFilterTolerance(FilterOnlyPseudoknot.class.getName());
         this.fullSeq = rnaSecondaryStructure.getSequence();
     }
 
@@ -78,7 +84,7 @@ public class CSVRow {
                 + getBondString(bondWindowEnd) + "," + strMatchSeq + "," + strMatchBond
                 + "," + scoreSeq + "," + scoreBond
                 + "," + seqCustomMatchString + "," + bondCustomMatchString
-                + "," + seqTolerance + "," + bondTolerance + "," + notPairedTolerance + "," + notConsecutiveTolerance
+                + "," + seqTolerance + "," + bondTolerance + "," + notPairedTolerance + "," + notConsecutiveTolerance + "," + pseudoknotTolerance
                 + "," + fullSeq
                 + "\n";
     }

@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 public class RNAApproximateMatcher extends RNABaseTripleMatcher {
     private final int maxPatternLength;
 
-    public RNAApproximateMatcher(int tolerance, int minPatternLength, int bondTolerance, int notPairedTolerance, int notConsecutiveTolerance, int maxPatternLength) {
-        super(tolerance, minPatternLength, bondTolerance, notPairedTolerance, notConsecutiveTolerance);
+    public RNAApproximateMatcher(int tolerance, int minPatternLength, int bondTolerance, int notPairedTolerance, int notConsecutiveTolerance, int pseudoknotTolerance, int maxPatternLength) {
+        super(tolerance, minPatternLength, bondTolerance, notPairedTolerance, notConsecutiveTolerance, pseudoknotTolerance);
         this.maxPatternLength = maxPatternLength;
     }
 

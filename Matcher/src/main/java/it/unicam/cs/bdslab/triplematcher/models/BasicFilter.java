@@ -12,7 +12,7 @@ import java.util.*;
  *
  * @param <T> the type of elements in the sequence and pattern
  */
-public class BasicFilter<T> implements MatchFilter<T> {
+public class BasicFilter<T> implements PatternMatcherFilter<T> {
     private final List<T> text;
     private final List<T> pattern;
 

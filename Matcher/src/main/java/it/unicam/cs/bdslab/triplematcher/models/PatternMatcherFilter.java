@@ -6,7 +6,7 @@ import java.util.List;
  * this class filter the matches of a RNAPatternMatcher, giving a list of matches
  * @param <T>
  */
-public interface MatchFilter<T> {
+public interface PatternMatcherFilter<T> {
     /**
      * Filter the matches of a RNAPatternMatcher, giving a list of matches
      * @param patternMatcher the RNAPatternMatcher to filter

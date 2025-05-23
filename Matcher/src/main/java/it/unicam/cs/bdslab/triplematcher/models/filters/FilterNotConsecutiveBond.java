@@ -6,9 +6,16 @@ import it.unicam.cs.bdslab.triplematcher.models.CompleteWeakBond;
 import it.unicam.cs.bdslab.triplematcher.models.Match;
 import it.unicam.cs.bdslab.triplematcher.models.utils.Pair;
 
+/**
+ * This class implements a filter that checks if the bonds in a match are not consecutive.
+ */
 public class FilterNotConsecutiveBond implements MatchFilter {
     private final int tolerance;
 
+    /**
+     * Constructor for the FilterNotConsecutiveBond class.
+     * @param tolerance the tolerance for the filter
+     */
     public FilterNotConsecutiveBond(int tolerance) {
         this.tolerance = tolerance;
     }
@@ -29,7 +36,7 @@ public class FilterNotConsecutiveBond implements MatchFilter {
                 }
             }
         }
-        bond.setFilterTollerance(notConsecutive);
+        bond.setFilterTolerance(this.getClass().getName(), notConsecutive);
         return consecutive;
     }
 }

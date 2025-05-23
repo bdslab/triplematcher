@@ -10,10 +10,15 @@ public class FilterBuilder {
         this.filter = baseFilter;
     }
 
+    /**
+     * Add a filter to the current filter.
+     * @param newFilter the new filter to add, if is <code>null</code> it will be ignored.
+     * @return the current filter builder
+     */
     public FilterBuilder addFilter(MatchFilter newFilter) {
         if (this.filter == baseFilter)
             this.filter = newFilter;
-        else
+        else if (newFilter != null)
             this.filter = this.filter.and(newFilter);
         return this;
     }

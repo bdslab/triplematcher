@@ -15,7 +15,15 @@ public class ApplicationSettings {
     private final int bondTolerance;
     private final int notPairedTolerance;
     private final int notConsecutiveTolerance;
-    public ApplicationSettings(CompleteWeakBond bondPattern, Character seqPattern, int sequenceTolerance, int minPatternLength, int bondTolerance, int notPairedTolerance, int notConsecutiveTolerance) {
+    private final int pseudoKnotsTolerance;
+    public ApplicationSettings(CompleteWeakBond bondPattern,
+                               Character seqPattern,
+                               int sequenceTolerance,
+                               int minPatternLength,
+                               int bondTolerance,
+                               int notPairedTolerance,
+                               int notConsecutiveTolerance,
+                               int pseudoKnotsTolerance) {
         this.bondPattern = bondPattern;
         this.seqPattern = seqPattern;
         this.sequenceTolerance = sequenceTolerance;
@@ -23,6 +31,7 @@ public class ApplicationSettings {
         this.bondTolerance = bondTolerance;
         this.notPairedTolerance = notPairedTolerance;
         this.notConsecutiveTolerance = notConsecutiveTolerance;
+        this.pseudoKnotsTolerance = pseudoKnotsTolerance;
     }
 
     public CompleteWeakBond getBondPattern() {
@@ -57,6 +66,9 @@ public class ApplicationSettings {
         return notConsecutiveTolerance;
     }
 
+    public int getPseudoKnotsTolerance() {
+        return pseudoKnotsTolerance;
+    }
     public List<WeakBond> getBondPatternList() {
         return Utils.replicate(bondPattern, maxPatternLength);
     }
@@ -67,15 +79,15 @@ public class ApplicationSettings {
 
     public String toString() {
         return "ApplicationSettings{" + "\n" +
-                "bondPattern=" + bondPattern + "\n" +
-                ", seqPattern=" + seqPattern + "\n" +
-                ", seqTolerance=" + sequenceTolerance + "\n" +
-                ", minPatternLength=" + minPatternLength + "\n" +
-                ", maxPatternLength=" + maxPatternLength + "\n" +
-                ", bondTolerance=" + bondTolerance + "\n" +
-                ", notPairedTolerance=" + notPairedTolerance + "\n" +
-                ", notConsecutiveTolerance=" + notConsecutiveTolerance + "\n" +
+                "\tbondPattern=" + bondPattern + "\n" +
+                "\t, seqPattern=" + seqPattern + "\n" +
+                "\t, minPatternLength=" + minPatternLength + "\n" +
+                "\t, maxPatternLength=" + maxPatternLength + "\n" +
+                "\t, seqTolerance=" + sequenceTolerance + "\n" +
+                "\t, bondTolerance=" + bondTolerance + "\n" +
+                "\t, notPairedTolerance=" + notPairedTolerance + "\n" +
+                "\t, notConsecutiveTolerance=" + notConsecutiveTolerance + "\n" +
+                "\t, pseudoKnotsTolerance=" + (pseudoKnotsTolerance == -1 ? "not used" : pseudoKnotsTolerance) + "\n" +
                 '}' + "\n";
     }
-
 }

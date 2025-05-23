@@ -30,6 +30,7 @@ public class WorkbenchTripleMatcher {
             .addOption("bt", true, "base pair tolerance for mismatch/insertion/deletion, default 1")
             .addOption("pt", true, "paired tolerance, default 1")
             .addOption("ct", true, "consecutive tolerance, default 1")
+            .addOption("p", true, "tolerance for pseudoknot, default: allow pseudoknot free matches")
             .addOption("h", "help", false, "print this message");
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd;
@@ -44,7 +45,7 @@ public class WorkbenchTripleMatcher {
             int basePairTolerance = Integer.parseInt(cmd.getOptionValue("bt", "1"));
             int pairedTolerance = Integer.parseInt(cmd.getOptionValue("pt", "1"));
             int consecutiveTolerance = Integer.parseInt(cmd.getOptionValue("ct", "1"));
-
+            int pseudoknotTolerance = Integer.parseInt(cmd.getOptionValue("p", "-1"));
             if (cmd.getArgs().length < 2) {
                 throw new IllegalArgumentException("Input folder and output file must be specified.");
             }
@@ -59,6 +60,7 @@ public class WorkbenchTripleMatcher {
                     , basePairTolerance
                     , pairedTolerance
                     , consecutiveTolerance
+                    , pseudoknotTolerance
             );
             Application app = new ApplicationCSV(settings);
             System.out.println("[INFO] start with settings: " + settings);

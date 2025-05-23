@@ -1,6 +1,5 @@
 package it.unicam.cs.bdslab.triplematcher.models;
 import org.junit.jupiter.api.Test;
-import it.unicam.cs.bdslab.triplematcher.WeakBond;
 import it.unicam.cs.bdslab.triplematcher.RNASecondaryStructure;
 import it.unicam.cs.bdslab.triplematcher.models.filters.FilterNotConsecutiveBond;
 import it.unicam.cs.bdslab.triplematcher.models.utils.Pair;
@@ -136,7 +135,7 @@ class BasicFilterTest {
         boolean result = filter.test(new RNASecondaryStructure(), pair);
         // ASSERT
         assertFalse(result);
-        assertEquals(2, bond1.getFilterTollerance());
+        assertEquals(2, bond1.getFilterTolerance(FilterNotConsecutiveBond.class.getName()));
     }
 
     @Test 
@@ -156,6 +155,6 @@ class BasicFilterTest {
         boolean result = filter.test(new RNASecondaryStructure(), pair);
         // ASSERT
         assertTrue(result);
-        assertEquals(0, bond1.getFilterTollerance());
+        assertEquals(0, bond1.getFilterTolerance(FilterNotConsecutiveBond.class.getName()));
     } 
 }
