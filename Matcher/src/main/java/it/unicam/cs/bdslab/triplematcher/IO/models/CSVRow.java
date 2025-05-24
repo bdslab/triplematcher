@@ -6,6 +6,7 @@ import it.unicam.cs.bdslab.triplematcher.models.EditOperation;
 import it.unicam.cs.bdslab.triplematcher.models.Match;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class CSVRow {
     public static final String[] HEADERSARRAY = {
@@ -13,10 +14,8 @@ public class CSVRow {
             "length",
             "solution_length_seq",
             "solution_length_bond",
-            "start_window_seq",
-            "stop_window_seq",
-            "start_window_bond",
-            "stop_window_bond",
+            "indexes_seq",
+            "indexes_bond",
             "str_match_seq",
             "str_match_bond",
             "real_num_seq",
@@ -34,10 +33,8 @@ public class CSVRow {
     private final int sequenceLength;
     private final int seqSolutionLength;
     private final int bondSolutionLength;
-    private final int seqWindowStart;
-    private final int seqWindowEnd;
-    private final WeakBond bondWindowStart;
-    private final WeakBond bondWindowEnd;
+    private final String seqIndexes;
+    private final String bondIndexes;
     private final String strMatchSeq;
     private final String strMatchBond;
     private final int scoreSeq;
@@ -55,10 +52,18 @@ public class CSVRow {
         this.sequenceLength = rnaSecondaryStructure.getSequence().length();
         this.seqSolutionLength = seqMatch.getLength();
         this.bondSolutionLength = bondMatch.getLength();
-        this.seqWindowStart = seqMatch.getCol() - seqMatch.getLength();
-        this.seqWindowEnd = seqMatch.getCol();
-        this.bondWindowStart = rnaSecondaryStructure.getBonds().get(bondMatch.getCol() - bondMatch.getLength());
-        this.bondWindowEnd = rnaSecondaryStructure.getBonds().get(bondMatch.getCol() - 1);
+
+        this.seqIndexes = IntStream.range(seqMatch.getCol() - seqMatch.getLength(), seqMatch.getCol())
+                .mapToObj(String::valueOf)
+                .reduce((a, b) -> a + ";" + b)
+                .orElse("");
+
+        this.bondIndexes = bondMatch.getEditOperations().stream()
+                .map(EditOperation::getSecond)
+                .map(CSVRow::getBondString)
+                .reduce((a, b) -> a + "," + b)
+                .orElse("");
+
         this.strMatchSeq = seqMatch.getAlignmentString();
         this.strMatchBond = bondMatch.getAlignmentString();
         this.scoreSeq = seqMatch.getDistance();
@@ -73,16 +78,26 @@ public class CSVRow {
     }
 
     public String getRow() {
-        return RNAKey + "," + sequenceLength + "," + seqSolutionLength + "," + bondSolutionLength + "," + seqWindowStart + "," + seqWindowEnd + "," + getBondString(bondWindowStart) + ","
-                + getBondString(bondWindowEnd) + "," + strMatchSeq + "," + strMatchBond
-                + "," + scoreSeq + "," + scoreBond
-                + "," + seqCustomMatchString + "," + bondCustomMatchString
-                + "," + seqTolerance + "," + bondTolerance + "," + notPairedTolerance + "," + notConsecutiveTolerance
-                + "," + fullSeq
-                + "\n";
+        return "\"" + RNAKey + "\","
+                + "\"" + sequenceLength + "\","
+                + "\"" + seqSolutionLength + "\","
+                + "\"" + bondSolutionLength + "\","
+                + "\"" + seqIndexes + "\","
+                + "\"" + bondIndexes + "\","
+                + "\"" + strMatchSeq + "\","
+                + "\"" + strMatchBond + "\","
+                + "\"" + scoreSeq + "\","
+                + "\"" + scoreBond + "\","
+                + "\"" + seqCustomMatchString + "\","
+                + "\"" + bondCustomMatchString + "\","
+                + "\"" + seqTolerance + "\","
+                + "\"" + bondTolerance + "\","
+                + "\"" + notPairedTolerance + "\","
+                + "\"" + notConsecutiveTolerance + "\","
+                + "\"" + fullSeq + "\"\n";
     }
 
-    private String getBondString(WeakBond bond) {
+    private static String getBondString(WeakBond bond) {
         return "(" + bond.getLeft() + ";" + bond.getRight() + ")";
     }
 
