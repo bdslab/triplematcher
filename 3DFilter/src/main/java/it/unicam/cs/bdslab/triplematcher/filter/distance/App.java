@@ -66,7 +66,12 @@ public class App {
                     try {
                         RNA3DFilter filter = new RNA3DFilter(threshold, loader.getStructure(key));
                         value.forEach(row -> {
-                            boolean isFiltered = filter.filter(row);
+                            boolean isFiltered = false;
+                            try {
+                                isFiltered = filter.filter(row);
+                            } catch (Exception e) {
+                                logger.error("An error occurred while filtering row with AccessionNumber: {}", row.getCsv(), e);
+                            }
                             if (isFiltered) {
                                 try {
                                     writer.write(row.getCsv());

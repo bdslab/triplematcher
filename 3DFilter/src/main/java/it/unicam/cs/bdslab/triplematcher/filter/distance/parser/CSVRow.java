@@ -76,10 +76,12 @@ public class CSVRow {
         this.bondSolutionLength = builder.bondSolutionLength;
         this.seqIndexes = Arrays.stream(builder.seqIndexes.split(";"))
                 .map(Integer::parseInt)
+                .map(index -> index - 1) // Convert to 0-based index
                 .collect(Collectors.toList());
         this.seqIndexesString = builder.seqIndexes;
         this.bondIndexes = Arrays.stream(builder.bondIndexes.split(";"))
                 .map(CSVRow::parseBondWindow)
+                .map(pair -> new Pair<>(pair.getFirst() - 1, pair.getSecond() - 1)) // Convert to 0-based index
                 .collect(Collectors.toList());
         this.bondIndexesString = builder.bondIndexes;
         this.strMatchSeq = builder.strMatchSeq;

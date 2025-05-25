@@ -99,16 +99,16 @@ public class RNA3DFilterTest {
                 .setAccessionNumber("test")
                 .setRNAType("RNA")
                 .setFullSeq("ACGUACGU")
-                .setBondIndexes("(2,8);(3,7);(4,7)")
-                .setSeqIndexes("1;2;3")
+                .setBondIndexes("(1,7);(2,6);(3,5)")
+                .setSeqIndexes("2;3;4")
                 .build();
 
         // Esecuzione del metodo da testare
         boolean result = filter.filter(row);
         // Calcolo della media
-        double expectedMean = (predefinedMatrix[2][1]
+        double expectedMean = (predefinedMatrix[1][0]
+                + predefinedMatrix[2][1]
                 + predefinedMatrix[3][2]
-                + predefinedMatrix[4][3]
         ) / 3.0;
         // Verifica del risultato
         assertTrue(result, "Il filtro dovrebbe restituire true per i dati forniti.");

@@ -21,7 +21,7 @@ public class TripleHelixNotationTest {
         row.setMeanDirection(Direction.LEFT_TO_RIGHT_FIRST_BOND);
 
         List<Triple<DistanceInfo>> distanceInfoList = new ArrayList<>();
-        distanceInfoList.add(new Triple<>(new DistanceInfo(0, 1, 1), new DistanceInfo(2, 3, 1), new DistanceInfo(4, 5, 1)));
+        distanceInfoList.add(new Triple<>(new DistanceInfo(1, 2, 1), new DistanceInfo(3, 4, 1), new DistanceInfo(4, 5, 1)));
         row.setDistanceInfo(distanceInfoList);
 
         String result = TripleHelixNotationGenerator.generateTripleHelixNotation(row);
@@ -69,8 +69,8 @@ public class TripleHelixNotationTest {
         row.setMeanDirection(Direction.LEFT_TO_RIGHT_FIRST_BOND);
 
         List<Triple<DistanceInfo>> distanceInfoList = new ArrayList<>();
-        distanceInfoList.add(new Triple<>(new DistanceInfo(0, 1, 1), new DistanceInfo(2, 1, 3), new DistanceInfo(4, 5, 1)));
-        distanceInfoList.add(new Triple<>(new DistanceInfo(6, 7, 1), new DistanceInfo(0, 1, 1), new DistanceInfo(2, 3, 1)));
+        distanceInfoList.add(new Triple<>(new DistanceInfo(1, 2, 1), new DistanceInfo(3, 2, 3), new DistanceInfo(4, 5, 1)));
+        distanceInfoList.add(new Triple<>(new DistanceInfo(7, 8, 1), new DistanceInfo(1, 2, 1), new DistanceInfo(2, 3, 1)));
         row.setDistanceInfo(distanceInfoList);
 
         String result = TripleHelixNotationGenerator.generateTripleHelixNotation(row);
