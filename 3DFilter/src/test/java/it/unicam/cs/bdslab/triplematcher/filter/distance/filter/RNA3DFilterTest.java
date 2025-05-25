@@ -5,6 +5,8 @@ import it.unicam.cs.bdslab.triplematcher.filter.distance.parser.Direction;
 import it.unicam.cs.bdslab.triplematcher.filter.distance.utils.DistanceInfo;
 import it.unicam.cs.bdslab.triplematcher.filter.distance.utils.GenericFileLoader;
 import it.unicam.cs.bdslab.triplematcher.filter.distance.utils.Triple;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
 import org.biojava.nbio.structure.Structure;
 import org.biojava.nbio.structure.StructureException;
 import org.junit.jupiter.api.BeforeAll;
@@ -39,10 +41,8 @@ public class RNA3DFilterTest {
                 .setAccessionNumber("4plx")
                 .setRNAType("RNA")
                 .setFullSeq("GAAGGUUUUUCUUUUCCUGAGAAAACAACACGUAUUGUUUUCUCAGGUUUUGCUUUUUGGCCUUUUUCUAGCUUAAAAAAAAAAAAAGCAAAA")
-                .setBondWindowStart("(37;76)")
-                .setBondWindowEnd("(47;66)")
-                .setSeqWindowStart(7)
-                .setSeqWindowEnd(17)
+                .setBondIndexes("(36,75);(37,74);(38,73);(39,72);(40,71);(41,70);(42,69);(43,68);(44,67);(45,66);(46,65)")
+                .setSeqIndexes("7;8;9;10;11;12;13;14;15;16")
                 .build();
         RNA3DFilter filter = new RNA3DFilter(1.0, fileLoader.getStructure("4plx"));
 
@@ -55,10 +55,8 @@ public class RNA3DFilterTest {
                 .setAccessionNumber("4plx")
                 .setRNAType("RNA")
                 .setFullSeq("GAAGGUUUUUCUUUUCCUGAGAAAACAACACGUAUUGUUUUCUCAGGUUUUGCUUUUUGGCCUUUUUCUAGCUUAAAAAAAAAAAAAGCAAAA")
-                .setBondWindowStart("(37;76)")
-                .setBondWindowEnd("(47;66)")
-                .setSeqWindowStart(7)
-                .setSeqWindowEnd(17)
+                .setBondIndexes("(36,75);(37,74);(38,73);(39,72);(40,71);(41,70);(42,69);(43,68);(44,67);(45,66);(46,65)")
+                .setSeqIndexes("7;8;9;10;11;12;13;14;15;16")
                 .setRNAKey("4plx")
                 .setBondTolerance(1)
                 .setBondCustomMatchString("MMMM")
@@ -75,7 +73,8 @@ public class RNA3DFilterTest {
         RNA3DFilter filter = new RNA3DFilter(1.0, fileLoader.getStructure("4plx"));
         filter.filter(row);
         assertNotNull(row.getCsv(), "CSVRow is null");
-        assertEquals(CSVRow.HEADERSARRAY.length, row.getCsv().split(",").length, "CSVRow is not well formatted, it should have " + CSVRow.HEADERS + " columns" + " but it has " + Arrays.toString(row.getCsv().split(",")));
+        CSVParser parser = CSVParser.parse(row.getCsv(), CSVFormat.DEFAULT);
+        assertEquals(CSVRow.HEADERSARRAY.length, parser.getRecords().stream().findFirst().get().size(), "CSVRow is not well formatted, it should have " + CSVRow.HEADERS + " columns" + " but it has " + Arrays.toString(row.getCsv().split(",")));
     }
 
     // Test for the mean calculation
@@ -100,10 +99,8 @@ public class RNA3DFilterTest {
                 .setAccessionNumber("test")
                 .setRNAType("RNA")
                 .setFullSeq("ACGUACGU")
-                .setBondWindowStart("(3;9)")
-                .setBondWindowEnd("(5;7)")
-                .setSeqWindowStart(1)
-                .setSeqWindowEnd(4)
+                .setBondIndexes("(2,8);(3,7);(4,7)")
+                .setSeqIndexes("1;2;3")
                 .build();
 
         // Esecuzione del metodo da testare

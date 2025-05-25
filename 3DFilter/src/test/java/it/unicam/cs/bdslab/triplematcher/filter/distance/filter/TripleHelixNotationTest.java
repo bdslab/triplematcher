@@ -15,6 +15,8 @@ public class TripleHelixNotationTest {
     void generateTripleHelixNotation_correctlyGeneratesNotationForValidInput() {
         CSVRow row = new CSVRow.Builder()
                 .setFullSeq("ACGUACGU")
+                .setSeqIndexes("1")
+                .setBondIndexes("(1,2)")
                 .build();
         row.setMeanDirection(Direction.LEFT_TO_RIGHT_FIRST_BOND);
 
@@ -31,6 +33,8 @@ public class TripleHelixNotationTest {
     void generateTripleHelixNotation_handlesEmptySequence() {
         CSVRow row = new CSVRow.Builder()
                 .setFullSeq("")
+                .setSeqIndexes("1")
+                .setBondIndexes("(1,2)")
                 .build();
         row.setMeanDirection(Direction.LEFT_TO_RIGHT_FIRST_BOND);
         row.setDistanceInfo(new ArrayList<>());
@@ -44,6 +48,8 @@ public class TripleHelixNotationTest {
     void generateTripleHelixNotation_handlesNoDistanceInfo() {
         CSVRow row = new CSVRow.Builder()
                 .setFullSeq("ACGUACGU")
+                .setSeqIndexes("1")
+                .setBondIndexes("(1,2)")
                 .build();
         row.setMeanDirection(Direction.LEFT_TO_RIGHT_FIRST_BOND);
         row.setDistanceInfo(new ArrayList<>());
@@ -57,6 +63,8 @@ public class TripleHelixNotationTest {
     void generateTripleHelixNotation_handlesMultipleTriplets() {
         CSVRow row = new CSVRow.Builder()
                 .setFullSeq("ACGUACGU")
+                .setSeqIndexes("1")
+                .setBondIndexes("(1,2)")
                 .build();
         row.setMeanDirection(Direction.LEFT_TO_RIGHT_FIRST_BOND);
 

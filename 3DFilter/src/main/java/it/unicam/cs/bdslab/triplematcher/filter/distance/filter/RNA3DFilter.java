@@ -63,10 +63,8 @@ public class RNA3DFilter {
                 this.distanceMatrix = calculator.getDistanceMatrix();
             }
             this.lastRow = row;
-            int seqStart = row.getSeqWindowStart();
-            int seqEnd = row.getSeqWindowEnd() - 1;
-            Pair<Integer> bondStart = row.getBondWindowStart();
-            Pair<Integer> bondEnd = row.getBondWindowEnd();
+            List<Integer> seqIndexes = row.getSeqIndexes();
+            List<Pair<Integer>> bondIndexes = row.getBondIndexes();
             // Lists to store triplets
             List<Triple<DistanceInfo>> distanceInfoLeft = new ArrayList<>();
             List<Triple<DistanceInfo>> distanceInfoRight = new ArrayList<>();
@@ -78,45 +76,43 @@ public class RNA3DFilter {
             double meanDistanceLeftCross = 0;
             double meanDistanceRightCross = 0;
             // Calculate means and triplets for the inverse
-            int countNormal = 0;
-            for (int i = seqStart; i <= seqEnd; i++) {
-                int delta = i - seqStart;
-                if (isOutOfBounds(i, bondStart.getFirst() - 1 + delta)
-                        || isOutOfBounds(i, bondStart.getSecond() - 1 - delta)
-                        || isOutOfBounds(i, bondEnd.getFirst() - 1 - delta)
-                        || isOutOfBounds(i, bondEnd.getSecond() - 1 + delta)
-                ) {
+            int countLeftToRight = 0;
+            for (int i = 0; i < seqIndexes.size(); i++) {
+                int actualSeqIndex = seqIndexes.get(i);
+                if (bondIndexes.size() <= i) {
                     continue;
                 }
-                meanDistanceLeft += accessMatrix(distanceMatrix, i, bondStart.getFirst() - 1 + delta);
-                meanDistanceRight += accessMatrix(distanceMatrix, i, bondEnd.getSecond() - 1 + delta);
-                distanceInfoLeft.add(createTriplet(distanceMatrix, i, bondStart.getFirst() - 1 + delta, bondStart.getSecond() - 1 - delta));
-                distanceInfoRight.add(createTriplet(distanceMatrix, i, bondEnd.getFirst() - 1 - delta, bondEnd.getSecond() - 1 + delta));
-                countNormal++;
+                int actualBondLeft = bondIndexes.get(i).getFirst();
+                int actualBondRight = bondIndexes.get(i).getSecond();
+                meanDistanceLeft += accessMatrix(distanceMatrix, actualSeqIndex, actualBondLeft);
+                meanDistanceRightCross += accessMatrix(distanceMatrix, actualSeqIndex, actualBondRight);
+                distanceInfoLeft.add(createTriplet(distanceMatrix, actualSeqIndex, actualBondLeft, actualBondRight));
+                distanceInfoRightCross.add(createTriplet(distanceMatrix, actualSeqIndex, actualBondLeft, actualBondRight));
+                countLeftToRight++;
             }
 
-            int countNormalCross = 0;
-            for (int i = seqStart; i <= seqEnd; i++) {
-                int delta = i - seqStart;
-                if (isOutOfBounds(i, bondStart.getFirst() - 1 + delta)
-                        || isOutOfBounds(i, bondStart.getSecond() - 1 - delta)
-                        || isOutOfBounds(i, bondEnd.getFirst() - 1 - delta)
-                        || isOutOfBounds(i, bondEnd.getSecond() - 1 + delta)
-                ) {
+            int countRightToLeft = 0;
+            int j = 0;
+            for (int i = seqIndexes.size() - 1; i >= 0; i--) {
+                int actualSeqIndex = seqIndexes.get(i);
+                if (bondIndexes.size() <= j) {
                     continue;
                 }
-                meanDistanceLeftCross += accessMatrix(distanceMatrix, i, bondEnd.getFirst() - 1 - delta);
-                meanDistanceRightCross += accessMatrix(distanceMatrix, i, bondStart.getSecond() - 1 - delta);
-                distanceInfoLeftCross.add(createTriplet(distanceMatrix, i, bondEnd.getFirst() - 1 - delta, bondEnd.getSecond() - 1 + delta));
-                distanceInfoRightCross.add(createTriplet(distanceMatrix, i, bondStart.getFirst() - 1 + delta, bondStart.getSecond() - 1 - delta));
-                countNormalCross++;
+                int bondLeft = bondIndexes.get(j).getFirst();
+                int bondRight = bondIndexes.get(j).getSecond();
+                j++;
+                meanDistanceLeftCross += accessMatrix(distanceMatrix, actualSeqIndex, bondLeft);
+                meanDistanceRight += accessMatrix(distanceMatrix, actualSeqIndex, bondRight);
+                distanceInfoLeftCross.add(createTriplet(distanceMatrix,actualSeqIndex, bondLeft, bondRight));
+                distanceInfoRight.add(createTriplet(distanceMatrix, actualSeqIndex, bondLeft, bondRight));
+                countRightToLeft++;
             }
 
             return setMean(row,
-                    calculateMean(meanDistanceLeft, countNormal),
-                    calculateMean(meanDistanceRight, countNormal),
-                    calculateMean(meanDistanceLeftCross, countNormalCross),
-                    calculateMean(meanDistanceRightCross, countNormalCross),
+                    calculateMean(meanDistanceLeft, countLeftToRight),
+                    calculateMean(meanDistanceRight, countLeftToRight),
+                    calculateMean(meanDistanceLeftCross, countRightToLeft),
+                    calculateMean(meanDistanceRightCross, countRightToLeft),
                     distanceInfoLeft,
                     distanceInfoRight,
                     distanceInfoLeftCross,
@@ -176,37 +172,6 @@ public class RNA3DFilter {
 
     private double accessMatrix(double[][] matrix, int i, int j) {
         return i < j ? matrix[j][i] : matrix[i][j];
-    }
-
-    private double calculateMeanAndTriplets(
-            double[][] distanceMatrix,
-            int seqStart,
-            int seqEnd,
-            int bondStart,
-            int bondEnd,
-            boolean isLeftToRight,
-            boolean isCross,
-            List<Triple<DistanceInfo>> triplets) {
-
-        double meanDistance = 0;
-        int count = 0;
-        for (int i = 0; i < seqEnd - seqStart; i++) {
-            int seqIndex = isLeftToRight ? seqStart + i : seqEnd - i;
-            int bondIndex1 = isCross ? bondStart + i : (isLeftToRight ? bondStart + i : bondEnd - i);
-            int bondIndex2 = isCross ? bondEnd - i : (isLeftToRight ? bondEnd + i : bondStart - i);
-            bondIndex1 -= 1;
-            bondIndex2 -= 1;
-            if (seqIndex < distanceMatrix.length && bondIndex1 < distanceMatrix.length && bondIndex2 < distanceMatrix.length && bondIndex1 > 0 && bondIndex2 > 0) {
-                triplets.add(createTriplet(distanceMatrix, seqIndex, bondIndex1, bondIndex2));
-                meanDistance += accessMatrix(distanceMatrix, seqIndex, bondIndex1);
-                count++;
-            } else
-                return Double.MAX_VALUE;
-        }
-        if (meanDistance == 0 || count == 0) {
-            return Double.MAX_VALUE;
-        }
-        return meanDistance / count;
     }
 
     private double calculateMean(double sum, int count) {
