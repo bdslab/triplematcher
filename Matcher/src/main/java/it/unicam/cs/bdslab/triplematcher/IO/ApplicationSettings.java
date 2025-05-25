@@ -15,7 +15,7 @@ public class ApplicationSettings {
     private final int bondTolerance;
     private final int notPairedTolerance;
     private final int notConsecutiveTolerance;
-    private final int pseudoKnotsTolerance;
+    private final int pseudoknotsTolerance;
     public ApplicationSettings(CompleteWeakBond bondPattern,
                                Character seqPattern,
                                int sequenceTolerance,
@@ -23,7 +23,7 @@ public class ApplicationSettings {
                                int bondTolerance,
                                int notPairedTolerance,
                                int notConsecutiveTolerance,
-                               int pseudoKnotsTolerance) {
+                               int pseudoknotsTolerance) {
         this.bondPattern = bondPattern;
         this.seqPattern = seqPattern;
         this.sequenceTolerance = sequenceTolerance;
@@ -31,7 +31,7 @@ public class ApplicationSettings {
         this.bondTolerance = bondTolerance;
         this.notPairedTolerance = notPairedTolerance;
         this.notConsecutiveTolerance = notConsecutiveTolerance;
-        this.pseudoKnotsTolerance = pseudoKnotsTolerance;
+        this.pseudoknotsTolerance = pseudoknotsTolerance;
     }
 
     public CompleteWeakBond getBondPattern() {
@@ -66,8 +66,8 @@ public class ApplicationSettings {
         return notConsecutiveTolerance;
     }
 
-    public int getPseudoKnotsTolerance() {
-        return pseudoKnotsTolerance;
+    public int getPseudoknotsTolerance() {
+        return pseudoknotsTolerance;
     }
     public List<WeakBond> getBondPatternList() {
         return Utils.replicate(bondPattern, maxPatternLength);
@@ -87,7 +87,7 @@ public class ApplicationSettings {
                 "\t, bondTolerance=" + bondTolerance + "\n" +
                 "\t, notPairedTolerance=" + notPairedTolerance + "\n" +
                 "\t, notConsecutiveTolerance=" + notConsecutiveTolerance + "\n" +
-                "\t, pseudoKnotsTolerance=" + (pseudoKnotsTolerance == -1 ? "not used" : pseudoKnotsTolerance) + "\n" +
+                "\t, pseudoknotsTolerance=" + (pseudoknotsTolerance == -1 ? "not used" : pseudoknotsTolerance) + "\n" +
                 '}' + "\n";
     }
 }

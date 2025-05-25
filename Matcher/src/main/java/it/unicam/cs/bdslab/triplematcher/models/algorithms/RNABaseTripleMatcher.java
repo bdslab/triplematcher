@@ -30,7 +30,7 @@ public abstract class RNABaseTripleMatcher implements RNATripleMatcher {
     }
 
     protected RNABaseTripleMatcher(ApplicationSettings settings) {
-        this(settings.getSequenceTolerance(), settings.getMinPatternLength(), settings.getBondTolerance(), settings.getNotPairedTolerance(), settings.getNotConsecutiveTolerance(), settings.getPseudoKnotsTolerance());
+        this(settings.getSequenceTolerance(), settings.getMinPatternLength(), settings.getBondTolerance(), settings.getNotPairedTolerance(), settings.getNotConsecutiveTolerance(), settings.getPseudoknotsTolerance());
     }
 
     /**
