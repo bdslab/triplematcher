@@ -22,10 +22,12 @@
  */
 package it.unicam.cs.bdslab.triplematcher;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 
+import it.unicam.cs.bdslab.triplematcher.models.CompleteWeakBond;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -36,21 +38,32 @@ import org.junit.jupiter.api.Test;
  */
 class RNASecondaryStructureTest {
 
-    //@Test
-    void testIsPseudoknotted() throws IOException {
-	RNASecondaryStructure s1 = RNASecondaryStructureFileReader
-		.readStructure("test/CRW_16S_A_C_1.db", false);
-	RNASecondaryStructure s2 = RNASecondaryStructureFileReader
-		.readStructure("test/CRW_16S_A_C_19.db", false);
-	RNASecondaryStructure s3 = RNASecondaryStructureFileReader
-		.readStructure("test/CRW_5S_A_C_20.db", false);
-	RNASecondaryStructure s4 = RNASecondaryStructureFileReader
-		.readStructure("test/CRW_5S_A_C_22.db", false);
-	assertTrue(s1.isPseudoknotted());
-	assertTrue(s2.isPseudoknotted());
-	assertFalse(s3.isPseudoknotted());
-	assertFalse(s4.isPseudoknotted());
-
+    @Test
+    void testIsPseudoknotted() throws IOException, URISyntaxException {
+		RNASecondaryStructure s1 = RNASecondaryStructureFileReader
+			.readStructure(Paths.get(this.getClass().getResource("/pseuduoknot.db").toURI()).toString(), false);
+		assertTrue(s1.isPseudoknotted());
     }
+    @Test
+    void testIsNotPseudoknotted() throws IOException, URISyntaxException {
+        RNASecondaryStructure s1 = RNASecondaryStructureFileReader
+            .readStructure(Paths.get(this.getClass().getResource("/notpseudoknot.db").toURI()).toString(), false);
+        assertFalse(s1.isPseudoknotted(), "Expected structure to not be pseudoknotted");
+    }
+
+    @Test
+    void testHasCrossingBonds() throws IOException, URISyntaxException {
+        RNASecondaryStructure s1 = RNASecondaryStructureFileReader
+            .readStructure(Paths.get(this.getClass().getResource("/pseuduoknot.db").toURI()).toString(), false);
+        assertTrue(s1.getBonds().stream().anyMatch(CompleteWeakBond::isCross), "Expected structure to have crossing bonds");
+    }
+
+    @Test
+    void testHasNoCrossingBonds() throws IOException, URISyntaxException {
+        RNASecondaryStructure s1 = RNASecondaryStructureFileReader
+            .readStructure(Paths.get(this.getClass().getResource("/notpseudoknot.db").toURI()).toString(), false);
+        assertFalse(s1.getBonds().stream().anyMatch(CompleteWeakBond::isCross), "Expected structure to not have crossing bonds");
+    }
+
 
 }

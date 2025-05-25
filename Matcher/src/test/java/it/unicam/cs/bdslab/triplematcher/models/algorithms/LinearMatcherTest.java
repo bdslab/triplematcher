@@ -1,6 +1,8 @@
-package it.unicam.cs.bdslab.triplematcher.models;
+package it.unicam.cs.bdslab.triplematcher.models.algorithms;
 
 import it.unicam.cs.bdslab.triplematcher.RNASecondaryStructure;
+import it.unicam.cs.bdslab.triplematcher.models.LinearMatcher;
+import it.unicam.cs.bdslab.triplematcher.models.Match;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

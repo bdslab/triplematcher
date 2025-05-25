@@ -1,6 +1,8 @@
-package it.unicam.cs.bdslab.triplematcher.models;
+package it.unicam.cs.bdslab.triplematcher.models.algorithms;
 
 import it.unicam.cs.bdslab.triplematcher.WeakBond;
+import it.unicam.cs.bdslab.triplematcher.models.EditOperation;
+import it.unicam.cs.bdslab.triplematcher.models.RNAApproximatePatternMatcher;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
