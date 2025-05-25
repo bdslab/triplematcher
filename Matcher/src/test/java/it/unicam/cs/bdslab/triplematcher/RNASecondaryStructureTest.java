@@ -47,7 +47,7 @@ class RNASecondaryStructureTest {
     @Test
     void testIsNotPseudoknotted() throws IOException, URISyntaxException {
         RNASecondaryStructure s1 = RNASecondaryStructureFileReader
-            .readStructure(Paths.get(this.getClass().getResource("/notpseudoknot.db").toURI()).toString(), false);
+            .readStructure(Paths.get(this.getClass().getResource("/notPseudoknot.db").toURI()).toString(), false);
         assertFalse(s1.isPseudoknotted(), "Expected structure to not be pseudoknotted");
     }
 
@@ -61,8 +61,16 @@ class RNASecondaryStructureTest {
     @Test
     void testHasNoCrossingBonds() throws IOException, URISyntaxException {
         RNASecondaryStructure s1 = RNASecondaryStructureFileReader
-            .readStructure(Paths.get(this.getClass().getResource("/notpseudoknot.db").toURI()).toString(), false);
+            .readStructure(Paths.get(this.getClass().getResource("/notPseudoknot.db").toURI()).toString(), false);
         assertFalse(s1.getBonds().stream().anyMatch(CompleteWeakBond::isCross), "Expected structure to not have crossing bonds");
+    }
+
+    @Test
+    void testIndeces() throws IOException, URISyntaxException {
+        RNASecondaryStructure s1 = RNASecondaryStructureFileReader
+            .readStructure(Paths.get(this.getClass().getResource("/testIndexes.db").toURI()).toString(), false);
+        assertEquals(1, s1.getBonds().get(0).getLeft(), "Expected first bond to start at index 0");
+        assertEquals(3, s1.getBonds().get(0).getRight(), "Expected first bond to end at index 2");
     }
 
 
