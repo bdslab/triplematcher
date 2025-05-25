@@ -4,9 +4,12 @@ import it.unicam.cs.bdslab.triplematcher.filter.distance.filter.TripleHelixNotat
 import it.unicam.cs.bdslab.triplematcher.filter.distance.utils.DistanceInfo;
 import it.unicam.cs.bdslab.triplematcher.filter.distance.utils.Triple;
 import it.unicam.cs.bdslab.triplematcher.filter.distance.utils.Utils;
+import org.checkerframework.checker.units.qual.A;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class CSVRow {
     public static final String[] HEADERSARRAY = {
@@ -14,10 +17,8 @@ public class CSVRow {
             "length",
             "solution_length_seq",
             "solution_length_bond",
-            "start_window_seq",
-            "stop_window_seq",
-            "start_window_bond",
-            "stop_window_bond",
+            "indices_seq",
+            "indices_bond",
             "str_match_seq",
             "str_match_bond",
             "real_num_seq",
@@ -43,10 +44,10 @@ public class CSVRow {
     private final int sequenceLength;
     private final int seqSolutionLength;
     private final int bondSolutionLength;
-    private final int seqWindowStart;
-    private final int seqWindowEnd;
-    private final String bondWindowStart;
-    private final String bondWindowEnd;
+    private final String seqIndexesString;
+    private final List<Integer> seqIndexes;
+    private final String bondIndexesString;
+    private final List<Pair<Integer>> bondIndexes;
     private final String strMatchSeq;
     private final String strMatchBond;
     private final int scoreSeq;
@@ -73,10 +74,14 @@ public class CSVRow {
         this.sequenceLength = builder.sequenceLength;
         this.seqSolutionLength = builder.seqSolutionLength;
         this.bondSolutionLength = builder.bondSolutionLength;
-        this.seqWindowStart = builder.seqWindowStart;
-        this.seqWindowEnd = builder.seqWindowEnd;
-        this.bondWindowStart = builder.bondWindowStart;
-        this.bondWindowEnd = builder.bondWindowEnd;
+        this.seqIndexes = Arrays.stream(builder.seqIndexes.split(";"))
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
+        this.seqIndexesString = builder.seqIndexes;
+        this.bondIndexes = Arrays.stream(builder.bondIndexes.split(";"))
+                .map(CSVRow::parseBondWindow)
+                .collect(Collectors.toList());
+        this.bondIndexesString = builder.bondIndexes;
         this.strMatchSeq = builder.strMatchSeq;
         this.strMatchBond = builder.strMatchBond;
         this.scoreSeq = builder.scoreSeq;
@@ -110,20 +115,12 @@ public class CSVRow {
         return accessionNumber;
     }
 
-    public int getSeqWindowStart() {
-        return seqWindowStart;
+    public List<Integer> getSeqIndexes() {
+        return seqIndexes;
     }
 
-    public int getSeqWindowEnd() {
-        return seqWindowEnd;
-    }
-
-    public Pair<Integer> getBondWindowStart() {
-        return parseBondWindow(bondWindowStart);
-    }
-
-    public Pair<Integer> getBondWindowEnd() {
-        return parseBondWindow(bondWindowEnd);
+    public List<Pair<Integer>> getBondIndexes() {
+        return bondIndexes;
     }
 
     public Direction getMeanDirection() {
@@ -180,41 +177,39 @@ public class CSVRow {
     }
 
     public String getCsv() {
-        return RNAKey + "," +
-                sequenceLength + "," +
-                seqSolutionLength + "," +
-                bondSolutionLength + "," +
-                seqWindowStart + "," +
-                seqWindowEnd + "," +
-                bondWindowStart + "," +
-                bondWindowEnd + "," +
-                strMatchSeq + "," +
-                strMatchBond + "," +
-                scoreSeq + "," +
-                scoreBond + "," +
-                seqCustomMatchString + "," +
-                bondCustomMatchString + "," +
-                seqTolerance + "," +
-                bondTolerance + "," +
-                notPairedTolerance + "," +
-                notConsecutiveTolerance + "," +
-                fullSeq + "," +
-                RNAType + "," +
-                accessionNumber + "," +
-                Utils.formatDoubleCsv(meanAngstroms) + "," +
-                meanDirection.write() + "," +
-                SelectedChainId + "," +
-                SelectedChainDescription + "," +
-                TripleHelixNotationGenerator.generateTripleHelixNotation(this) + "," +
-                distanceInfo +
+        return "\"" + RNAKey + "\"," +
+                "\"" + sequenceLength + "\"," +
+                "\"" + seqSolutionLength + "\"," +
+                "\"" + bondSolutionLength + "\"," +
+                "\"" + seqIndexesString + "\"," +
+                "\"" + bondIndexesString + "\"," +
+                "\"" + strMatchSeq + "\"," +
+                "\"" + strMatchBond + "\"," +
+                "\"" + scoreSeq + "\"," +
+                "\"" + scoreBond + "\"," +
+                "\"" + seqCustomMatchString + "\"," +
+                "\"" + bondCustomMatchString + "\"," +
+                "\"" + seqTolerance + "\"," +
+                "\"" + bondTolerance + "\"," +
+                "\"" + notPairedTolerance + "\"," +
+                "\"" + notConsecutiveTolerance + "\"," +
+                "\"" + fullSeq + "\"," +
+                "\"" + RNAType + "\"," +
+                "\"" + accessionNumber + "\"," +
+                "\"" + Utils.formatDoubleCsv(meanAngstroms) + "\"," +
+                "\"" + meanDirection.write() + "\"," +
+                "\"" + SelectedChainId + "\"," +
+                "\"" + SelectedChainDescription + "\"," +
+                "\"" + TripleHelixNotationGenerator.generateTripleHelixNotation(this) + "\"," +
+                "\"" + distanceInfo + "\"" +
                 "\n";
     }
 
-    private Pair<Integer> parseBondWindow(String bondWindow) {
+    private static Pair<Integer> parseBondWindow(String bondWindow) {
         String[] split = bondWindow
                 .replace("(", "")
                 .replace(")", "")
-                .split(";");
+                .split(",");
         return new Pair<>(Integer.parseInt(split[0]), Integer.parseInt(split[1]));
     }
 
@@ -223,10 +218,8 @@ public class CSVRow {
         private int sequenceLength;
         private int seqSolutionLength;
         private int bondSolutionLength;
-        private int seqWindowStart;
-        private int seqWindowEnd;
-        private String bondWindowStart;
-        private String bondWindowEnd;
+        private String seqIndexes;
+        private String bondIndexes;
         private String strMatchSeq;
         private String strMatchBond;
         private int scoreSeq;
@@ -261,23 +254,13 @@ public class CSVRow {
             return this;
         }
 
-        public Builder setSeqWindowStart(int seqWindowStart) {
-            this.seqWindowStart = seqWindowStart;
+        public Builder setSeqIndexes(String seqIndexes) {
+            this.seqIndexes = seqIndexes;
             return this;
         }
 
-        public Builder setSeqWindowEnd(int seqWindowEnd) {
-            this.seqWindowEnd = seqWindowEnd;
-            return this;
-        }
-
-        public Builder setBondWindowStart(String bondWindowStart) {
-            this.bondWindowStart = bondWindowStart;
-            return this;
-        }
-
-        public Builder setBondWindowEnd(String bondWindowEnd) {
-            this.bondWindowEnd = bondWindowEnd;
+        public Builder setBondIndexes(String bondIndexes) {
+            this.bondIndexes = bondIndexes;
             return this;
         }
 
