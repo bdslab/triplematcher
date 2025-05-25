@@ -14,8 +14,8 @@ public class CSVRow {
             "length",
             "solution_length_seq",
             "solution_length_bond",
-            "indexes_seq",
-            "indexes_bond",
+            "indices_seq",
+            "indices_bond",
             "str_match_seq",
             "str_match_bond",
             "real_num_seq",
@@ -61,7 +61,7 @@ public class CSVRow {
         this.bondIndexes = bondMatch.getEditOperations().stream()
                 .map(EditOperation::getSecond)
                 .map(CSVRow::getBondString)
-                .reduce((a, b) -> a + "," + b)
+                .reduce((a, b) -> a + ";" + b)
                 .orElse("");
 
         this.strMatchSeq = seqMatch.getAlignmentString();
@@ -98,7 +98,7 @@ public class CSVRow {
     }
 
     private static String getBondString(WeakBond bond) {
-        return "(" + bond.getLeft() + ";" + bond.getRight() + ")";
+        return "(" + bond.getLeft() + "," + bond.getRight() + ")";
     }
 
     private String getCustomMatchString(List<? extends EditOperation<?>> editOperations) {
