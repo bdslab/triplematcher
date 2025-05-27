@@ -18,6 +18,7 @@ import java.nio.file.Paths;
  * - t tolerance -> number of allowed mismatches, default 2
  */
 public class WorkbenchTripleMatcher {
+    private static final String USAGE = "java -jar Matcher.jar <inputFolder> <output> [Options]";
 
     public static void main(String[] args) {
         Options options = new Options();
@@ -46,6 +47,12 @@ public class WorkbenchTripleMatcher {
             int pairedTolerance = Integer.parseInt(cmd.getOptionValue("pt", "1"));
             int consecutiveTolerance = Integer.parseInt(cmd.getOptionValue("ct", "1"));
             int pseudoknotTolerance = Integer.parseInt(cmd.getOptionValue("p", "-1"));
+
+            if (cmd.hasOption("h")) {
+                HelpFormatter formatter = new HelpFormatter();
+                formatter.printHelp(USAGE, options);
+                return;
+            }
             if (cmd.getArgs().length < 2) {
                 throw new IllegalArgumentException("Input folder and output file must be specified.");
             }
@@ -71,7 +78,7 @@ public class WorkbenchTripleMatcher {
         } catch (ParseException | IllegalArgumentException e) {
             System.err.println("Error parsing command line options: " + e.getMessage());
             HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp("Java -jar WorkbenchTripleMatcher inputFolder output", options);
+            formatter.printHelp(USAGE, options);
         }
     }
 }

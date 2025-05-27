@@ -27,21 +27,21 @@ public class App {
     private static final Logger logger = LoggerFactory.getLogger("filtered");
     private static final String GREEN = "\u001B[32m";
     private static final String RESET = "\u001B[0m";
-
+    private static final String USAGE = "Usage: java -jar 3DFilter.jar <input_file> <output_file> [Options]";
     public static void main(String[] args) {
         Options options = new Options()
                 .addOption("h", "help", false, "print this message")
-                .addOption("t", "tolerance", true, "tolerance in angstroms, default 12")
-                .addOption("p", "pdb files", true, "path to a folder containing PDB files, if not provided, the program will download the files");
+                .addOption("t", "tolerance", true, "tolerance in angstroms added to a base distance of 10 (e.g., distance < 10 + tolerance), default is 0")
+                .addOption("p", "pdb-files", true, "path to a folder containing PDB files, if not provided, the program will download the files");
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
         try {
             CommandLine cli = parser.parse(options, args);
             if (cli.hasOption("h")) {
-                formatter.printHelp("3DFilter", options);
+                formatter.printHelp(USAGE, options);
                 System.exit(1);
             }
-            double threshold = Double.parseDouble(cli.getOptionValue("t", "-3"));
+            double threshold = Double.parseDouble(cli.getOptionValue("t", "0"));
             Path inputFolder = Paths.get(cli.getArgs()[0]);
             Path outputFile = Paths.get(cli.getArgs()[1] + ".csv");
             Path pdbFolder = cli.getOptionValue("p") != null ? Paths.get(cli.getOptionValue("p")) : null;
@@ -89,7 +89,7 @@ public class App {
                 });
             }
         } catch (Exception e) {
-            formatter.printHelp("3DFilter", options);
+            formatter.printHelp(USAGE, options);
         }
     }
 }
