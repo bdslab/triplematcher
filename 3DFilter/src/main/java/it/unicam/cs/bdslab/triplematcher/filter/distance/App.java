@@ -30,7 +30,7 @@ public class App {
 
     public static void main(String[] args) {
         Options options = new Options()
-                .addOption("h", "help", false, "Print this message")
+                .addOption("h", "help", false, "print this message")
                 .addOption("t", "tolerance", true, "tolerance in angstroms, default 12")
                 .addOption("p", "pdb files", true, "path to a folder containing PDB files, if not provided, the program will download the files");
         CommandLineParser parser = new DefaultParser();
@@ -46,7 +46,7 @@ public class App {
             Path outputFile = Paths.get(cli.getArgs()[1] + ".csv");
             Path pdbFolder = cli.getOptionValue("p") != null ? Paths.get(cli.getOptionValue("p")) : null;
             logger.info("Tolerance set to {}", threshold);
-            logger.info("Input folder: {}", inputFolder);
+            logger.info("Input file: {}", inputFolder);
             logger.info("Output file: {}", outputFile);
             if (pdbFolder != null) {
                 logger.info("PDB folder: {}", pdbFolder);
