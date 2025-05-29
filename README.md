@@ -14,6 +14,7 @@ It is divided into two main modules: **Matcher** and **3DFilter**.
 - **Java 8 or higher**
 - **Maven 3.6 or higher**
 
+If you need example molecules you can download the metadata in csv and molecule secondary structures in any format (db, ct, bpseq, aas) from the [PhyloRNA database](https://bdslab.unicam.it/phylorna)
 ### Build Instructions
 To build the project, run the following command in the root directory:
 ```bash
@@ -28,7 +29,7 @@ To run the Matcher module, use the following command:
 java -jar Matcher/target/matcher-1.0-SNAPSHOT.jar <input_folder> <output_file>
 ```
 the input folder must contain the RNA secondary structures, in various formats (.db, .aas, .bpseq, .ct).
-If you have secondary structure in non-accepted format, you can use [TARNAS](https://github.com/bdslab/TARNAS/releases/latest).
+If you have secondary structure in non-accepted format, you can use [TARNAS app](https://github.com/bdslab/TARNAS/releases/latest) or visit [TARNAS web](https://bdslab.unicam.it/tarnas).
 
 With the output of the Matcher module, in order to use the 3DFilter module, you have to add 2 columns:
 1. "Accession number": the pdb id of the RNA structure
