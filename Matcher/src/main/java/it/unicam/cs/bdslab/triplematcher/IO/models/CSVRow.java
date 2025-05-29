@@ -14,7 +14,8 @@ import java.util.stream.IntStream;
 
 public class CSVRow {
     public static final String[] HEADERSARRAY = {
-            "FileName",
+            "file_name",
+            "id_from_file",
             "length",
             "solution_length_seq",
             "solution_length_bond",
@@ -34,7 +35,8 @@ public class CSVRow {
             "full_seq",
     };
     public static final String HEADERS = String.join(",", HEADERSARRAY) + "\n";
-    private final String RNAKey;
+    private final String idFromFile;
+    private final String fileName;
     private final int sequenceLength;
     private final int seqSolutionLength;
     private final int bondSolutionLength;
@@ -54,12 +56,13 @@ public class CSVRow {
     private final String fullSeq;
 
     public CSVRow(RNASecondaryStructure rnaSecondaryStructure, Match<CompleteWeakBond> bondMatch, Match<Character> seqMatch) {
-        this.RNAKey = rnaSecondaryStructure.getDescription();
+        this.fileName = rnaSecondaryStructure.getDescription();
+        this.idFromFile = rnaSecondaryStructure.getDescription().split("\\.")[0];
         this.sequenceLength = rnaSecondaryStructure.getSequence().length();
         this.seqSolutionLength = seqMatch.getLength();
         this.bondSolutionLength = bondMatch.getLength();
 
-        this.seqIndexes = IntStream.range(seqMatch.getCol() - seqMatch.getLength(), seqMatch.getCol())
+        this.seqIndexes = IntStream.range(seqMatch.getCol() - seqMatch.getLength() + 1, seqMatch.getCol() + 1)
                 .mapToObj(String::valueOf)
                 .reduce((a, b) -> a + ";" + b)
                 .orElse("");
@@ -85,7 +88,8 @@ public class CSVRow {
     }
 
     public String getRow() {
-        return "\"" + RNAKey + "\","
+        return "\"" + fileName + "\","
+                + "\"" + idFromFile + "\","
                 + "\"" + sequenceLength + "\","
                 + "\"" + seqSolutionLength + "\","
                 + "\"" + bondSolutionLength + "\","

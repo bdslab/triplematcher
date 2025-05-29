@@ -34,7 +34,7 @@ With the output of the Matcher module, in order to use the 3DFilter module, you 
 1. "Accession number": the pdb id of the RNA structure
 2. "RNA Type": the chain used in the secondary structure file.
 
-If you have and ".xlsx" or "csv" file which have these two columns, and a FileName column (which is the name of the file without extension), you can use the following command:
+If you have an ".xlsx" or "csv" file which have these two columns, and a `Benchmark ID` column (which is the name of the file without extension), you can use the following command:
 ```bash
 pip install pandas
 pip install openpyxl

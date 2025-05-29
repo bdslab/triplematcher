@@ -10,12 +10,10 @@ import org.biojava.nbio.structure.StructureException;
 import org.biojava.nbio.structure.StructureIO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.Marker;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class RNA3DFilter {
     private static final Logger logger = LoggerFactory.getLogger("filtered");
@@ -52,7 +50,7 @@ public class RNA3DFilter {
             calculator = this.isDistanceMatrixSetFromConstructor
                     ? null
                     : this.lastRow != null
-                        && this.lastRow.getRNAKey().equals(row.getRNAKey())
+                        && this.lastRow.getIdFromFile().equals(row.getIdFromFile())
                         && this.lastRow.getRNAType().equals(row.getRNAType())
                             ? this.calculator
                             : new DistanceMatrixCalculator(structure, row.getRNAType(), row.getFullSeq());

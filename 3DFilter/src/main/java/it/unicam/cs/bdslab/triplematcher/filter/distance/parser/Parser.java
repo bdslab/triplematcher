@@ -1,6 +1,5 @@
 package it.unicam.cs.bdslab.triplematcher.filter.distance.parser;
 
-import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
@@ -20,7 +19,8 @@ public class Parser {
         try (CSVParser parser = new CSVParser(Files.newBufferedReader(path), CSVFormat.RFC4180.withFirstRecordAsHeader())) {
             parser.forEach(record -> {
                 CSVRow row = new CSVRow.Builder()
-                        .setRNAKey(record.get("FileName"))
+                        .setFileName(record.get("file_name"))
+                        .setIdFromFile(record.get("id_from_file"))
                         .setSequenceLength(Integer.parseInt(record.get("length")))
                         .setSeqSolutionLength(Integer.parseInt(record.get("solution_length_seq")))
                         .setBondSolutionLength(Integer.parseInt(record.get("solution_length_bond")))

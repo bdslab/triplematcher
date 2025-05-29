@@ -2,28 +2,20 @@ package it.unicam.cs.bdslab.triplematcher.filter.distance.filter;
 
 import it.unicam.cs.bdslab.triplematcher.filter.distance.parser.CSVRow;
 import it.unicam.cs.bdslab.triplematcher.filter.distance.parser.Direction;
-import it.unicam.cs.bdslab.triplematcher.filter.distance.utils.DistanceInfo;
 import it.unicam.cs.bdslab.triplematcher.filter.distance.utils.GenericFileLoader;
-import it.unicam.cs.bdslab.triplematcher.filter.distance.utils.Triple;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
-import org.biojava.nbio.structure.Structure;
 import org.biojava.nbio.structure.StructureException;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class RNA3DFilterTest {
     private static GenericFileLoader fileLoader;
@@ -57,7 +49,7 @@ public class RNA3DFilterTest {
                 .setFullSeq("GAAGGUUUUUCUUUUCCUGAGAAAACAACACGUAUUGUUUUCUCAGGUUUUGCUUUUUGGCCUUUUUCUAGCUUAAAAAAAAAAAAAGCAAAA")
                 .setBondIndexes("(36,75);(37,74);(38,73);(39,72);(40,71);(41,70);(42,69);(43,68);(44,67);(45,66);(46,65)")
                 .setSeqIndexes("7;8;9;10;11;12;13;14;15;16")
-                .setRNAKey("4plx")
+                .setIdFromFile("4plx")
                 .setBondTolerance(1)
                 .setBondCustomMatchString("MMMM")
                 .setSeqCustomMatchString("MMMM")

@@ -73,7 +73,7 @@ public class FolderIterator implements Iterator<RNASecondaryStructure> {
         RNASecondaryStructure secondaryStructure = null;
         try {
             secondaryStructure = RNASecondaryStructureFileReader.readStructure(path.toString(), false);
-            secondaryStructure.description = path.getFileName().toString().replace(".db", "");
+            secondaryStructure.description = path.getFileName().toString();
         } catch (IOException | RNAInputFileParserException e) {
             System.err.println("[WARNING] Skipping file " + path + " ... " + e.getMessage());
         }

@@ -69,8 +69,8 @@ class RNASecondaryStructureTest {
     void testIndeces() throws IOException, URISyntaxException {
         RNASecondaryStructure s1 = RNASecondaryStructureFileReader
             .readStructure(Paths.get(this.getClass().getResource("/testIndexes.db").toURI()).toString(), false);
-        assertEquals(1, s1.getBonds().get(0).getLeft(), "Expected first bond to start at index 0");
-        assertEquals(3, s1.getBonds().get(0).getRight(), "Expected first bond to end at index 2");
+        assertEquals(1, s1.getBonds().get(0).getLeft(), "Expected first bond to start at index 1");
+        assertEquals(3, s1.getBonds().get(0).getRight(), "Expected first bond to end at index 3");
     }
 
 

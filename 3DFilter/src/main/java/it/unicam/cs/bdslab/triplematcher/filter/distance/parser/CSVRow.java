@@ -4,16 +4,15 @@ import it.unicam.cs.bdslab.triplematcher.filter.distance.filter.TripleHelixNotat
 import it.unicam.cs.bdslab.triplematcher.filter.distance.utils.DistanceInfo;
 import it.unicam.cs.bdslab.triplematcher.filter.distance.utils.Triple;
 import it.unicam.cs.bdslab.triplematcher.filter.distance.utils.Utils;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class CSVRow {
     public static final String[] HEADERSARRAY = {
-            "FileName",
+            "file_name",
+            "id_from_file",
             "length",
             "solution_length_seq",
             "solution_length_bond",
@@ -40,7 +39,8 @@ public class CSVRow {
             "distance_info",
     };
     public static final String HEADERS = String.join(",", HEADERSARRAY) + "\n";
-    private final String RNAKey;
+    private final String fileName;
+    private final String idFromFile;
     private final int sequenceLength;
     private final int seqSolutionLength;
     private final int bondSolutionLength;
@@ -70,7 +70,8 @@ public class CSVRow {
     private List<Triple<DistanceInfo>> distanceInfoList;
 
     private CSVRow(Builder builder) {
-        this.RNAKey = builder.RNAKey;
+        this.fileName = builder.fileName;
+        this.idFromFile = builder.idFromFile;
         this.sequenceLength = builder.sequenceLength;
         this.seqSolutionLength = builder.seqSolutionLength;
         this.bondSolutionLength = builder.bondSolutionLength;
@@ -101,8 +102,8 @@ public class CSVRow {
         this.meanDirection = Direction.LEFT_TO_RIGHT_FIRST_BOND;
     }
 
-    public String getRNAKey() {
-        return RNAKey;
+    public String getIdFromFile() {
+        return idFromFile;
     }
 
     public String getFullSeq() {
@@ -179,7 +180,8 @@ public class CSVRow {
     }
 
     public String getCsv() {
-        return "\"" + RNAKey + "\"," +
+        return "\"" + fileName + "\"," +
+                "\"" + idFromFile + "\"," +
                 "\"" + sequenceLength + "\"," +
                 "\"" + seqSolutionLength + "\"," +
                 "\"" + bondSolutionLength + "\"," +
@@ -216,7 +218,8 @@ public class CSVRow {
     }
 
     public static class Builder {
-        private String RNAKey;
+        private String fileName;
+        private String idFromFile;
         private int sequenceLength;
         private int seqSolutionLength;
         private int bondSolutionLength;
@@ -236,8 +239,13 @@ public class CSVRow {
         private String accessionNumber;
         private String RNAType;
 
-        public Builder setRNAKey(String RNAKey) {
-            this.RNAKey = RNAKey;
+        public Builder setFileName(String fileName) {
+            this.fileName = fileName;
+            return this;
+        }
+
+        public Builder setIdFromFile(String idFromFile) {
+            this.idFromFile = idFromFile;
             return this;
         }
 
