@@ -6,6 +6,8 @@ def main(path_matches, path_ids_xlsx, out):
     df_out = df_matches.merge(df_ids, left_on="id_from_file", right_on="Benchmark ID", how="inner")
     colums_to_drop = df_ids.columns.delete(df_ids.columns.get_loc("Accession number"))
     colums_to_drop = colums_to_drop.delete(colums_to_drop.get_loc("Rna Type"))
+    colums_to_drop = colums_to_drop.delete(colums_to_drop.get_loc("Organism name"))
+    colums_to_drop = colums_to_drop.delete(colums_to_drop.get_loc("Is Pseudoknotted"))
     df_out = df_out.drop(columns=colums_to_drop)
     df_out.to_csv(out, index=False, sep=",")
     print("Merged file saved in: ", out)

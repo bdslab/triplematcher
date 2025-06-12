@@ -88,16 +88,18 @@ public class DistanceMatrixCalculator {
                 nonHetatmGroups.add(group);
             }
         }
-        int groupsNumber = nonHetatmGroups.size();
-        double[][] distanceMatrix = new double[groupsNumber][];
-        // Create a map to store the C1' atoms to avoid multiple calls to getAtom which is expensive
-        Map<Integer, Atom> c1Atoms = new HashMap<>();
-        for (int i = 0; i < nonHetatmGroups.size(); i++) {
-            Group group = nonHetatmGroups.get(i);
+
+        // Create a cache to store the C1' atoms to avoid multiple calls to getAtom which is expensive
+        List<Atom> c1Atoms = new ArrayList<>(nonHetatmGroups.size());
+        for (Group group : nonHetatmGroups) {
             Atom c1Atom = group.getAtom("C1'");
-            c1Atoms.put(i, c1Atom);
+            if (c1Atom != null)
+                c1Atoms.add(c1Atom);
         }
-        for (int i = 0; i < nonHetatmGroups.size(); i++) {
+        int groupsNumber = c1Atoms.size();
+        double[][] distanceMatrix = new double[groupsNumber][];
+
+        for (int i = 0; i < c1Atoms.size(); i++) {
             distanceMatrix[i] = new double[i + 1];
             distanceMatrix[i][i] = 0;
             Atom c1i = c1Atoms.get(i);

@@ -21,7 +21,7 @@ public class RNA3DFilter {
     private final Structure structure;
     private double[][] distanceMatrix;
     private boolean isDistanceMatrixSetFromConstructor = false;
-    public static final double ANGSTROMS_THRESHOLD = 10.0;
+    public static final double ANGSTROMS_THRESHOLD = 11.0;
     private CSVRow lastRow = null;
     private DistanceMatrixCalculator calculator = null;
 

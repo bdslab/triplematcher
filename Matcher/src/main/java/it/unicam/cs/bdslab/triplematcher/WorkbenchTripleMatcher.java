@@ -56,9 +56,12 @@ public class WorkbenchTripleMatcher {
             if (cmd.getArgs().length < 2) {
                 throw new IllegalArgumentException("Input folder and output file must be specified.");
             }
-
+            String outputFileName = cmd.getArgs()[1];
+            if (!outputFileName.endsWith(".csv")) {
+                outputFileName += ".csv";
+            }
             Path inputFolder = Paths.get(cmd.getArgs()[0]);
-            Path outputFile = Paths.get(cmd.getArgs()[1] + "_" + nucleotide + "_" + basePair + "_" + SequenceTolerance + ".csv");
+            Path outputFile = Paths.get(outputFileName);
             ApplicationSettings settings = new ApplicationSettings(
                     new CompleteWeakBond(1, 2, basePair.charAt(0), basePair.charAt(1), false)
                     , nucleotide.charAt(0)

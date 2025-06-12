@@ -18,6 +18,10 @@ public class CSVRow {
             "solution_length_bond",
             "indices_seq",
             "indices_bond",
+            "Rna Type",
+            "Accession Number",
+            "Organism name",
+            "Is Pseudoknotted",
             "str_match_seq",
             "str_match_bond",
             "real_num_seq",
@@ -29,14 +33,12 @@ public class CSVRow {
             "tolerance_not_paired",
             "tolerance_not_consecutive",
             "full_seq",
-            "Rna Type",
-            "Accession Number",
             "mean_angstroms",
             "mean_direction",
             "chain_id",
             "chain_description",
             "triple_notation",
-            "distance_info",
+            "distance_info"
     };
     public static final String HEADERS = String.join(",", HEADERSARRAY) + "\n";
     private final String fileName;
@@ -61,6 +63,8 @@ public class CSVRow {
     private final String fullSeq;
     private final String accessionNumber;
     private final String RNAType;
+    private final String organismName;
+    private final boolean isPseudoknotted;
 
     private double meanAngstroms;
     private Direction meanDirection;
@@ -100,6 +104,8 @@ public class CSVRow {
         this.RNAType = builder.RNAType;
         this.meanAngstroms = Double.NaN;
         this.meanDirection = Direction.LEFT_TO_RIGHT_FIRST_BOND;
+        this.organismName = builder.organismName;
+        this.isPseudoknotted = builder.isPseudoknotted;
     }
 
     public String getIdFromFile() {
@@ -187,6 +193,10 @@ public class CSVRow {
                 "\"" + bondSolutionLength + "\"," +
                 "\"" + seqIndexesString + "\"," +
                 "\"" + bondIndexesString + "\"," +
+                "\"" + RNAType + "\"," +
+                "\"" + accessionNumber + "\"," +
+                "\"" + organismName + "\"," +
+                "\"" + isPseudoknotted + "\"," +
                 "\"" + strMatchSeq + "\"," +
                 "\"" + strMatchBond + "\"," +
                 "\"" + scoreSeq + "\"," +
@@ -198,8 +208,6 @@ public class CSVRow {
                 "\"" + notPairedTolerance + "\"," +
                 "\"" + notConsecutiveTolerance + "\"," +
                 "\"" + fullSeq + "\"," +
-                "\"" + RNAType + "\"," +
-                "\"" + accessionNumber + "\"," +
                 "\"" + Utils.formatDoubleCsv(meanAngstroms) + "\"," +
                 "\"" + meanDirection.write() + "\"," +
                 "\"" + SelectedChainId + "\"," +
@@ -238,6 +246,18 @@ public class CSVRow {
         private String fullSeq;
         private String accessionNumber;
         private String RNAType;
+        private String organismName;
+        private boolean isPseudoknotted;
+
+        public Builder setOrganismName(String organismName) {
+            this.organismName = organismName;
+            return this;
+        }
+
+        public Builder setPseudoknotted(boolean pseudoknotted) {
+            isPseudoknotted = pseudoknotted;
+            return this;
+        }
 
         public Builder setFileName(String fileName) {
             this.fileName = fileName;

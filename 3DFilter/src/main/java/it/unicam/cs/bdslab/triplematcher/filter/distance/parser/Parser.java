@@ -39,6 +39,8 @@ public class Parser {
                         .setFullSeq(record.get("full_seq"))
                         .setRNAType(record.get("Rna Type"))
                         .setAccessionNumber(record.get("Accession number"))
+                        .setOrganismName(record.isSet("Organism name") ? record.get("Organism name") : "")
+                        .setPseudoknotted(record.isSet("Is Pseudoknotted") ? record.get("Is Pseudoknotted").equalsIgnoreCase("yes") : false)
                         .build();
                 rows.add(row);
             });

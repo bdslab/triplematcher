@@ -29,9 +29,10 @@ public class App {
     private static final String RESET = "\u001B[0m";
     private static final String USAGE = "Usage: java -jar 3DFilter.jar <input_file> <output_file> [Options]";
     public static void main(String[] args) {
+        double filterTh = RNA3DFilter.ANGSTROMS_THRESHOLD;
         Options options = new Options()
                 .addOption("h", "help", false, "print this message")
-                .addOption("t", "tolerance", true, "tolerance in angstroms added to a base distance of 10 (e.g., distance < 10 + tolerance), default is 0")
+                .addOption("t", "tolerance", true, "tolerance in angstroms added to a base distance of " + filterTh + " (e.g., distance < "+ filterTh + " + tolerance), default is 0")
                 .addOption("p", "pdb-files", true, "path to a folder containing PDB files, if not provided, the program will download the files");
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
@@ -43,7 +44,11 @@ public class App {
             }
             double threshold = Double.parseDouble(cli.getOptionValue("t", "0"));
             Path inputFolder = Paths.get(cli.getArgs()[0]);
-            Path outputFile = Paths.get(cli.getArgs()[1] + ".csv");
+            String outputFileName = cli.getArgs()[1];
+            if (!outputFileName.endsWith(".csv")) {
+                outputFileName += ".csv";
+            }
+            Path outputFile = Paths.get(outputFileName);
             Path pdbFolder = cli.getOptionValue("p") != null ? Paths.get(cli.getOptionValue("p")) : null;
             logger.info("Tolerance set to {}", threshold);
             logger.info("Input file: {}", inputFolder);

@@ -17,6 +17,15 @@ public class ParserTest {
 
         Path path = Paths.get(this.getClass().getResource("/complete.csv").toURI());
         List<CSVRow> rows = parser.parse(path);
-        Assertions.assertEquals(316, rows.size());
+        Assertions.assertEquals(1, rows.size());
+    }
+
+    @Test
+    public void testParserWithOptional() throws URISyntaxException {
+        Parser parser = new Parser();
+
+        Path path = Paths.get(this.getClass().getResource("/complete_no_optional.csv").toURI());
+        List<CSVRow> rows = parser.parse(path);
+        Assertions.assertEquals(1, rows.size());
     }
 }

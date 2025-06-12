@@ -85,7 +85,8 @@ usage: Usage: java -jar 3DFilter.jar <input_file> <output_file> [Options]
  -p,--pdb-files <arg>   path to a folder containing PDB files, if not
                         provided, the program will download the files
  -t,--tolerance <arg>   tolerance in angstroms added to a base distance of
-                        10 (e.g., distance < 10 + tolerance), default is 0
+                        11.0 (e.g., distance < 11.0 + tolerance), default
+                        is 0
 ```
 
 ## Contributing
