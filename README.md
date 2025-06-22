@@ -50,11 +50,11 @@ java -jar 3DFilter/target/3dfilter-1.0-SNAPSHOT.jar <matcher_output_file> <outpu
 
 If you are familiar with shell scripting, you can use the provided script to run both modules in one go:
 ```bash
-bash Scripts/example.sh <matcher_jar> <python_script> <3dfilter_jar>
+bash example.sh <matcher_jar> <python_script> <3dfilter_jar>
 ```
 on Windows, you can use the provided batch script:
 ```batch
-Scripts\example.bat <matcher_jar> <python_script> <3dfilter_jar>
+example.bat <matcher_jar> <python_script> <3dfilter_jar>
 ```
 make sure to change `config.conf` with your configuration file.
 
