@@ -63,6 +63,7 @@ make sure to change `config.conf` with your configuration file.
 $> java -jar Matcher/target/matcher-1.0-SNAPSHOT.jar -h 
 
 usage: java -jar Matcher.jar <inputFolder> <output> [Options]
+ -a          find all possible matches
  -b <arg>    canonical base pair (AU, UA, GC, CG), default UA
  -bt <arg>   base pair tolerance for mismatch/insertion/deletion, default
              1

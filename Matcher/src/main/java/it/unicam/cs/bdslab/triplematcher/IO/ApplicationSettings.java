@@ -16,6 +16,8 @@ public class ApplicationSettings {
     private final int notPairedTolerance;
     private final int notConsecutiveTolerance;
     private final int pseudoknotsTolerance;
+    private final boolean findAllMatches;
+
     public ApplicationSettings(CompleteWeakBond bondPattern,
                                Character seqPattern,
                                int sequenceTolerance,
@@ -23,7 +25,8 @@ public class ApplicationSettings {
                                int bondTolerance,
                                int notPairedTolerance,
                                int notConsecutiveTolerance,
-                               int pseudoknotsTolerance) {
+                               int pseudoknotsTolerance,
+                               boolean findAllMatches) {
         this.bondPattern = bondPattern;
         this.seqPattern = seqPattern;
         this.sequenceTolerance = sequenceTolerance;
@@ -32,6 +35,7 @@ public class ApplicationSettings {
         this.notPairedTolerance = notPairedTolerance;
         this.notConsecutiveTolerance = notConsecutiveTolerance;
         this.pseudoknotsTolerance = pseudoknotsTolerance;
+        this.findAllMatches = findAllMatches;
     }
 
     public CompleteWeakBond getBondPattern() {
@@ -69,6 +73,11 @@ public class ApplicationSettings {
     public int getPseudoknotsTolerance() {
         return pseudoknotsTolerance;
     }
+
+    public boolean isFindAllMatches() {
+        return findAllMatches;
+    }
+
     public List<WeakBond> getBondPatternList() {
         return Utils.replicate(bondPattern, maxPatternLength);
     }

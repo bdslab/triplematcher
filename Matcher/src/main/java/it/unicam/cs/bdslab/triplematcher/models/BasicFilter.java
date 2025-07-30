@@ -15,7 +15,18 @@ import java.util.*;
 public class BasicFilter<T> implements PatternMatcherFilter<T> {
     private final List<T> text;
     private final List<T> pattern;
-
+    private final boolean findAllMatches;
+    /**
+     * Constructor for the BasicFilter class.
+     * @param text the sequence to be matched
+     * @param pattern the pattern to be matched
+     * @param findAllMatches a boolean indicating whether to find all matches or not
+     */
+    public BasicFilter(List<T> text, List<T> pattern, boolean findAllMatches) {
+        this.text = Collections.unmodifiableList(text);
+        this.pattern = Collections.unmodifiableList(pattern);
+        this.findAllMatches = findAllMatches;
+    }
     /**
      * Constructor for the BasicFilter class.
      * @param text the sequence to be matched
@@ -24,8 +35,8 @@ public class BasicFilter<T> implements PatternMatcherFilter<T> {
     public BasicFilter(List<T> text, List<T> pattern) {
         this.text = Collections.unmodifiableList(text);
         this.pattern = Collections.unmodifiableList(pattern);
+        this.findAllMatches = false; // Default to not finding all matches
     }
-
     @Override
     public List<Match<T>> filter(RNAPatternMatcher<T> patternMatcher, int tolerance, int minPatternLength) {
         patternMatcher.solve(pattern);
@@ -45,7 +56,7 @@ public class BasicFilter<T> implements PatternMatcherFilter<T> {
         List<Match<T>> matches = new LinkedList<>();
         // If the row has 0 we don't need to consider others
         boolean rowWith0 = false;
-        for (int i = matrix.length - 1; i >= minPatternLength && !rowWith0; i--) {
+        for (int i = matrix.length - 1; i >= minPatternLength && (!rowWith0 || findAllMatches); i--) {
             int[] matrixRow = matrix[i];
             int minScoreValue = Utils.getMin(matrixRow);
             // if the min distance on the row is higher than the tolerance I consider the next row
