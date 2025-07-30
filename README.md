@@ -58,12 +58,12 @@ example.bat <matcher_jar> <python_script> <3dfilter_jar>
 ```
 make sure to change `config.conf` with your configuration file.
 
-### Matcher Configuration
+### Matcher Options
 ```aiignore
 $> java -jar Matcher/target/matcher-1.0-SNAPSHOT.jar -h 
 
 usage: java -jar Matcher.jar <inputFolder> <output> [Options]
- -a          find all possible matches
+ -a          find all sub-matches of exact bond matches
  -b <arg>    canonical base pair (AU, UA, GC, CG), default UA
  -bt <arg>   base pair tolerance for mismatch/insertion/deletion, default
              1
@@ -78,7 +78,30 @@ usage: java -jar Matcher.jar <inputFolder> <output> [Options]
              sequence, default 1
 
 ```
-### 3DFilter Configuration
+A sequence of bonds must be consecutive, meaning that each bond must occur between 
+adjacent nucleotide positions. In some cases, a sequence of bonds may consist of 
+correct base pairs, but the positions are not adjacent.
+For example, the sequence:
+(U-13, A-18); (U-24, A-51); (U-25, A-50); (U-26, A-49); (U-27, A-48)
+includes five consecutive UA base pairs. However, the first pair starts at 
+position 13, while the second starts at position 24. In this case, the match is 
+discarded due to non-adjacency.
+
+By default, the Matcher does not include sub-matches when reporting exact matches, 
+in order to avoid an excessive number of results.
+In this example, the sub-match
+(U-24, A-51); (U-25, A-50); (U-26, A-49); (U-27, A-48)
+has adjacent positions and length 4, but would not be found under the default 
+behavior.
+
+The use of the `-a` option solves this issue by always enabling the detection of 
+sub-matches in bonds, although this may lead to a large number of additional results. 
+To manage this, the use of zones (see the `Combining Matcher and 3DFilter Output 
+into Zones` section below) aggregates 
+overlapping or adjacent sub-matches to facilitate the identification of regions 
+that may contain triple helices.
+
+### 3DFilter Options
 ```aiignore
 $> java -jar 3DFilter/target/3dfilter-1.0-SNAPSHOT.jar -h
 usage: Usage: java -jar 3DFilter.jar <input_file> <output_file> [Options]
@@ -89,6 +112,13 @@ usage: Usage: java -jar 3DFilter.jar <input_file> <output_file> [Options]
                         11.0 (e.g., distance < 11.0 + tolerance), default
                         is 0
 ```
+
+In the case of the 3DFilter, the tolerance refers to the average distance between the 
+unpaired nucleotide and the closest nucleotide in the base pair of the considered 
+triple.
+Typically, in a real triple, this distance does not exceed 11 angstroms. However, 
+allowing a tolerance of one or two angstroms may be useful to capture edge cases.
+
 ## Combining Matcher and 3DFilter Output into Zones
 
 The `Scripts/` folder contains a collection of Python scripts for grouping the

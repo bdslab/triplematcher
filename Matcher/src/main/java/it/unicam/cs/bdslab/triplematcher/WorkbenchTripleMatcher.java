@@ -32,7 +32,7 @@ public class WorkbenchTripleMatcher {
             .addOption("pt", true, "paired tolerance, default 1")
             .addOption("ct", true, "consecutive tolerance, default 1")
             .addOption("p", true, "tolerance for pseudoknot, default: allow pseudoknot free matches")
-            .addOption("a", false, "find all possible matches")
+            .addOption("a", false, "find all sub-matches of exact bond matches")
             .addOption("h", "help", false, "print this message");
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd;
