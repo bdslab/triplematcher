@@ -119,6 +119,59 @@ triple.
 Typically, in a real triple, this distance does not exceed 11 angstroms. However, 
 allowing a tolerance of one or two angstroms may be useful to capture edge cases.
 
+## Output of TripleMatcher
+
+The CSV output files contain the detected 2D and 3D matches, as detailed below.
+
+### Output of the Matcher
+
+The `Matcher` outputs 2D matches, i.e., combinations of unpaired nucleotide sequences and corresponding base-pair sequences (bonds) that plausibly form a triple helix according to a defined pattern. The main columns in the CSV output are `indices_seq` and `indices_bond`, each associated with a given `file_name`. Additional columns report alignment details and match lengths, depending on the tolerance options used.
+
+Below is an example of two 2D matches identified in the PDB structure `2M8K`:
+
+| `indices_seq`    | `indices_bond`                                 |
+|------------------|------------------------------------------------|
+| 31;32;33;34;35   | (17,42);(18,41);(19,40);(20,39);(21,38);(23,36) |
+| 6;7;8;9;10;11    | (17,42);(18,41);(19,40);(20,39);(21,38);(23,36) |
+
+The left column lists unpaired nucleotide positions (third strand), while the right column lists canonical WCF base pairs. In the first row, the unpaired region lies outside the annotated triple helix in `2M8K`; in the second, it matches the known Hoogsteen strand. In both cases, the paired region corresponds to a known triple helix.
+
+### Output of the 3DFilter
+
+The `3DFilter` retains the same columns as the `Matcher`, but adds spatial distance information and an augmented dot-bracket notation for matches that are geometrically feasible. This is called a 3D match.
+
+Below is an example of spatial data from RNA structure `2M8K`, corresponding to the second 2D match above. Values are taken from the `distance_info` column and reorganized for readability:
+
+| **Interaction A**   | **Interaction B**   | **Interaction C**   |
+|---------------------|---------------------|---------------------|
+| (11; 17; 14.96)     | (11; 42; 7.78)      | (17; 42; 11.06)     |
+| (10; 18; 14.60)     | (10; 41; 7.77)      | (18; 41; 10.96)     |
+| (9; 19; 14.82)      | (9; 40; 7.95)       | (19; 40; 10.40)     |
+| (8; 20; 14.89)      | (8; 39; 8.50)       | (20; 39; 9.70)      |
+| (7; 21; 14.57)      | (7; 38; 9.01)       | (21; 38; 9.76)      |
+| (6; 23; 13.02)      | (6; 36; 8.49)       | (23; 36; 7.41)      |
+
+Each entry is a triple of the form (index₁; index₂; distance), where the distance (in Ångströms) is the Euclidean distance between the C1′ atoms of the two nucleotides involved.
+- **Interaction A**: distance between the unpaired third-strand nucleotide and the WCF base *not* involved in Hoogsteen pairing
+- **Interaction B**: distance between the third strand and the Hoogsteen partner (typically <11 Å, average ≈ 8.25 Å)
+- **Interaction C**: distance between the two bases forming each WCF pair
+
+The `3DFilter` also adds a `triple_notation` column representing the **augmented dot-bracket notation** derived from the spatially validated triple helix:
+
+`-----zyxwvu------------------------Z-YXWVU------`
+
+This notation must be aligned with the RNA sequence and secondary structure in standard dot-bracket format. For example, for `2M8K`:
+
+`GGUUUCUUUUUAGUGAUUUUUCCAAACCCCUUUGUGCAAAAAUCAUUA`<br>
+`(((((......[[[[[[[[[[.[))))).......].]]]]]]]]]].`<br>
+`-----zyxwvu------------------------Z-YXWVU------`
+
+Here, each Hoogsteen base pair is represented by a pair of matching lowercase-uppercase letters (e.g., `zZ`), where the lowercase letter indicates the unpaired third-strand nucleotide, and the uppercase letter its Hoogsteen interaction partner in the WCF region.
+
+The filtered 3D match corresponds exactly to the experimentally validated triple helix in `2M8K`.
+
+
+
 ## Combining Matcher and 3DFilter Output into Zones
 
 The `Scripts/` folder contains a collection of Python scripts for grouping the
