@@ -26,7 +26,7 @@ or download the release [here](https://github.com/bdslab/triplematcher/releases/
 
 To run the Matcher module, use the following command:
 ```bash
-java -jar Matcher/target/matcher-1.0-SNAPSHOT.jar <input_folder> <output_file>
+java -jar Matcher-v1.0-all-dependencies.jar <input_folder> <output_file>
 ```
 the input folder must contain the RNA secondary structures, in various formats (.db, .aas, .bpseq, .ct).
 If you have secondary structure in non-accepted format, you can use [TARNAS app](https://github.com/bdslab/TARNAS/releases/latest) or visit [TARNAS web](https://bdslab.unicam.it/tarnas).
@@ -45,7 +45,7 @@ otherwise, you have to add these columns manually.
 
 To run the 3DFilter module, use the following command:
 ```bash
-java -jar 3DFilter/target/3dfilter-1.0-SNAPSHOT.jar <matcher_output_file> <output_file>
+java -jar 3DFilter-v1.0-all-dependencies.jar <matcher_output_file> <output_file>
 ```
 
 If you are familiar with shell scripting, you can use the provided script to run both modules in one go:
@@ -60,7 +60,7 @@ make sure to change `config.conf` with your configuration file.
 
 ### Matcher Options
 ```aiignore
-$> java -jar Matcher/target/matcher-1.0-SNAPSHOT.jar -h 
+$> java -jar Matcher-v1.0-all-dependencies.jar -h 
 
 usage: java -jar Matcher.jar <inputFolder> <output> [Options]
  -a          find all sub-matches of exact bond matches
@@ -103,7 +103,7 @@ that may contain triple helices.
 
 ### 3DFilter Options
 ```aiignore
-$> java -jar 3DFilter/target/3dfilter-1.0-SNAPSHOT.jar -h
+$> java -jar 3DFilter-v1.0-all-dependencies.jar -h
 usage: Usage: java -jar 3DFilter.jar <input_file> <output_file> [Options]
  -h,--help              print this message
  -p,--pdb-files <arg>   path to a folder containing PDB files, if not
