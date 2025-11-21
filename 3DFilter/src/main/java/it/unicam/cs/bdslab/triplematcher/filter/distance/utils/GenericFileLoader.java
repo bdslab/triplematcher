@@ -3,6 +3,9 @@ package it.unicam.cs.bdslab.triplematcher.filter.distance.utils;
 import org.biojava.nbio.structure.Structure;
 import org.biojava.nbio.structure.StructureException;
 import org.biojava.nbio.structure.StructureIO;
+import org.biojava.nbio.structure.chem.ChemComp;
+import org.biojava.nbio.structure.chem.ChemCompGroupFactory;
+import org.biojava.nbio.structure.chem.ChemCompProvider;
 import org.biojava.nbio.structure.io.*;
 
 import org.slf4j.Logger;
@@ -24,8 +27,13 @@ public class GenericFileLoader {
     private final List<String> supportedExtensions = Arrays.stream(StructureFiletype.values())
             .flatMap(t -> t.getExtensions().stream())
             .collect(Collectors.toList());
-
+    private static ChemCompProvider oldProvider;
     public GenericFileLoader(Path folder) {
+        if (oldProvider == null) {
+            oldProvider = ChemCompGroupFactory.getChemCompProvider();
+        }
+        ChemCompGroupFactory.setChemCompProvider(new FixChemCompProvider(oldProvider));
+
         if (folder != null) {
             File dir = folder.toFile();
             if (!dir.isDirectory()) {
@@ -51,6 +59,7 @@ public class GenericFileLoader {
     }
 
     private Structure loadGenericType(FileContainer file) throws StructureException, IOException {
+        logger.info("Using {}", ChemCompGroupFactory.getChemCompProvider());
         LocalPDBDirectory reader = null;
         switch (file.fileType) {
             case PDB:
@@ -110,5 +119,43 @@ public class GenericFileLoader {
             this.file = file;
         }
     }
+
+    /**
+     * This provider fixes the issue where first nucleotide may have an extra character.
+     * For example, A5' should be treated as A, C3' as C, G2' as G, U1' as U, T7' as T.
+     * This is done by checking if the name starts or ends with A, C, G, U, T and removing the extra character.
+     */
+    private static class FixChemCompProvider implements ChemCompProvider {
+
+        private final ChemCompProvider oldProvider;
+
+        public FixChemCompProvider(ChemCompProvider provider) {
+            this.oldProvider = Objects.requireNonNull(provider);
+        }
+
+        private final String[] BASES = {"A", "C", "G", "U"};
+
+        @Override
+        public ChemComp getChemComp(String name) {
+
+            if (name == null) return this.oldProvider.getChemComp(null);
+
+            if (name.length() != 2) {
+                return this.oldProvider.getChemComp(name);
+            }
+
+            // upper has length 2
+            String upper = name.toUpperCase();
+            for (String base : BASES) {
+                if (upper.startsWith(base) || upper.endsWith(base)) {
+                    upper = upper.substring(0, upper.length() - 1);
+                    break;
+                }
+            }
+
+            return this.oldProvider.getChemComp(upper);
+        }
+    }
+
 
 }
