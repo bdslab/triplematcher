@@ -42,7 +42,7 @@ public class WorkbenchTripleMatcher {
             String nucleotide = cmd.getOptionValue("n", "U");
             String basePair = cmd.getOptionValue("b", "UA");
             int minPatternLength = Integer.parseInt(cmd.getOptionValue("ml", "4"));
-            int SequenceTolerance = Integer.parseInt(cmd.getOptionValue("st", "1"));
+            int sequenceTolerance = Integer.parseInt(cmd.getOptionValue("st", "1"));
             int basePairTolerance = Integer.parseInt(cmd.getOptionValue("bt", "1"));
             int pairedTolerance = Integer.parseInt(cmd.getOptionValue("pt", "1"));
             int consecutiveTolerance = Integer.parseInt(cmd.getOptionValue("ct", "1"));
@@ -65,7 +65,7 @@ public class WorkbenchTripleMatcher {
             ApplicationSettings settings = new ApplicationSettings(
                     new CompleteWeakBond(1, 2, basePair.charAt(0), basePair.charAt(1), false)
                     , nucleotide.charAt(0)
-                    , SequenceTolerance
+                    , sequenceTolerance
                     , minPatternLength
                     , basePairTolerance
                     , pairedTolerance
