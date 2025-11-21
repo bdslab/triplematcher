@@ -73,5 +73,12 @@ class RNASecondaryStructureTest {
         assertEquals(3, s1.getBonds().get(0).getRight(), "Expected first bond to end at index 3");
     }
 
+    @Test
+    void Pan2PKiss() throws IOException, URISyntaxException {
+        RNASecondaryStructure s1 = RNASecondaryStructureFileReader
+            .readStructure(Paths.get(this.getClass().getResource("/PAN2_Predicted_Pkiss.db.txt").toURI()).toString(), false);
+        assertTrue(s1.isPseudoknotted(), "Expected structure to be pseudoknotted");
+        assertTrue(s1.getBonds().stream().anyMatch(CompleteWeakBond::isCross), "Expected structure to have crossing bonds");
+    }
 
 }

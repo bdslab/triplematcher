@@ -1,12 +1,21 @@
 package it.unicam.cs.bdslab.triplematcher.models.algorithms;
 
+import it.unicam.cs.bdslab.triplematcher.IO.ApplicationSettings;
+import it.unicam.cs.bdslab.triplematcher.RNASecondaryStructure;
+import it.unicam.cs.bdslab.triplematcher.RNASecondaryStructureFileReader;
 import it.unicam.cs.bdslab.triplematcher.WeakBond;
+import it.unicam.cs.bdslab.triplematcher.models.CompleteWeakBond;
 import it.unicam.cs.bdslab.triplematcher.models.EditOperation;
+import it.unicam.cs.bdslab.triplematcher.models.Match;
 import it.unicam.cs.bdslab.triplematcher.models.RNAApproximatePatternMatcher;
+import it.unicam.cs.bdslab.triplematcher.models.utils.Pair;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -128,6 +137,27 @@ public class RNAApproximatePatternMatcherTest {
         );
         assertEquals(expectedFirstAlignment, firstAlignment, "First alignment should be correct.");
         assertEquals(expectedSecondAlignment, secondAlignment, "Second alignment should be correct.");
+    }
+
+    @Test
+    void filterPan2PkissTest() throws URISyntaxException, IOException {
+        RNASecondaryStructure s1 = RNASecondaryStructureFileReader
+                .readStructure(Paths.get(this.getClass().getResource("/PAN2_Predicted_Pkiss.db.txt").toURI()).toString(), false);
+        RNAApproximateMatcher matcher = new RNAApproximateMatcher(new ApplicationSettings(
+                new CompleteWeakBond(1, 2, 'U', 'A', false)
+                , 'U'
+                , 1
+                , 4
+                , 1
+                , 1
+                , 13
+                , -1
+        ));
+        s1.isNotWeakBond(1);
+        List<Pair<Match<CompleteWeakBond>,Match<Character>>> matches =
+                matcher.match(s1, new CompleteWeakBond(1, 2, 'U', 'A', false), 'U');
+
+        assertNotEquals(0, matches.size(), "Matches should not be empty.");
     }
 
     private List<WeakBond> getWeakBonds(List<Integer> lefts, List<Integer> rights) {
