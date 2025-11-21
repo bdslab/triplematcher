@@ -24,9 +24,6 @@ public class GenericFileLoader {
     private static final Logger logger = LoggerFactory.getLogger("filtered");
 
     private final HashMap<String, FileContainer> files = new HashMap<>();
-    private final List<String> supportedExtensions = Arrays.stream(StructureFiletype.values())
-            .flatMap(t -> t.getExtensions().stream())
-            .collect(Collectors.toList());
     private static ChemCompProvider oldProvider;
     public GenericFileLoader(Path folder) {
         if (oldProvider == null) {
@@ -59,7 +56,6 @@ public class GenericFileLoader {
     }
 
     private Structure loadGenericType(FileContainer file) throws StructureException, IOException {
-        logger.info("Using {}", ChemCompGroupFactory.getChemCompProvider());
         LocalPDBDirectory reader = null;
         switch (file.fileType) {
             case PDB:
@@ -89,10 +85,6 @@ public class GenericFileLoader {
         } else {
             return "";
         }
-    }
-
-    private StructureFiletype getFileType(File file) {
-        return getFileType(getFileExtension(file));
     }
 
     private StructureFiletype getFileType(String extension) {
