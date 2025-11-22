@@ -28,7 +28,6 @@ public class ApplicationCSV implements Application {
     @Override
     public void exportFolder(Path inputFolder, Path output) {
         FolderIterator folderIterator = new FolderIterator(inputFolder, false);
-        MatchCombiner<WeakBond, Character> combiner = new MatchCombiner<>();
         RNATripleMatcher matcher = new RNAApproximateMatcher(this.settings);
         int allResults = 0;
         try (OutputStreamWriter writer = new OutputStreamWriter(Files.newOutputStream(output))) {

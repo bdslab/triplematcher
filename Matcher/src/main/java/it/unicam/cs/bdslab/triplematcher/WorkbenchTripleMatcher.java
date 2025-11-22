@@ -32,6 +32,7 @@ public class WorkbenchTripleMatcher {
             .addOption("pt", true, "paired tolerance, default 1")
             .addOption("ct", true, "consecutive tolerance, default 1")
             .addOption("p", true, "tolerance for pseudoknot, default: allow pseudoknot free matches")
+            .addOption("a", false, "find all sub-matches of exact bond matches")
             .addOption("h", "help", false, "print this message");
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd;
@@ -47,7 +48,7 @@ public class WorkbenchTripleMatcher {
             int pairedTolerance = Integer.parseInt(cmd.getOptionValue("pt", "1"));
             int consecutiveTolerance = Integer.parseInt(cmd.getOptionValue("ct", "1"));
             int pseudoknotTolerance = Integer.parseInt(cmd.getOptionValue("p", "-1"));
-
+            boolean findAllMatches = cmd.hasOption("a");
             if (cmd.hasOption("h")) {
                 HelpFormatter formatter = new HelpFormatter();
                 formatter.printHelp(USAGE, options);
@@ -71,6 +72,7 @@ public class WorkbenchTripleMatcher {
                     , pairedTolerance
                     , consecutiveTolerance
                     , pseudoknotTolerance
+                    , findAllMatches
             );
             Application app = new ApplicationCSV(settings);
             System.out.println("[INFO] start with settings: " + settings);

@@ -18,19 +18,21 @@ public abstract class RNABaseTripleMatcher implements RNATripleMatcher {
     protected final int notPairedTolerance;
     protected final int notConsecutiveTolerance;
     protected final int pseudoKnotsTolerance;
+    protected final boolean findAllMatches;
 
 
-    protected RNABaseTripleMatcher(int tolerance, int minPatternLength, int bondTolerance, int notPairedTolerance, int notConsecutiveTolerance, int pseudoKnotsTolerance) {
+    protected RNABaseTripleMatcher(int tolerance, int minPatternLength, int bondTolerance, int notPairedTolerance, int notConsecutiveTolerance, int pseudoKnotsTolerance, boolean findAllMatches) {
         this.tolerance = tolerance;
         this.minPatternLength = minPatternLength;
         this.bondTolerance = bondTolerance;
         this.notPairedTolerance = notPairedTolerance;
         this.notConsecutiveTolerance = notConsecutiveTolerance;
         this.pseudoKnotsTolerance = pseudoKnotsTolerance;
+        this.findAllMatches = findAllMatches;
     }
 
     protected RNABaseTripleMatcher(ApplicationSettings settings) {
-        this(settings.getSequenceTolerance(), settings.getMinPatternLength(), settings.getBondTolerance(), settings.getNotPairedTolerance(), settings.getNotConsecutiveTolerance(), settings.getPseudoknotsTolerance());
+        this(settings.getSequenceTolerance(), settings.getMinPatternLength(), settings.getBondTolerance(), settings.getNotPairedTolerance(), settings.getNotConsecutiveTolerance(), settings.getPseudoknotsTolerance(), settings.isFindAllMatches());
     }
 
     /**

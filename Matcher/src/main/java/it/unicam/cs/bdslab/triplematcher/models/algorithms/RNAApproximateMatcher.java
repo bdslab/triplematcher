@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 public class RNAApproximateMatcher extends RNABaseTripleMatcher {
     private final int maxPatternLength;
 
-    public RNAApproximateMatcher(int tolerance, int minPatternLength, int bondTolerance, int notPairedTolerance, int notConsecutiveTolerance, int pseudoknotTolerance, int maxPatternLength) {
-        super(tolerance, minPatternLength, bondTolerance, notPairedTolerance, notConsecutiveTolerance, pseudoknotTolerance);
+    public RNAApproximateMatcher(int tolerance, int minPatternLength, int bondTolerance, int notPairedTolerance, int notConsecutiveTolerance, int pseudoknotTolerance, int maxPatternLength, boolean findAllMatches) {
+        super(tolerance, minPatternLength, bondTolerance, notPairedTolerance, notConsecutiveTolerance, pseudoknotTolerance, findAllMatches);
         this.maxPatternLength = maxPatternLength;
     }
 
@@ -29,6 +29,9 @@ public class RNAApproximateMatcher extends RNABaseTripleMatcher {
 
     @Override
     public List<Pair<Match<CompleteWeakBond>, Match<Character>>> match(RNASecondaryStructure structure, CompleteWeakBond bondPattern, Character seqPattern) {
+        // Ensure the structure is ready for matching because with parallel processing
+        // the weak bond cache must be computed before the match.
+        structure.computeWeakBondCache();
         return super.combiner.combine(
                 getMatches(super.getBondText(structure), Utils.replicate(bondPattern, this.maxPatternLength), this.bondTolerance),
                 getMatches(super.getSeqText(structure), Utils.replicate(seqPattern, this.maxPatternLength), this.tolerance)
@@ -38,7 +41,7 @@ public class RNAApproximateMatcher extends RNABaseTripleMatcher {
     }
 
     private<T> List<Match<T>> getMatches(List<T> text, List<T> pattern, int tolerance) {
-        BasicFilter<T> filter = new BasicFilter<>(text, pattern);
+        BasicFilter<T> filter = new BasicFilter<>(text, pattern, super.findAllMatches);
         RNAApproximatePatternMatcher<T> matcher = new RNAApproximatePatternMatcher<>(text);
         return filter.filter(matcher, tolerance, super.minPatternLength);
     }
