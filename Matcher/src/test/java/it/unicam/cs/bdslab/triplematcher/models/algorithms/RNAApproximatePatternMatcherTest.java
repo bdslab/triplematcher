@@ -152,6 +152,7 @@ public class RNAApproximatePatternMatcherTest {
                 , 1
                 , 13
                 , -1
+                , false
         ));
         s1.isNotWeakBond(1);
         List<Pair<Match<CompleteWeakBond>,Match<Character>>> matches =
